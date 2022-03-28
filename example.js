@@ -1,7 +1,7 @@
 const ConductorClient = require('./client').default
 
 const conductorClient = new ConductorClient({
-  baseURL: 'https://conductor.dev.bdreporting.local/api',
+    baseURL: 'http://localhost:8080/api',
 })
 
 //Replace with prefered logger and/or leave null
