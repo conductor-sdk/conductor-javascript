@@ -1,0 +1,26 @@
+{
+  "name": "@blackdiamond/conductor-client",
+  "version": "1.0.0",
+  "description": "Package used to interface with Netflix Conductor",
+  "main": "index.js",
+  "scripts": {
+    "lint": "eslint .",
+    "lint-fix": "eslint --fix ."
+  },
+  "author": "Black Diamond",
+  "license": "UNLICENSED",
+  
+  "files": [
+    "index.js",
+    "watcher.js",
+    "client.js",
+    "connector.js"
+  ],
+  "devDependencies": {
+    "eslint": "^6.1.0"
+  },
+  "dependencies": {
+    "config": "^3.3.6",
+    "superagent": "^6.1.0"
+  }
+}
