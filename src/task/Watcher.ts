@@ -1,7 +1,7 @@
 import {TaskClient} from "./TaskClient"
 import {ConductorLogger} from "../common/ConductorLogger"
 import {Task, TaskResult, TaskResultStatus} from "./types"
-import {sleep} from "./Sleep"
+import {sleep} from "./sleep"
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
 

@@ -12,6 +12,7 @@ export class TaskRunner {
     this.logger = logger ?? new DefaultLogger()
   }
 
+  // TODO(@ntomlin) simplify the options here?
   registerWatcher = (taskType: string, callback: WatcherArgs["callback"], options: Omit<WatcherArgs, "client" | "logger" | "callback">) => {
     if (!taskType) {
       throw new Error('Task type is required for registering watcher')

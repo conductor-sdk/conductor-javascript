@@ -32,7 +32,6 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
-    "node-fetch": "^2.6.7",
-    "superagent": "^6.1.0"
+    "node-fetch": "^2.6.7"
   }
 }
