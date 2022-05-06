@@ -54,15 +54,9 @@ export class HttpBaseClient {
       agent: this.#agent ?? undefined
     })
 
-    console.log(`${url}`, res.status, 'ok', res.ok)
     if (!res.ok) {
-      let body
-      try {
-        body = await res.text()
-      } catch (e) {}
-      finally {
-        throw new Error(`Non successful response ${res.status}. ${body}`)
-      }
+      let body = await res.text().catch(e => e.message)
+      throw new Error(`Non successful response ${res.status}. ${body}`)
     }
     return res
   }
