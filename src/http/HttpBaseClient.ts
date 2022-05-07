@@ -2,11 +2,11 @@ import {Agent, AgentOptions} from 'https'
 import fetch, {Headers, RequestInit} from "node-fetch"
 import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
 
-interface RequestOptions extends RequestInit {
+export interface RequestOptions extends RequestInit {
   json?: any
 }
 
-interface JSONOptions {
+export interface JSONOptions {
   parseResponse: boolean
 }
 
@@ -20,16 +20,16 @@ interface HttpConfig {
 }
 
 export class HttpBaseClient {
-  readonly #agent: Agent | undefined
-  readonly #config: HttpConfig
-  readonly #logger: ConductorLogger
+  private readonly agent: Agent | undefined
+  private readonly config: HttpConfig
+  private readonly logger: ConductorLogger
 
   constructor(config: HttpConfig, logger?: ConductorLogger) {
     if (config.httpsAgentOptions) {
-      this.#agent = new Agent(config.httpsAgentOptions)
+      this.agent = new Agent(config.httpsAgentOptions)
     }
-    this.#config = config
-    this.#logger = logger ?? new DefaultLogger()
+    this.config = config
+    this.logger = logger ?? new DefaultLogger()
   }
 
   json = async (url: string, options: RequestOptions  = {}, jsonOptions: JSONOptions = { parseResponse : true}) => {
@@ -48,10 +48,10 @@ export class HttpBaseClient {
   }
 
   request = async (url: string, options: RequestOptions = {}) => {
-    const fetchUrl = url.startsWith("/") ? url : `${this.#config.baseURL}/${url}`
+    const fetchUrl = url.startsWith("/") ? url : `${this.config.baseURL}/${url}`
     const res = await fetch(fetchUrl, {
       ...options,
-      agent: this.#agent ?? undefined
+      agent: this.agent ?? undefined
     })
 
     if (!res.ok) {

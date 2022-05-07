@@ -1,11 +1,11 @@
 import {TaskClient} from "./TaskClient"
 import {ConductorLogger} from "../common/ConductorLogger"
-import {Task, TaskResult, TaskResultStatus} from "./types"
+import {Task, TaskResultStatus} from "./types"
 import {sleep} from "./sleep"
+import {ConductorWorker} from "./Worker"
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
 
-const MAX_32_INT = 2147483647
 interface RunnerOptions {
   workerID: string
   pollingIntervals?: number,
@@ -28,7 +28,7 @@ export interface RunnerArgs {
   watcherOptions: RunnerOptions,
   logger: ConductorLogger
   // TODO(@ntomlin): is callback really the "execute" function and could this just be a `worker`?
-  callback: (task: Task) => Promise<TaskResult>
+  worker: ConductorWorker
 }
 
 export class TaskRunner {
@@ -41,13 +41,13 @@ export class TaskRunner {
   #logger: ConductorLogger
   #options: Required<RunnerOptions>
   #pollingFailures: number = 0
-  #callback: RunnerArgs["callback"]
+  worker: RunnerArgs["worker"]
 
-  constructor({ client, taskType, watcherOptions, logger, callback} : RunnerArgs) {
+  constructor({ client, taskType, watcherOptions, logger, worker} : RunnerArgs) {
     this.#client = client
     this.#taskType = taskType
     this.#logger = logger
-    this.#callback = callback
+    this.worker = worker
     this.#options = {
       ...DEFAULT_OPTIONS,
       ...watcherOptions
@@ -58,16 +58,6 @@ export class TaskRunner {
     clearTimeout(this.#tasksTimeout[taskId])
     delete this.#tasks[taskId]
   }
-
-  #destroyTask = (taskId: string) => {
-    delete this.#tasks[taskId]
-  }
-
-  #updateTask = async (taskBody: Omit<TaskResult, "workerId">) =>
-    this.#client.updateTask({
-      ...taskBody,
-      workerId: this.#options.workerID,
-    })
 
   // TODO: do we want to start this in a promise so we an return it?
   pollAndRepeat = async () => {
@@ -117,20 +107,20 @@ export class TaskRunner {
   #executeTask = async (task: Task) => {
     this.#tasks[task.taskId] = task
 
-    // TODO(@ntomlin): the conductor server should handle this for us?
-    if (task.responseTimeoutSeconds > 0 && task.responseTimeoutSeconds <= MAX_32_INT) {
-      this.#tasksTimeout [task.taskId] = setTimeout(() => {
-        this.#destroyTask(task.taskId)
-        this.#logger.error('Task %s was not updated in time', task.taskId)
-      }, task.responseTimeoutSeconds * 1000)
-    }
+    // TODO(@ntomlin): I think conductor server handles this for us so we can omit this
+    // if (task.responseTimeoutSeconds > 0 && task.responseTimeoutSeconds <= MAX_32_INT) {
+    //   this.#tasksTimeout [task.taskId] = setTimeout(() => {
+    //     this.#destroyTask(task.taskId)
+    //     this.#logger.error('Task %s was not updated in time', task.taskId)
+    //   }, task.responseTimeoutSeconds * 1000)
+    // }
 
     // TODO(@ntomlin) I think we need to map the task id to the worker to get this to work
     // right now we have a lot of workers with one callback
     // OR we have watchers separate. This is doing too many things right now
     try {
-      const result = await this.#callback(task)
-      await this.#updateTask({
+      const result = await this.worker(task)
+      await this.#client.updateTask({
         ...result,
         workflowInstanceId: task.workflowInstanceId,
         taskId: task.taskId,
@@ -138,7 +128,7 @@ export class TaskRunner {
       this.#logger.debug(`Finished polling for task ${task.taskId}`)
     } catch (error: unknown) {
       this.#logger.error(`Error polling and executing ${task.taskId}`, error)
-      await this.#updateTask({
+      await this.#client.updateTask({
         workflowInstanceId: task.workflowInstanceId,
         taskId: task.taskId,
         reasonForIncompletion: (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,

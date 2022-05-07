@@ -13,7 +13,7 @@ export class TaskManager {
   }
 
   // TODO(@ntomlin) simplify the options here?
-  register = (taskType: string, callback: RunnerArgs["callback"], options: Omit<RunnerArgs, "client" | "logger" | "callback">) => {
+  register = (taskType: string, callback: RunnerArgs["worker"], options: Omit<RunnerArgs, "client" | "logger" | "worker">) => {
     if (!taskType) {
       throw new Error('Task type is required to register')
     }
@@ -29,7 +29,7 @@ export class TaskManager {
         ...options,
         workerID: 'TODO'
       },
-      callback,
+      worker: callback,
       logger: this.logger
     })
     return this.tasks[taskType]

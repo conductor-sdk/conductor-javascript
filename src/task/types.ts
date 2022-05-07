@@ -26,7 +26,7 @@ export const TaskStatus = {
 export type TaskStatuses = typeof TaskResultStatus
 export type TaskStatusType = TaskStatuses[keyof TaskStatuses]
 
-export interface TaskResult {
+export interface TaskRunnerResult {
   status: TaskResultStatusType
   outputData: ConductorData
   workflowInstanceId: string
@@ -34,6 +34,8 @@ export interface TaskResult {
   taskId: string
   workerId?: string
 }
+
+export type WorkerResult = Omit<TaskRunnerResult, "workflowInstanceId" | "taskId">
 
 export interface Task {
   taskId: string

@@ -1,8 +1,8 @@
 import {HttpBaseClient} from "../http/HttpBaseClient"
-import {Task, TaskResult} from "./types"
+import {Task, TaskRunnerResult} from "./types"
 
 export class TaskClient extends HttpBaseClient {
-  updateTask = (taskResult: TaskResult) => {
+  updateTask = (taskResult: TaskRunnerResult) => {
     return this.json('tasks', {
       json: taskResult,
       method: 'POST',
