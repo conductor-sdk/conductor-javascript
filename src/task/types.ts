@@ -35,7 +35,7 @@ export interface TaskRunnerResult {
   workerId?: string
 }
 
-export type WorkerResult = Omit<TaskRunnerResult, "workflowInstanceId" | "taskId">
+export type WorkerResult = Omit<TaskRunnerResult, "workflowInstanceId" | "taskId" | "workerId">
 
 export interface Task {
   taskId: string

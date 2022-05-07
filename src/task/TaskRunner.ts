@@ -12,6 +12,7 @@ interface RunnerOptions {
   pollFailureBackoffFactor?: number,
   maxPollInterval?: number,
   maxRunner?: number,
+  retryCount?: number
 }
 
 const DEFAULT_OPTIONS: Required<RunnerOptions> = {
@@ -20,93 +21,85 @@ const DEFAULT_OPTIONS: Required<RunnerOptions> = {
   pollFailureBackoffFactor: 1, //Every failure adds 1x the polling interval
   maxPollInterval: 15000, //15 second max interval
   maxRunner: 1,
+  retryCount: 3
 }
 
 export interface RunnerArgs {
   client: TaskClient,
   taskType: string,
-  watcherOptions: RunnerOptions,
+  runnerOptions: RunnerOptions,
   logger: ConductorLogger
-  // TODO(@ntomlin): is callback really the "execute" function and could this just be a `worker`?
   worker: ConductorWorker
 }
 
 export class TaskRunner {
-  #startTime: Date | undefined
   isPolling = false
-  #tasksTimeout: Record<string, ReturnType<typeof setInterval>> = {}
-  #taskType: string
-  #tasks: Record<string, Task> = {}
   #client: TaskClient
   #logger: ConductorLogger
   #options: Required<RunnerOptions>
-  #pollingFailures: number = 0
+  #failures: number = 0
   worker: RunnerArgs["worker"]
 
-  constructor({ client, taskType, watcherOptions, logger, worker} : RunnerArgs) {
+  constructor({ client, runnerOptions, logger, worker} : RunnerArgs) {
     this.#client = client
-    this.#taskType = taskType
     this.#logger = logger
     this.worker = worker
     this.#options = {
       ...DEFAULT_OPTIONS,
-      ...watcherOptions
+      ...runnerOptions
     }
   }
 
-  #destroyTaskAndTaskTimeout = (taskId: string) => {
-    clearTimeout(this.#tasksTimeout[taskId])
-    delete this.#tasks[taskId]
-  }
-
-  // TODO: do we want to start this in a promise so we an return it?
   pollAndRepeat = async () => {
-    // TODO: a way to break out?
-    while (true) {
-      this.#startTime = new Date()
+    while (this.isPolling) {
       try {
-        if (this.isPolling) {
-          const { workerID } = this.#options
-          const freeRunnersCount = this.#options.maxRunner - Object.keys(this.#tasks).length
-          if (freeRunnersCount > 0) {
-            const task = await this.#client.pollTask(this.#taskType, workerID, '')
-            if (this.#pollingFailures === undefined || this.#pollingFailures > 0) {
-              this.#logger.info('Initial polling started successfully for task type: %s', this.#taskType)
-              this.#pollingFailures = 0
-            }
-            if (task && task.taskId) {
-              await this.#executeTask(task)
-            } else {
-              this.#logger.debug(`No tasks for ${this.#taskType}`)
-            }
-          }
+        const { workerID } = this.#options
+        // TODO (@ntomlin): this is our way of limiting parallelism because we are in a non threaded context
+        // I _think_ we should just do this outside in the manager though, and then allow these individual runners to blindly poll when allowed?
+        const task = await this.#client.pollTask(this.worker.taskDefName, workerID, '')
+        if (task && task.taskId) {
+          await this.#executeTask(task)
+        } else {
+          this.#logger.debug(`No tasks for ${this.worker.taskDefName}`)
         }
       } catch (unknownError: unknown) {
-        let message = ""
-        let stack: string | undefined = ""
-        if ((unknownError as Error).stack) { stack = (unknownError as Error).stack}
-        if ((unknownError as Error).message) { message = (unknownError as Error).message}
-        this.#pollingFailures = (this.#pollingFailures || 0) + 1
-        this.#logger.error('Polling connection failed for task type: %s, error: %s, stack: %s', this.#taskType, message, stack)
+        this.#failures = this.#failures + 1
+        this.#handleError(unknownError)
+      }
+
+      if (this.#failures >= this.#options.retryCount) {
+        this.stopPolling()
+        break;
       }
 
       let pollInterval = this.#options.pollingIntervals
-      if (this.#options.pollFailureBackoffFactor && this.#pollingFailures > 0) {
-        pollInterval = pollInterval + (this.#options.pollFailureBackoffFactor * pollInterval * this.#pollingFailures)
-
+      if (this.#options.pollFailureBackoffFactor && this.#failures > 0) {
+        pollInterval = pollInterval + (this.#options.pollFailureBackoffFactor * pollInterval * this.#failures)
         if (this.#options.maxPollInterval && pollInterval > this.#options.maxPollInterval) {
           pollInterval = this.#options.maxPollInterval
         }
       }
 
-      // TODO figure this out
-      await sleep(pollInterval - (new Date().getTime() - this.#startTime?.getTime()))
+      // TODO(@ntomlin): stop polling after we've failed `n` times?
+
+      // @ntomlin:
+      // this originally calculated the pollInterval from the starTime of the current poll
+      // to allow the individual runners to "catch up" if the execution of a task was taking longer than normal
+      // I've removed this and simplified to match the other client lib's behavior but please let me know if that's unwanted
+      await sleep(pollInterval)
     }
   }
 
-  #executeTask = async (task: Task) => {
-    this.#tasks[task.taskId] = task
+  #handleError = (unknownError: unknown) => {
+    let message = ""
+    let stack: string | undefined = ""
+    if ((unknownError as Error).stack) { stack = (unknownError as Error).stack}
+    if ((unknownError as Error).message) { message = (unknownError as Error).message}
+    this.#failures = (this.#failures || 0) + 1
+    this.#logger.error('Polling connection failed for task type: %s, error: %s, stack: %s', this.worker.taskDefName, message, stack)
+  }
 
+  #executeTask = async (task: Task) => {
     // TODO(@ntomlin): I think conductor server handles this for us so we can omit this
     // if (task.responseTimeoutSeconds > 0 && task.responseTimeoutSeconds <= MAX_32_INT) {
     //   this.#tasksTimeout [task.taskId] = setTimeout(() => {
@@ -119,7 +112,7 @@ export class TaskRunner {
     // right now we have a lot of workers with one callback
     // OR we have watchers separate. This is doing too many things right now
     try {
-      const result = await this.worker(task)
+      const result = await this.worker.execute(task)
       await this.#client.updateTask({
         ...result,
         workflowInstanceId: task.workflowInstanceId,
@@ -135,18 +128,15 @@ export class TaskRunner {
         status: TaskResultStatus.FAILED,
         outputData: {}
       })
-    } finally {
-      this.#destroyTaskAndTaskTimeout(task.taskId)
     }
   }
 
   startPolling = () => {
     if (this.isPolling) {
-      throw new Error('Watcher is already started')
+      throw new Error('Runner is already started')
     }
 
     this.isPolling = true
-    this.#startTime = new Date()
     // TODO(@ntomlin) is this what we want?
     return this.pollAndRepeat()
   }

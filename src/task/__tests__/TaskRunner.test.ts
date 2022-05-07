@@ -17,8 +17,13 @@ const mockLogger: ConductorLogger = {
   info: jest.fn()
 }
 
+class Worker {
+  taskType = ""
+}
+
 test('works tasks', async () => {
   const args: RunnerArgs = {
+    taskType: "test",
     worker: async ({inputData}) =>  {
       return {
         outputData: {
@@ -28,10 +33,9 @@ test('works tasks', async () => {
         status: TaskResultStatus.COMPLETED
       }
     },
-    taskType: "test",
-    watcherOptions: {
+    runnerOptions: {
       pollingIntervals: 10,
-      workerID: ""
+      workerID: "test"
     },
     logger: mockLogger,
     client: mockTaskClient
