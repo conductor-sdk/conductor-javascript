@@ -5,10 +5,11 @@
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
-    "lint": "eslint .",
+    "lint": "npx eslint . --ext .js,.ts",
     "build": "tsup index.ts",
-    "lint-fix": "eslint --fix .",
-    "test": "jest"
+    "lint-fix": "npx eslint . --fix --ext .js,.ts",
+    "test": "jest",
+    "ci": "npm run lint && npm run test"
   },
   "author": "Conductor community",
   "license": "UNLICENSED",
@@ -28,6 +29,8 @@
     "@tsconfig/node16": "^1.0.2",
     "@types/node": "^17.0.30",
     "@types/node-fetch": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^6.1.0",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.1",

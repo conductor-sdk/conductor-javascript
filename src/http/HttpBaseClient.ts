@@ -55,7 +55,7 @@ export class HttpBaseClient {
     })
 
     if (!res.ok) {
-      let body = await res.text().catch(e => e.message)
+      const body = await res.text().catch(e => e.message)
       throw new Error(`Non successful response ${res.status}. ${body}`)
     }
     return res
