@@ -43,5 +43,4 @@ export interface Task {
   inputData: ConductorData
   workflowInstanceId: string
   reasonForIncompletion?: string,
-  responseTimeoutSeconds: number
 }

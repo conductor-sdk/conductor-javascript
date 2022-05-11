@@ -1,43 +1,59 @@
 import {TaskClient} from "./TaskClient"
-import {TaskRunner} from "./TaskRunner"
+import os from "os"
+import {RunnerOptions, TaskRunner} from "./TaskRunner"
 import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
 import {ConductorWorker} from "./Worker"
 
+export interface TaskManagerConfig {
+  logger?: ConductorLogger
+  options: Partial<RunnerOptions>
+}
+
 export class TaskManager {
-  private tasks: Record<string, TaskRunner> = {}
+  private tasks: Record<string, Array<TaskRunner>> = {}
   private readonly client: TaskClient
   private readonly logger: ConductorLogger
   private workers: Array<ConductorWorker>
+  private options: Partial<RunnerOptions>
 
-  constructor(client: TaskClient, workers: Array<ConductorWorker>, logger?: ConductorLogger) {
+  constructor(client: TaskClient, workers: Array<ConductorWorker>, config: TaskManagerConfig) {
     this.client = client
-    this.logger = logger ?? new DefaultLogger()
+    this.logger = config.logger ?? new DefaultLogger()
     this.workers = workers
+    this.options = config.options
   }
 
-  startPolling = async () => {
-    // TODO: handle concurrency here via spinning up `n` parallel threads?
-    const promises = this.workers.map(worker => {
-      const runner = new TaskRunner({
-        client: this.client,
-        taskType: worker.taskDefName,
-        runnerOptions: {
-          workerID: 'TODO'
-        },
-        worker,
-        logger: this.logger
-      })
-      return runner.startPolling()
+  startPolling = () => {
+    const options = {
+      ...this.options,
+      workerID: this.#workerId()
+    }
+    const maxRunner = this.options.maxRunner ?? 1
+    this.workers.forEach(worker => {
+      this.tasks[worker.taskDefName] = []
+      for (let i = 0; i < maxRunner; i++) {
+        const runner = new TaskRunner({
+          worker,
+          options,
+          client: this.client,
+          logger: this.logger
+        })
+        // TODO(@ntomlin): right now we aren't handling these promises
+        // which will inevitably lead to chaos
+        runner.startPolling()
+        this.tasks[worker.taskDefName].push(runner)
+      }
     })
-
-    return Promise.all(promises)
   }
 
   stopPolling = () => {
     for (const taskType in this.tasks) {
-      if (this.tasks[taskType].isPolling) {
-        this.tasks[taskType].stopPolling()
-      }
+      this.tasks[taskType].forEach(runner => runner.stopPolling())
     }
+  }
+
+  #workerId = () : string => {
+    const providedId = this.options.workerID
+    return providedId ?? os.hostname()
   }
 }

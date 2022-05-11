@@ -1,47 +1,64 @@
-import {test} from "@jest/globals"
+import {jest, test, expect} from "@jest/globals"
+import {setTimeout} from "timers/promises"
+import type {Mocked} from "jest-mock"
 
 import {RunnerArgs, TaskRunner} from "../TaskRunner"
 import {TaskClient} from "../TaskClient"
-import {ConductorLogger} from "../../common/ConductorLogger"
-import {sleep} from "../sleep"
-import {TaskResultStatus} from "../types"
+import {TaskResultStatus, TaskRunnerResult} from "../types"
+import {mockLogger} from "./mockLogger"
 
-const stub: Pick<TaskClient, "pollTask" | "updateTask"> = {
+const taskClientStub: Mocked<Pick<TaskClient, "pollTask" | "updateTask">> = {
   pollTask: jest.fn(),
   updateTask: jest.fn()
 }
-const mockTaskClient = stub as unknown as TaskClient
-const mockLogger: ConductorLogger = {
-  debug: jest.fn(),
-  error: jest.fn(),
-  info: jest.fn()
-}
+const mockTaskClient = taskClientStub as unknown as TaskClient
 
-class Worker {
-  taskType = ""
-}
-
-test('works tasks', async () => {
+test('polls tasks', async () => {
+  const workerID = "worker-id"
   const args: RunnerArgs = {
-    taskType: "test",
-    worker: async ({inputData}) =>  {
-      return {
-        outputData: {
-          "hi": "there",
-          ...inputData
-        },
-        status: TaskResultStatus.COMPLETED
-      }
+    worker: {
+      taskDefName: "test",
+      execute: async ({inputData}) =>  {
+        return {
+          outputData: {
+            "hello": "from worker",
+            ...inputData
+          },
+          status: TaskResultStatus.COMPLETED
+        }
+      },
     },
-    runnerOptions: {
-      pollingIntervals: 10,
-      workerID: "test"
+    options: {
+      pollInterval: 10,
+      workerID
     },
     logger: mockLogger,
     client: mockTaskClient
   }
+  const workflowInstanceId =  "fake-workflow-id"
+  const taskId = "fake-task-id"
+  taskClientStub.pollTask.mockResolvedValue({
+    taskId,
+    workflowInstanceId,
+    status: "IN_PROGRESS",
+    reasonForIncompletion: undefined,
+    inputData: {
+      "input": "from workflow"
+    }
+  })
+
   const runner = new TaskRunner(args)
-  runner.pollAndRepeat()
-  await sleep(50)
+  runner.startPolling()
+  await setTimeout(10)
   runner.stopPolling()
+  const expected: TaskRunnerResult = {
+    taskId,
+    workflowInstanceId,
+    status: "COMPLETED",
+    outputData: {
+      "hello": "from worker",
+      "input": "from workflow"
+    }
+  }
+  expect(taskClientStub.updateTask).toHaveBeenCalledWith(expected)
 })
