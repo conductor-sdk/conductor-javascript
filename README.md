@@ -33,7 +33,6 @@ const taskManager = new TaskManager(
 taskManager.startPolling()
 ```
 
-
 ## Development
 
 ```
@@ -50,4 +49,16 @@ npm run lint
 
 # lint and autofix
 npm run lint:fix
+```
+
+
+### Releasing [work in progress]
+
+TODO: we need to add shared credentials for the `@orkes` org
+
+Publication is currently manual. 
+
+```
+npm test
+npm publish
 ```
