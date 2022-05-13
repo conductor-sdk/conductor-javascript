@@ -1,6 +1,8 @@
 Conductor node client
 ---
 
+This is a node.js client for [Netflix](https://github.com/Netflix/conductor) and [Orkes](https://orkes.io/) Conductor.
+
 ## Quickstart
 
 ```
