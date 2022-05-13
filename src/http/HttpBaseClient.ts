@@ -10,13 +10,17 @@ export interface JSONOptions {
   parseResponse: boolean
 }
 
-// TODO(@orkes): add orkes auth support?
 interface HttpConfig {
   baseURL: string
   /*
   Options passed to an [`https` Agent](https://nodejs.org/docs/latest-v16.x/api/https.html#class-httpsagent)
    */
   httpsAgentOptions?: AgentOptions
+  /*
+  TODO(@orkes): add orkes auth support?
+  @ntomlin: The initial exchange and refresh dance is something that I did not implement yet.
+  This would probably be the place to do that implementation.
+   */
 }
 
 export class HttpBaseClient {
