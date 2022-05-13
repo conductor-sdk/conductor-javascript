@@ -4,23 +4,43 @@ export interface ConductorLogger {
   debug(...args: any): void
 }
 
-// TODO: level?
+const levels = {
+  DEBUG: 10,
+  INFO: 30,
+  ERROR: 60
+} as const
+
 export class DefaultLogger implements ConductorLogger {
   private tags: Object[]
+  private level: number = 30
 
   constructor(tags: object[] = []) {
     this.tags = tags
   }
 
+  private log (level: keyof typeof levels, ...args: any) {
+    let resolvedLevel: number
+    let name = level
+    if (level in levels) {
+      resolvedLevel = levels[level]
+    } else {
+      name = "INFO"
+      resolvedLevel = levels.INFO
+    }
+    if (resolvedLevel > this.level) {
+      console.log(name, ...this.tags, ...args)
+    }
+  }
+
   info = (...args: any): void => {
-    console.log('INFO', ...this.tags, ...args)
+    this.log("INFO", ...args)
   }
 
   debug = (...args: any): void => {
-    console.log('DEBUG', ...this.tags, ...args)
+    this.log("DEBUG", ...args)
   }
 
   error =(...args: any): void => {
-    console.log('ERROR',...this.tags, ...args)
+    this.log("ERROR", ...args)
   }
 }
