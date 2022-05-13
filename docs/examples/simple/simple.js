@@ -1,10 +1,11 @@
-Conductor node client
----
-
-## Quickstart
-
-```
 const {TaskClient, TaskManager} = require('@conductor-sdk/conductor-client')
+
+/*
+Ensure you have followd the orkes guide
+https://orkes.io/content/docs/getting-started/run/running-first-worker#adding-worker-implementation
+
+To register the task and workflow definitions
+ */
 
 const client = new TaskClient({
   // or wherever Conductor is running locally
@@ -31,23 +32,4 @@ const taskManager = new TaskManager(
 )
 
 taskManager.startPolling()
-```
 
-
-## Development
-
-```
-# .node-version file contains necessary version of node
-# ensure that you are using a compatible version
-# Install dependencies
-npm i
-
-# run tests
-npm test
-
-# lint
-npm run lint
-
-# lint and autofix
-npm run lint:fix
-```

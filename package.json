@@ -41,5 +41,8 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.7"
+  },
+  "engines": {
+    "node": ">=16"
   }
 }

@@ -1,0 +1,10 @@
+{
+  "name": "conductor-js-client-simple-example",
+  "private": true,
+  "scripts": {
+    "start": "node simple.js"
+  },
+  "dependencies": {
+    "@orkes/conductor-client": "*"
+  }
+}
