@@ -1,7 +1,7 @@
 /* TODO(@ntomlin) generate these from json schema */
 
 // TODO(@ntomlin): allow typing this generically?
-export type ConductorData = Record<string, any>
+export type ConductorData = Record<string, unknown>
 export const TaskResultStatus = {
   'IN_PROGRESS': 'IN_PROGRESS',
   'FAILED': 'FAILED',

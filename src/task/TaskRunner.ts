@@ -13,17 +13,10 @@ export interface RunnerOptions {
   maxRunner?: number
 }
 
-const DEFAULT_OPTIONS: Required<RunnerOptions> = {
-  workerID: '',
-  pollInterval: 1000,
-  maxRunner: 1,
-  domain: ''
-}
-
 export interface RunnerArgs {
   worker: ConductorWorker,
   client: TaskClient,
-  options: RunnerOptions,
+  options: Required<RunnerOptions>,
   logger: ConductorLogger
 }
 
@@ -38,10 +31,7 @@ export class TaskRunner {
     this.#client = client
     this.#logger = logger
     this.#worker = worker
-    this.#options = {
-      ...DEFAULT_OPTIONS,
-      ...options
-    }
+    this.#options = options
   }
 
   startPolling = () => {

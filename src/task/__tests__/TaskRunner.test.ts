@@ -30,6 +30,8 @@ test('polls tasks', async () => {
     },
     options: {
       pollInterval: 10,
+      domain: '',
+      maxRunner: 1,
       workerID
     },
     logger: mockLogger,
