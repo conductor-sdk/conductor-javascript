@@ -5,7 +5,7 @@ This is a node.js client for [Netflix](https://github.com/Netflix/conductor) and
 
 ## Quickstart
 
-```
+```javascript
 const {TaskClient, TaskManager} = require('@conductor-sdk/conductor-client')
 
 const client = new TaskClient({
@@ -37,7 +37,7 @@ taskManager.startPolling()
 
 ## Development
 
-```
+```shell
 # .node-version file contains necessary version of node
 # ensure that you are using a compatible version
 # Install dependencies
@@ -60,7 +60,7 @@ TODO: we need to add shared credentials for the `@orkes` org
 
 Publication is currently manual. 
 
-```
+```shell
 npm test
 npm publish
 ```
