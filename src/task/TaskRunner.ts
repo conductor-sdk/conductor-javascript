@@ -75,7 +75,7 @@ export class TaskRunner {
       })
       this.#logger.debug(`Finished polling for task ${task.taskId}`)
     } catch (error: unknown) {
-      this.#logger.error(`Error polling and executing ${task.taskId}`, error)
+      this.#logger.error(`Error executing ${task.taskId}`, error)
       await this.#client.updateTask({
         workflowInstanceId: task.workflowInstanceId,
         taskId: task.taskId,
@@ -91,6 +91,6 @@ export class TaskRunner {
     let stack: string | undefined = ""
     if ((unknownError as Error).stack) { stack = (unknownError as Error).stack}
     if ((unknownError as Error).message) { message = (unknownError as Error).message}
-    this.#logger.error('Polling connection failed for task type: %s, error: %s, stack: %s', this.#worker.taskDefName, message, stack)
+    this.#logger.error(`Error for ${this.#worker.taskDefName}: error: ${message}, stack: ${stack}`)
   }
 }
