@@ -1,18 +1,19 @@
 {
   "name": "@conductor-sdk/conductor-client",
   "version": "1.0.0",
-  "description": "Client for netlfix Conductor",
+  "description": "JavaScript Client for Netflix Conductor",
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
     "lint": "npx eslint . --ext .js,.ts",
     "build": "tsup index.ts",
+    "prepublishOnly": "npm run build",
     "lint-fix": "npx eslint . --fix --ext .js,.ts",
     "test": "jest",
     "ci": "npm run lint && npm run test"
   },
   "author": "Conductor community",
-  "license": "UNLICENSED",
+  "license": "Apache-2.0",
   "files": [
     "dist",
     "README.md"
