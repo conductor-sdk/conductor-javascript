@@ -1,7 +1,14 @@
 {
   "name": "@conductor-sdk/conductor-client",
-  "version": "1.0.0",
   "description": "JavaScript Client for Netflix Conductor",
+  "version": "1.0.0",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
+  },
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
@@ -41,6 +48,13 @@
   },
   "dependencies": {
     "node-fetch": "^2.6.7"
+  },
+  "tsup": {
+    "target": "node16",
+    "sourcemap": true,
+    "format": ["esm", "cjs"],
+    "dts": true,
+    "clean": true
   },
   "engines": {
     "node": ">=16"
