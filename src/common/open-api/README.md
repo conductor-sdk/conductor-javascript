@@ -8,4 +8,8 @@ openapi-generator generate -g typescript-fetch -i https://play-app.orkes.io/api-
 
 The `runtime` file has been modified to:
 
+- Import fetch globals from `node-fetch`
+- Allow passing `tls` options
+- 
+The original generates
 

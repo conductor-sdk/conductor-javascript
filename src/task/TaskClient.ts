@@ -1,5 +1,7 @@
 import {HttpBaseClient} from "../http/HttpBaseClient"
 import {Task, TaskRunnerResult} from "./types"
+import{BaseAPI} from "../common/open-api"
+
 
 export class TaskClient extends HttpBaseClient {
   updateTask = (taskResult: TaskRunnerResult) => {
