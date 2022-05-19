@@ -54,7 +54,7 @@ export class ConductorClient {
       PASSWORD: config?.PASSWORD,
       HEADERS: config?.HEADERS,
       ENCODE_PATH: config?.ENCODE_PATH,
-      AGENT: config?.AGENT
+      AGENT: config?.AGENT // conductor-client-modification
     });
 
     this.adminResource = new AdminResourceService(this.request);
