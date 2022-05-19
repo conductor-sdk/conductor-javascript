@@ -1,8 +1,8 @@
-import {TaskClient} from "./TaskClient"
 import os from "os"
 import {RunnerOptions, TaskRunner} from "./TaskRunner"
 import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
 import {ConductorWorker} from "./Worker"
+import {ConductorClient} from "../common/open-api"
 
 export interface TaskManagerConfig {
   logger?: ConductorLogger
@@ -22,12 +22,12 @@ function workerId (options: Partial<RunnerOptions>) {
 
 export class TaskManager {
   private tasks: Record<string, Array<TaskRunner>> = {}
-  private readonly client: TaskClient
+  private readonly client: ConductorClient
   private readonly logger: ConductorLogger
   private workers: Array<ConductorWorker>
   private runnerOptions: Required<RunnerOptions>
 
-  constructor(client: TaskClient, workers: Array<ConductorWorker>, config: TaskManagerConfig = {}) {
+  constructor(client: ConductorClient, workers: Array<ConductorWorker>, config: TaskManagerConfig = {}) {
     if (!workers) { throw new Error("No workers supplied to TaskManager. Please pass an array of workers.") }
     this.client = client
     this.logger = config.logger ?? new DefaultLogger()
@@ -47,7 +47,7 @@ export class TaskManager {
         const runner = new TaskRunner({
           worker,
           options: this.runnerOptions,
-          client: this.client,
+          client: this.client.taskResource,
           logger: this.logger
         })
         // TODO(@ntomlin): right now we aren't handling these promises

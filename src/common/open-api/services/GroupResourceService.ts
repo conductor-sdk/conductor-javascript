@@ -13,6 +13,78 @@ export class GroupResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get all groups
+   * @returns Group OK
+   * @throws ApiError
+   */
+  public listGroups(): CancelablePromise<Array<Group>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/groups',
+    });
+  }
+
+  /**
+   * Add user to group
+   * @param groupId
+   * @param userId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public addUserToGroup(
+    groupId: string,
+    userId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/groups/{groupId}/users/{userId}',
+      path: {
+        'groupId': groupId,
+        'userId': userId,
+      },
+    });
+  }
+
+  /**
+   * Remove user from group
+   * @param groupId
+   * @param userId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeUserFromGroup(
+    groupId: string,
+    userId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/groups/{groupId}/users/{userId}',
+      path: {
+        'groupId': groupId,
+        'userId': userId,
+      },
+    });
+  }
+
+  /**
+   * Get the permissions this group has over workflows and tasks
+   * @param groupId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getGrantedPermissions(
+    groupId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/groups/{groupId}/permissions',
+      path: {
+        'groupId': groupId,
+      },
+    });
+  }
+
+  /**
    * Get a group by id
    * @param id
    * @returns any OK
@@ -78,60 +150,6 @@ export class GroupResourceService {
   }
 
   /**
-   * Add user to group
-   * @param groupId
-   * @param userId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public addUserToGroup(
-    groupId: string,
-    userId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/groups/{groupId}/users/{userId}',
-      path: {
-        'groupId': groupId,
-        'userId': userId,
-      },
-    });
-  }
-
-  /**
-   * Remove user from group
-   * @param groupId
-   * @param userId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeUserFromGroup(
-    groupId: string,
-    userId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/groups/{groupId}/users/{userId}',
-      path: {
-        'groupId': groupId,
-        'userId': userId,
-      },
-    });
-  }
-
-  /**
-   * Get all groups
-   * @returns Group OK
-   * @throws ApiError
-   */
-  public listGroups(): CancelablePromise<Array<Group>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/groups',
-    });
-  }
-
-  /**
    * Get all users in group
    * @param id
    * @returns any OK
@@ -145,24 +163,6 @@ export class GroupResourceService {
       url: '/api/groups/{id}/users',
       path: {
         'id': id,
-      },
-    });
-  }
-
-  /**
-   * Get the permissions this group has over workflows and tasks
-   * @param groupId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getGrantedPermissions1(
-    groupId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/groups/{groupId}/permissions',
-      path: {
-        'groupId': groupId,
       },
     });
   }

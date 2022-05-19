@@ -11,36 +11,6 @@ export class AdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Queue up all the running workflows for sweep
-   * @param workflowId
-   * @returns string OK
-   * @throws ApiError
-   */
-  public requeueSweep(
-    workflowId: string,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/admin/sweep/requeue/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-    });
-  }
-
-  /**
-   * Get details of redis usage
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getRedisUsage(): CancelablePromise<Record<string, any>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/admin/redisUsage',
-    });
-  }
-
-  /**
    * Verify and repair workflow consistency
    * @param workflowId
    * @returns string OK
@@ -52,6 +22,24 @@ export class AdminResourceService {
     return this.httpRequest.request({
       method: 'POST',
       url: '/api/admin/consistency/verifyAndRepair/{workflowId}',
+      path: {
+        'workflowId': workflowId,
+      },
+    });
+  }
+
+  /**
+   * Queue up all the running workflows for sweep
+   * @param workflowId
+   * @returns string OK
+   * @throws ApiError
+   */
+  public requeueSweep(
+    workflowId: string,
+  ): CancelablePromise<string> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/admin/sweep/requeue/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -99,6 +87,18 @@ export class AdminResourceService {
       query: {
         'verbose': verbose,
       },
+    });
+  }
+
+  /**
+   * Get details of redis usage
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getRedisUsage(): CancelablePromise<Record<string, any>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/admin/redisUsage',
     });
   }
 

@@ -12,6 +12,119 @@ export class ApplicationResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get application's access keys
+   * @param id
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getAccessKeys(
+    id: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/applications/{id}/accessKeys',
+      path: {
+        'id': id,
+      },
+    });
+  }
+
+  /**
+   * Create an access key for an application
+   * @param id
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public createAccessKey(
+    id: string,
+    requestBody?: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/applications/{id}/accessKeys',
+      path: {
+        'id': id,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * @param applicationId
+   * @param role
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public addRoleToApplicationUser(
+    applicationId: string,
+    role: string,
+    requestBody?: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/applications/{applicationId}/roles/{role}',
+      path: {
+        'applicationId': applicationId,
+        'role': role,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * @param applicationId
+   * @param role
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeRoleFromApplicationUser(
+    applicationId: string,
+    role: string,
+    requestBody?: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/applications/{applicationId}/roles/{role}',
+      path: {
+        'applicationId': applicationId,
+        'role': role,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Toggle the status of an access key
+   * @param applicationId
+   * @param keyId
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public toggleAccessKeyStatus(
+    applicationId: string,
+    keyId: string,
+    requestBody?: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/applications/{applicationId}/accessKeys/{keyId}/status',
+      path: {
+        'applicationId': applicationId,
+        'keyId': keyId,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
    * Get all applications
    * @returns ConductorApplication OK
    * @throws ApiError
@@ -125,119 +238,6 @@ export class ApplicationResourceService {
     return this.httpRequest.request({
       method: 'DELETE',
       url: '/api/applications/{id}',
-      path: {
-        'id': id,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Toggle the status of an access key
-   * @param applicationId
-   * @param keyId
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public toggleAccessKeyStatus(
-    applicationId: string,
-    keyId: string,
-    requestBody?: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/applications/{applicationId}/accessKeys/{keyId}/status',
-      path: {
-        'applicationId': applicationId,
-        'keyId': keyId,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * @param applicationId
-   * @param role
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public addRoleToApplicationUser(
-    applicationId: string,
-    role: string,
-    requestBody?: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/applications/{applicationId}/roles/{role}',
-      path: {
-        'applicationId': applicationId,
-        'role': role,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * @param applicationId
-   * @param role
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeRoleFromApplicationUser(
-    applicationId: string,
-    role: string,
-    requestBody?: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/applications/{applicationId}/roles/{role}',
-      path: {
-        'applicationId': applicationId,
-        'role': role,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Get application's access keys
-   * @param id
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getAccessKeys(
-    id: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/applications/{id}/accessKeys',
-      path: {
-        'id': id,
-      },
-    });
-  }
-
-  /**
-   * Create an access key for an application
-   * @param id
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public createAccessKey(
-    id: string,
-    requestBody?: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/applications/{id}/accessKeys',
       path: {
         'id': id,
       },

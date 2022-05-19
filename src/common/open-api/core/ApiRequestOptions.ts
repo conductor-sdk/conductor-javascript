@@ -15,4 +15,4 @@ export type ApiRequestOptions = {
   readonly mediaType?: string;
   readonly responseHeader?: string;
   readonly errors?: Record<number, string>;
-} & Pick<RequestInit, "agent">;
+} & Pick<RequestInit, "agent">; // conductor-client-modification

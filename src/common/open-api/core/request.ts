@@ -280,7 +280,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
       const formData = getFormData(options);
       const body = getRequestBody(options);
       const headers = await getHeaders(config, options);
-
+      if (config.AGENT) { options.agent = config.AGENT } // conductor-client-modification
       if (!onCancel.isCancelled) {
         const response = await sendRequest(options, url, body, formData, headers, onCancel);
         const responseBody = await getResponseBody(response);

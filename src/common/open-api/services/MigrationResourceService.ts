@@ -9,18 +9,6 @@ export class MigrationResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Migrate Workflow and Task Definitions to Postgres
-   * @returns any OK
-   * @throws ApiError
-   */
-  public migrateMetadata(): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/admin/migrate_metadata',
-    });
-  }
-
-  /**
    * Migrate workflows from Redis to Postgres
    * @returns number OK
    * @throws ApiError
@@ -29,6 +17,18 @@ export class MigrationResourceService {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/admin/migrate_workflow',
+    });
+  }
+
+  /**
+   * Migrate Workflow and Task Definitions to Postgres
+   * @returns any OK
+   * @throws ApiError
+   */
+  public migrateMetadata(): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/admin/migrate_metadata',
     });
   }
 

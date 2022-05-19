@@ -17,7 +17,7 @@ export type OpenAPIConfig = {
   PASSWORD?: string | Resolver<string>;
   HEADERS?: Headers | Resolver<Headers>;
   ENCODE_PATH?: (path: string) => string;
-  AGENT?: RequestInit["agent"]
+  AGENT?: RequestInit["agent"] // conductor-client-modification
 };
 
 export const OpenAPI: OpenAPIConfig = {

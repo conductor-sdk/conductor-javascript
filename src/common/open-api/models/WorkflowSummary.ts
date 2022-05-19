@@ -10,7 +10,7 @@ export type WorkflowSummary = {
   startTime?: string;
   updateTime?: string;
   endTime?: string;
-  status?: WorkflowSummary.status;
+  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
   input?: string;
   output?: string;
   reasonForIncompletion?: string;
@@ -24,17 +24,3 @@ export type WorkflowSummary = {
   outputSize?: number;
   inputSize?: number;
 };
-
-export namespace WorkflowSummary {
-
-  export enum status {
-    RUNNING = 'RUNNING',
-    COMPLETED = 'COMPLETED',
-    FAILED = 'FAILED',
-    TIMED_OUT = 'TIMED_OUT',
-    TERMINATED = 'TERMINATED',
-    PAUSED = 'PAUSED',
-  }
-
-
-}

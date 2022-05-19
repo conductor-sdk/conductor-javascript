@@ -7,7 +7,7 @@ import type { WorkflowTask } from './WorkflowTask';
 
 export type Task = {
   taskType?: string;
-  status?: Task.status;
+  status?: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED';
   inputData?: Record<string, any>;
   referenceTaskName?: string;
   retryCount?: number;
@@ -48,20 +48,3 @@ export type Task = {
   queueWaitTime?: number;
   loopOverTask?: boolean;
 };
-
-export namespace Task {
-
-  export enum status {
-    IN_PROGRESS = 'IN_PROGRESS',
-    CANCELED = 'CANCELED',
-    FAILED = 'FAILED',
-    FAILED_WITH_TERMINAL_ERROR = 'FAILED_WITH_TERMINAL_ERROR',
-    COMPLETED = 'COMPLETED',
-    COMPLETED_WITH_ERRORS = 'COMPLETED_WITH_ERRORS',
-    SCHEDULED = 'SCHEDULED',
-    TIMED_OUT = 'TIMED_OUT',
-    SKIPPED = 'SKIPPED',
-  }
-
-
-}

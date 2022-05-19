@@ -14,8 +14,8 @@ export type TaskDef = {
   timeoutSeconds: number;
   inputKeys?: Array<string>;
   outputKeys?: Array<string>;
-  timeoutPolicy?: TaskDef.timeoutPolicy;
-  retryLogic?: TaskDef.retryLogic;
+  timeoutPolicy?: 'RETRY' | 'TIME_OUT_WF' | 'ALERT_ONLY';
+  retryLogic?: 'FIXED' | 'EXPONENTIAL_BACKOFF' | 'LINEAR_BACKOFF';
   retryDelaySeconds?: number;
   responseTimeoutSeconds?: number;
   concurrentExecLimit?: number;
@@ -28,20 +28,3 @@ export type TaskDef = {
   pollTimeoutSeconds?: number;
   backoffScaleFactor?: number;
 };
-
-export namespace TaskDef {
-
-  export enum timeoutPolicy {
-    RETRY = 'RETRY',
-    TIME_OUT_WF = 'TIME_OUT_WF',
-    ALERT_ONLY = 'ALERT_ONLY',
-  }
-
-  export enum retryLogic {
-    FIXED = 'FIXED',
-    EXPONENTIAL_BACKOFF = 'EXPONENTIAL_BACKOFF',
-    LINEAR_BACKOFF = 'LINEAR_BACKOFF',
-  }
-
-
-}

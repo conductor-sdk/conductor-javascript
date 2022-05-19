@@ -14,16 +14,5 @@ export type WorkflowScheduleExecutionModel = {
   reason?: string;
   stackTrace?: string;
   startWorkflowRequest?: StartWorkflowRequest;
-  state?: WorkflowScheduleExecutionModel.state;
+  state?: 'POLLED' | 'FAILED' | 'EXECUTED';
 };
-
-export namespace WorkflowScheduleExecutionModel {
-
-  export enum state {
-    POLLED = 'POLLED',
-    FAILED = 'FAILED',
-    EXECUTED = 'EXECUTED',
-  }
-
-
-}

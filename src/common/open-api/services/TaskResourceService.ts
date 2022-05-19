@@ -17,75 +17,32 @@ export class TaskResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Search for tasks based in payload and other parameters
-   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
-   * @param start
-   * @param size
-   * @param sort
-   * @param freeText
-   * @param query
-   * @returns SearchResultTaskSummary OK
+   * Get task by Id
+   * @param taskId
+   * @returns Task OK
    * @throws ApiError
    */
-  public search(
-    start?: number,
-    size: number = 100,
-    sort?: string,
-    freeText: string = '*',
-    query?: string,
-  ): CancelablePromise<SearchResultTaskSummary> {
+  public getTask(
+    taskId: string,
+  ): CancelablePromise<Task> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/search',
-      query: {
-        'start': start,
-        'size': size,
-        'sort': sort,
-        'freeText': freeText,
-        'query': query,
+      url: '/api/tasks/{taskId}',
+      path: {
+        'taskId': taskId,
       },
     });
   }
 
   /**
-   * Get the last poll data for a given task type
-   * @param taskType
-   * @returns PollData OK
+   * Get the details about each queue
+   * @returns number OK
    * @throws ApiError
    */
-  public getPollData(
-    taskType: string,
-  ): CancelablePromise<Array<PollData>> {
+  public all(): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/polldata',
-      query: {
-        'taskType': taskType,
-      },
-    });
-  }
-
-  /**
-   * Get the external uri where the task payload is to be stored
-   * @param path
-   * @param operation
-   * @param payloadType
-   * @returns ExternalStorageLocation OK
-   * @throws ApiError
-   */
-  public getExternalStorageLocation(
-    path: string,
-    operation: string,
-    payloadType: string,
-  ): CancelablePromise<ExternalStorageLocation> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/tasks/externalstoragelocation',
-      query: {
-        'path': path,
-        'operation': operation,
-        'payloadType': payloadType,
-      },
+      url: '/api/tasks/queue/all',
     });
   }
 
@@ -104,69 +61,6 @@ export class TaskResourceService {
       path: {
         'taskType': taskType,
       },
-    });
-  }
-
-  /**
-   * Get Task type queue sizes
-   * @param taskType
-   * @returns number OK
-   * @throws ApiError
-   */
-  public size(
-    taskType?: Array<string>,
-  ): CancelablePromise<Record<string, number>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/tasks/queue/sizes',
-      query: {
-        'taskType': taskType,
-      },
-    });
-  }
-
-  /**
-   * Update a task By Ref Name
-   * @param workflowId
-   * @param taskRefName
-   * @param status
-   * @param requestBody
-   * @returns string OK
-   * @throws ApiError
-   */
-  public updateTask(
-    workflowId: string,
-    taskRefName: string,
-    status: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED',
-    requestBody: Record<string, any>,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/tasks/{workflowId}/{taskRefName}/{status}',
-      path: {
-        'workflowId': workflowId,
-        'taskRefName': taskRefName,
-        'status': status,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Update a task
-   * @param requestBody
-   * @returns string OK
-   * @throws ApiError
-   */
-  public updateTask1(
-    requestBody: TaskResult,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/tasks',
-      body: requestBody,
-      mediaType: 'application/json',
     });
   }
 
@@ -211,26 +105,68 @@ export class TaskResourceService {
   }
 
   /**
-   * Get the last poll data for all task types
-   * @returns PollData OK
-   * @throws ApiError
-   */
-  public getAllPollData(): CancelablePromise<Array<PollData>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/tasks/queue/polldata/all',
-    });
-  }
-
-  /**
    * Get the details about each queue
    * @returns number OK
    * @throws ApiError
    */
-  public all(): CancelablePromise<Record<string, number>> {
+  public allVerbose(): CancelablePromise<Record<string, Record<string, Record<string, number>>>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/all',
+      url: '/api/tasks/queue/all/verbose',
+    });
+  }
+
+  /**
+   * Poll for a task of a certain type
+   * @param tasktype
+   * @param workerid
+   * @param domain
+   * @returns Task OK
+   * @throws ApiError
+   */
+  public poll(
+    tasktype: string,
+    workerid?: string,
+    domain?: string,
+  ): CancelablePromise<Task> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/tasks/poll/{tasktype}',
+      path: {
+        'tasktype': tasktype,
+      },
+      query: {
+        'workerid': workerid,
+        'domain': domain,
+      },
+    });
+  }
+
+  /**
+   * Update a task By Ref Name
+   * @param workflowId
+   * @param taskRefName
+   * @param status
+   * @param requestBody
+   * @returns string OK
+   * @throws ApiError
+   */
+  public updateTask(
+    workflowId: string,
+    taskRefName: string,
+    status: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED',
+    requestBody: Record<string, any>,
+  ): CancelablePromise<string> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/tasks/{workflowId}/{taskRefName}/{status}',
+      path: {
+        'workflowId': workflowId,
+        'taskRefName': taskRefName,
+        'status': status,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -266,14 +202,98 @@ export class TaskResourceService {
   }
 
   /**
-   * Get the details about each queue
+   * Update a task
+   * @param requestBody
+   * @returns string OK
+   * @throws ApiError
+   */
+  public updateTask1(
+    requestBody: TaskResult,
+  ): CancelablePromise<string> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/tasks',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Search for tasks based in payload and other parameters
+   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+   * @param start
+   * @param size
+   * @param sort
+   * @param freeText
+   * @param query
+   * @returns SearchResultTaskSummary OK
+   * @throws ApiError
+   */
+  public search(
+    start?: number,
+    size: number = 100,
+    sort?: string,
+    freeText: string = '*',
+    query?: string,
+  ): CancelablePromise<SearchResultTaskSummary> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/tasks/search',
+      query: {
+        'start': start,
+        'size': size,
+        'sort': sort,
+        'freeText': freeText,
+        'query': query,
+      },
+    });
+  }
+
+  /**
+   * Get Task type queue sizes
+   * @param taskType
    * @returns number OK
    * @throws ApiError
    */
-  public allVerbose(): CancelablePromise<Record<string, Record<string, Record<string, number>>>> {
+  public size1(
+    taskType?: Array<string>,
+  ): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/all/verbose',
+      url: '/api/tasks/queue/sizes',
+      query: {
+        'taskType': taskType,
+      },
+    });
+  }
+
+  /**
+   * Get the last poll data for a given task type
+   * @param taskType
+   * @returns PollData OK
+   * @throws ApiError
+   */
+  public getPollData(
+    taskType: string,
+  ): CancelablePromise<Array<PollData>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/tasks/queue/polldata',
+      query: {
+        'taskType': taskType,
+      },
+    });
+  }
+
+  /**
+   * Get the last poll data for all task types
+   * @returns PollData OK
+   * @throws ApiError
+   */
+  public getAllPollData(): CancelablePromise<Array<PollData>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/tasks/queue/polldata/all',
     });
   }
 
@@ -310,45 +330,25 @@ export class TaskResourceService {
   }
 
   /**
-   * Get task by Id
-   * @param taskId
-   * @returns Task OK
+   * Get the external uri where the task payload is to be stored
+   * @param path
+   * @param operation
+   * @param payloadType
+   * @returns ExternalStorageLocation OK
    * @throws ApiError
    */
-  public getTask(
-    taskId: string,
-  ): CancelablePromise<Task> {
+  public getExternalStorageLocation1(
+    path: string,
+    operation: string,
+    payloadType: string,
+  ): CancelablePromise<ExternalStorageLocation> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/{taskId}',
-      path: {
-        'taskId': taskId,
-      },
-    });
-  }
-
-  /**
-   * Poll for a task of a certain type
-   * @param tasktype
-   * @param workerid
-   * @param domain
-   * @returns Task OK
-   * @throws ApiError
-   */
-  public poll(
-    tasktype: string,
-    workerid?: string,
-    domain?: string,
-  ): CancelablePromise<Task> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/tasks/poll/{tasktype}',
-      path: {
-        'tasktype': tasktype,
-      },
+      url: '/api/tasks/externalstoragelocation',
       query: {
-        'workerid': workerid,
-        'domain': domain,
+        'path': path,
+        'operation': operation,
+        'payloadType': payloadType,
       },
     });
   }

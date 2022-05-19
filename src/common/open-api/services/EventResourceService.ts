@@ -11,6 +11,24 @@ export class EventResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Remove an event handler
+   * @param name
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeEventHandlerStatus(
+    name: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/event/{name}',
+      path: {
+        'name': name,
+      },
+    });
+  }
+
+  /**
    * Get all the event handlers
    * @returns EventHandler OK
    * @throws ApiError
@@ -53,24 +71,6 @@ export class EventResourceService {
       url: '/api/event',
       body: requestBody,
       mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Remove an event handler
-   * @param name
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeEventHandlerStatus(
-    name: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/event/{name}',
-      path: {
-        'name': name,
-      },
     });
   }
 

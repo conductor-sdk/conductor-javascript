@@ -14,92 +14,6 @@ export class SchedulerResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Resume a paused schedule by name
-   * @param userId
-   * @param name
-   * @returns any OK
-   * @throws ApiError
-   */
-  public resumeSchedule(
-    userId: string,
-    name: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/schedules/{name}/resume',
-      path: {
-        'name': name,
-      },
-      query: {
-        'userId': userId,
-      },
-    });
-  }
-
-  /**
-   * Test timeout - do not use in production
-   * @returns any OK
-   * @throws ApiError
-   */
-  public testTimeout(): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/test/timeout',
-    });
-  }
-
-  /**
-   * Get list of the next x (default 3, max 5) execution times for a scheduler
-   * @param cronExpression
-   * @param scheduleStartTime
-   * @param scheduleEndTime
-   * @param limit
-   * @returns number OK
-   * @throws ApiError
-   */
-  public getNextFewSchedules(
-    cronExpression: string,
-    scheduleStartTime?: number,
-    scheduleEndTime?: number,
-    limit: number = 3,
-  ): CancelablePromise<Array<number>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/nextFewSchedules',
-      query: {
-        'cronExpression': cronExpression,
-        'scheduleStartTime': scheduleStartTime,
-        'scheduleEndTime': scheduleEndTime,
-        'limit': limit,
-      },
-    });
-  }
-
-  /**
-   * Requeue all execution records
-   * @returns any OK
-   * @throws ApiError
-   */
-  public requeueAllExecutionRecords(): CancelablePromise<Record<string, any>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/admin/requeue',
-    });
-  }
-
-  /**
-   * Resume all scheduling
-   * @returns any OK
-   * @throws ApiError
-   */
-  public resumeAllSchedules(): CancelablePromise<Record<string, any>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/admin/resume',
-    });
-  }
-
-  /**
    * Get an existing workflow schedule by name
    * @param name
    * @returns any OK
@@ -152,6 +66,37 @@ export class SchedulerResourceService {
   }
 
   /**
+   * Search for workflows based on payload and other parameters
+   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
+   * @param start
+   * @param size
+   * @param sort
+   * @param freeText
+   * @param query
+   * @returns SearchResultWorkflowScheduleExecutionModel OK
+   * @throws ApiError
+   */
+  public searchV2(
+    start?: number,
+    size: number = 100,
+    sort?: string,
+    freeText: string = '*',
+    query?: string,
+  ): CancelablePromise<SearchResultWorkflowScheduleExecutionModel> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/search/executions',
+      query: {
+        'start': start,
+        'size': size,
+        'sort': sort,
+        'freeText': freeText,
+        'query': query,
+      },
+    });
+  }
+
+  /**
    * Get all existing workflow schedules and optionally filter by workflow name
    * @param workflowName
    * @returns WorkflowSchedule OK
@@ -191,6 +136,68 @@ export class SchedulerResourceService {
   }
 
   /**
+   * Test timeout - do not use in production
+   * @returns any OK
+   * @throws ApiError
+   */
+  public testTimeout(): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/test/timeout',
+    });
+  }
+
+  /**
+   * Resume a paused schedule by name
+   * @param userId
+   * @param name
+   * @returns any OK
+   * @throws ApiError
+   */
+  public resumeSchedule(
+    userId: string,
+    name: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/schedules/{name}/resume',
+      path: {
+        'name': name,
+      },
+      query: {
+        'userId': userId,
+      },
+    });
+  }
+
+  /**
+   * Get list of the next x (default 3, max 5) execution times for a scheduler
+   * @param cronExpression
+   * @param scheduleStartTime
+   * @param scheduleEndTime
+   * @param limit
+   * @returns number OK
+   * @throws ApiError
+   */
+  public getNextFewSchedules(
+    cronExpression: string,
+    scheduleStartTime?: number,
+    scheduleEndTime?: number,
+    limit: number = 3,
+  ): CancelablePromise<Array<number>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/nextFewSchedules',
+      query: {
+        'cronExpression': cronExpression,
+        'scheduleStartTime': scheduleStartTime,
+        'scheduleEndTime': scheduleEndTime,
+        'limit': limit,
+      },
+    });
+  }
+
+  /**
    * Pauses an existing schedule by name
    * @param userId
    * @param name
@@ -214,33 +221,26 @@ export class SchedulerResourceService {
   }
 
   /**
-   * Search for workflows based on payload and other parameters
-   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
-   * @param start
-   * @param size
-   * @param sort
-   * @param freeText
-   * @param query
-   * @returns SearchResultWorkflowScheduleExecutionModel OK
+   * Requeue all execution records
+   * @returns any OK
    * @throws ApiError
    */
-  public searchV22(
-    start?: number,
-    size: number = 100,
-    sort?: string,
-    freeText: string = '*',
-    query?: string,
-  ): CancelablePromise<SearchResultWorkflowScheduleExecutionModel> {
+  public requeueAllExecutionRecords(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/search/executions',
-      query: {
-        'start': start,
-        'size': size,
-        'sort': sort,
-        'freeText': freeText,
-        'query': query,
-      },
+      url: '/api/scheduler/admin/requeue',
+    });
+  }
+
+  /**
+   * Resume all scheduling
+   * @returns any OK
+   * @throws ApiError
+   */
+  public resumeAllSchedules(): CancelablePromise<Record<string, any>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/admin/resume',
     });
   }
 

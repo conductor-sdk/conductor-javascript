@@ -9,20 +9,6 @@ export type SubjectRef = {
   /**
    * User, role or group
    */
-  type?: SubjectRef.type;
+  type?: 'USER' | 'ROLE' | 'GROUP';
   id: string;
 };
-
-export namespace SubjectRef {
-
-  /**
-   * User, role or group
-   */
-  export enum type {
-    USER = 'USER',
-    ROLE = 'ROLE',
-    GROUP = 'GROUP',
-  }
-
-
-}

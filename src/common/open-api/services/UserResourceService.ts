@@ -13,6 +13,24 @@ export class UserResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get all users
+   * @param apps
+   * @returns ConductorUser OK
+   * @throws ApiError
+   */
+  public listUsers(
+    apps: boolean = false,
+  ): CancelablePromise<Array<ConductorUser>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/users',
+      query: {
+        'apps': apps,
+      },
+    });
+  }
+
+  /**
    * Get a user by id
    * @param principal
    * @param id
@@ -88,7 +106,7 @@ export class UserResourceService {
    * @returns any OK
    * @throws ApiError
    */
-  public getGrantedPermissions(
+  public getGrantedPermissions1(
     userId: string,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
@@ -96,24 +114,6 @@ export class UserResourceService {
       url: '/api/users/{userId}/permissions',
       path: {
         'userId': userId,
-      },
-    });
-  }
-
-  /**
-   * Get all users
-   * @param apps
-   * @returns ConductorUser OK
-   * @throws ApiError
-   */
-  public listUsers(
-    apps: boolean = false,
-  ): CancelablePromise<Array<ConductorUser>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/users',
-      query: {
-        'apps': apps,
       },
     });
   }

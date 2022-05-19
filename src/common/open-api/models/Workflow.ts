@@ -11,7 +11,7 @@ export type Workflow = {
   updateTime?: number;
   createdBy?: string;
   updatedBy?: string;
-  status?: Workflow.status;
+  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
   endTime?: number;
   workflowId?: string;
   parentWorkflowId?: string;
@@ -31,21 +31,7 @@ export type Workflow = {
   priority?: number;
   variables?: Record<string, any>;
   lastRetriedTime?: number;
+  startTime?: number;
   workflowName?: string;
   workflowVersion?: number;
-  startTime?: number;
 };
-
-export namespace Workflow {
-
-  export enum status {
-    RUNNING = 'RUNNING',
-    COMPLETED = 'COMPLETED',
-    FAILED = 'FAILED',
-    TIMED_OUT = 'TIMED_OUT',
-    TERMINATED = 'TERMINATED',
-    PAUSED = 'PAUSED',
-  }
-
-
-}

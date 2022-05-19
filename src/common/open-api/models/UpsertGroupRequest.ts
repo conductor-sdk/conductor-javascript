@@ -7,18 +7,5 @@ export type UpsertGroupRequest = {
    * A general description of the group
    */
   description: string;
-  roles?: UpsertGroupRequest.roles;
+  roles?: 'ADMIN' | 'USER' | 'WORKER' | 'METADATA_MANAGER' | 'WORKFLOW_MANAGER';
 };
-
-export namespace UpsertGroupRequest {
-
-  export enum roles {
-    ADMIN = 'ADMIN',
-    USER = 'USER',
-    WORKER = 'WORKER',
-    METADATA_MANAGER = 'METADATA_MANAGER',
-    WORKFLOW_MANAGER = 'WORKFLOW_MANAGER',
-  }
-
-
-}

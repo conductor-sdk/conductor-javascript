@@ -12,6 +12,27 @@ export class AuthorizationResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get the access that have been granted over the given object
+   * @param type
+   * @param id
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getPermissions(
+    type: string,
+    id: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/auth/authorization/{type}/{id}',
+      path: {
+        'type': type,
+        'id': id,
+      },
+    });
+  }
+
+  /**
    * Grant access to a user over the target
    * @param requestBody
    * @returns Response OK
@@ -48,27 +69,6 @@ export class AuthorizationResourceService {
       url: '/api/auth/authorization',
       body: requestBody,
       mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Get the access that have been granted over the given object
-   * @param type
-   * @param id
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getPermissions(
-    type: string,
-    id: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/auth/authorization/{type}/{id}',
-      path: {
-        'type': type,
-        'id': id,
-      },
     });
   }
 

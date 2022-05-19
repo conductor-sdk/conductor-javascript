@@ -10,7 +10,7 @@ export type TaskSummary = {
   startTime?: string;
   updateTime?: string;
   endTime?: string;
-  status?: TaskSummary.status;
+  status?: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED';
   reasonForIncompletion?: string;
   executionTime?: number;
   queueWaitTime?: number;
@@ -23,20 +23,3 @@ export type TaskSummary = {
   externalOutputPayloadStoragePath?: string;
   workflowPriority?: number;
 };
-
-export namespace TaskSummary {
-
-  export enum status {
-    IN_PROGRESS = 'IN_PROGRESS',
-    CANCELED = 'CANCELED',
-    FAILED = 'FAILED',
-    FAILED_WITH_TERMINAL_ERROR = 'FAILED_WITH_TERMINAL_ERROR',
-    COMPLETED = 'COMPLETED',
-    COMPLETED_WITH_ERRORS = 'COMPLETED_WITH_ERRORS',
-    SCHEDULED = 'SCHEDULED',
-    TIMED_OUT = 'TIMED_OUT',
-    SKIPPED = 'SKIPPED',
-  }
-
-
-}

@@ -9,6 +9,18 @@ export class QueueAdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get the queue length
+   * @returns number OK
+   * @throws ApiError
+   */
+  public size(): CancelablePromise<Record<string, number>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/queue/size',
+    });
+  }
+
+  /**
    * Get Queue Names
    * @returns string OK
    * @throws ApiError
@@ -17,34 +29,6 @@ export class QueueAdminResourceService {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/queue/',
-    });
-  }
-
-  /**
-   * Publish a message in queue to mark a wait task as completed.
-   * @param workflowId
-   * @param taskRefName
-   * @param status
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public update(
-    workflowId: string,
-    taskRefName: string,
-    status: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED',
-    requestBody: Record<string, any>,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/queue/update/{workflowId}/{taskRefName}/{status}',
-      path: {
-        'workflowId': workflowId,
-        'taskRefName': taskRefName,
-        'status': status,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
     });
   }
 
@@ -77,14 +61,30 @@ export class QueueAdminResourceService {
   }
 
   /**
-   * Get the queue length
-   * @returns number OK
+   * Publish a message in queue to mark a wait task as completed.
+   * @param workflowId
+   * @param taskRefName
+   * @param status
+   * @param requestBody
+   * @returns any OK
    * @throws ApiError
    */
-  public size1(): CancelablePromise<Record<string, number>> {
+  public update1(
+    workflowId: string,
+    taskRefName: string,
+    status: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED',
+    requestBody: Record<string, any>,
+  ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/queue/size',
+      method: 'POST',
+      url: '/api/queue/update/{workflowId}/{taskRefName}/{status}',
+      path: {
+        'workflowId': workflowId,
+        'taskRefName': taskRefName,
+        'status': status,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 

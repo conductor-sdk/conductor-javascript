@@ -12,6 +12,23 @@ export class TokenResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Generate JWT with the given access key
+   * @param requestBody
+   * @returns Response OK
+   * @throws ApiError
+   */
+  public generateToken(
+    requestBody: GenerateTokenRequest,
+  ): CancelablePromise<Response> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/token',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
    * Get the user info from the token
    * @param principal
    * @returns any OK
@@ -26,23 +43,6 @@ export class TokenResourceService {
       query: {
         'principal': principal,
       },
-    });
-  }
-
-  /**
-   * Generate JWT with the given access key
-   * @param requestBody
-   * @returns Response OK
-   * @throws ApiError
-   */
-  public generateToken(
-    requestBody: GenerateTokenRequest,
-  ): CancelablePromise<Response> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/token',
-      body: requestBody,
-      mediaType: 'application/json',
     });
   }
 

@@ -21,18 +21,8 @@ export type WorkflowDef = {
   restartable?: boolean;
   workflowStatusListenerEnabled?: boolean;
   ownerEmail?: string;
-  timeoutPolicy?: WorkflowDef.timeoutPolicy;
+  timeoutPolicy?: 'TIME_OUT_WF' | 'ALERT_ONLY';
   timeoutSeconds: number;
   variables?: Record<string, any>;
   inputTemplate?: Record<string, any>;
 };
-
-export namespace WorkflowDef {
-
-  export enum timeoutPolicy {
-    TIME_OUT_WF = 'TIME_OUT_WF',
-    ALERT_ONLY = 'ALERT_ONLY',
-  }
-
-
-}

@@ -10,21 +10,9 @@ export type TaskResult = {
   reasonForIncompletion?: string;
   callbackAfterSeconds?: number;
   workerId?: string;
-  status?: TaskResult.status;
+  status?: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED';
   outputData?: Record<string, any>;
   logs?: Array<TaskExecLog>;
   externalOutputPayloadStoragePath?: string;
   subWorkflowId?: string;
 };
-
-export namespace TaskResult {
-
-  export enum status {
-    IN_PROGRESS = 'IN_PROGRESS',
-    FAILED = 'FAILED',
-    FAILED_WITH_TERMINAL_ERROR = 'FAILED_WITH_TERMINAL_ERROR',
-    COMPLETED = 'COMPLETED',
-  }
-
-
-}
