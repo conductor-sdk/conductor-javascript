@@ -207,6 +207,7 @@ export const sendRequest = async (
     method: options.method,
     body: body ?? formData,
     signal: controller.signal,
+    agent: options.agent
   };
 
   onCancel(() => controller.abort());

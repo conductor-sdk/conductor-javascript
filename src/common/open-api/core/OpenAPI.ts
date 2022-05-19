@@ -2,6 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
+import {RequestInit} from "node-fetch"
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
@@ -16,6 +17,7 @@ export type OpenAPIConfig = {
   PASSWORD?: string | Resolver<string>;
   HEADERS?: Headers | Resolver<Headers>;
   ENCODE_PATH?: (path: string) => string;
+  AGENT?: RequestInit["agent"]
 };
 
 export const OpenAPI: OpenAPIConfig = {

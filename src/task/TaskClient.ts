@@ -1,15 +1,15 @@
 import {HttpBaseClient} from "../http/HttpBaseClient"
 import {Task, TaskRunnerResult} from "./types"
+import {TaskResourceService} from "../common/open-api"
 
-export class TaskClient extends HttpBaseClient {
+export class TaskClient {
+  private readonly taskService: TaskResourceService
+
+  constructor(taskService: TaskResourceService) {
+    this.taskService = taskService
+  }
   updateTask = (taskResult: TaskRunnerResult) => {
-    return this.json('tasks', {
-      json: taskResult,
-      method: 'POST',
-      headers: {
-        accept: "text/plain"
-      }
-    }, { parseResponse: false})
+    return this.taskService.updateTask1(taskResult)
   }
 
   logMessageForTask = async (taskId: string, message: string) => {
