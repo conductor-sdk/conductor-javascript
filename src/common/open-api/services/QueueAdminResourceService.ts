@@ -16,7 +16,7 @@ export class QueueAdminResourceService {
   public size(): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/queue/size',
+      url: '/queue/size',
     });
   }
 
@@ -28,7 +28,7 @@ export class QueueAdminResourceService {
   public names(): CancelablePromise<Record<string, string>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/queue/',
+      url: '/queue/',
     });
   }
 
@@ -49,7 +49,7 @@ export class QueueAdminResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/queue/update/{workflowId}/task/{taskId}/{status}',
+      url: '/queue/update/{workflowId}/task/{taskId}/{status}',
       path: {
         'workflowId': workflowId,
         'taskId': taskId,
@@ -77,7 +77,7 @@ export class QueueAdminResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/queue/update/{workflowId}/{taskRefName}/{status}',
+      url: '/queue/update/{workflowId}/{taskRefName}/{status}',
       path: {
         'workflowId': workflowId,
         'taskRefName': taskRefName,

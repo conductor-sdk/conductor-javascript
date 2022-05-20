@@ -23,7 +23,7 @@ export class UserResourceService {
   ): CancelablePromise<Array<ConductorUser>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/users',
+      url: '/users',
       query: {
         'apps': apps,
       },
@@ -43,7 +43,7 @@ export class UserResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/users/{id}',
+      url: '/users/{id}',
       path: {
         'id': id,
       },
@@ -69,7 +69,7 @@ export class UserResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/users/{id}',
+      url: '/users/{id}',
       path: {
         'id': id,
       },
@@ -91,7 +91,7 @@ export class UserResourceService {
   ): CancelablePromise<Response> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/users/{id}',
+      url: '/users/{id}',
       path: {
         'id': id,
       },
@@ -111,7 +111,7 @@ export class UserResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/users/{userId}/permissions',
+      url: '/users/{userId}/permissions',
       path: {
         'userId': userId,
       },

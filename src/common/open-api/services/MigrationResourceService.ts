@@ -16,7 +16,7 @@ export class MigrationResourceService {
   public migrateWorkflows(): CancelablePromise<number> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/migrate_workflow',
+      url: '/admin/migrate_workflow',
     });
   }
 
@@ -28,7 +28,7 @@ export class MigrationResourceService {
   public migrateMetadata(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/migrate_metadata',
+      url: '/admin/migrate_metadata',
     });
   }
 

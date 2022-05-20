@@ -22,7 +22,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/applications/{id}/accessKeys',
+      url: '/applications/{id}/accessKeys',
       path: {
         'id': id,
       },
@@ -42,7 +42,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/applications/{id}/accessKeys',
+      url: '/applications/{id}/accessKeys',
       path: {
         'id': id,
       },
@@ -65,7 +65,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/applications/{applicationId}/roles/{role}',
+      url: '/applications/{applicationId}/roles/{role}',
       path: {
         'applicationId': applicationId,
         'role': role,
@@ -89,7 +89,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/applications/{applicationId}/roles/{role}',
+      url: '/applications/{applicationId}/roles/{role}',
       path: {
         'applicationId': applicationId,
         'role': role,
@@ -114,7 +114,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/applications/{applicationId}/accessKeys/{keyId}/status',
+      url: '/applications/{applicationId}/accessKeys/{keyId}/status',
       path: {
         'applicationId': applicationId,
         'keyId': keyId,
@@ -132,7 +132,7 @@ export class ApplicationResourceService {
   public listApplications(): CancelablePromise<Array<ConductorApplication>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/applications',
+      url: '/applications',
     });
   }
 
@@ -150,7 +150,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/applications',
+      url: '/applications',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -171,7 +171,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/applications/{applicationId}/accessKeys/{keyId}',
+      url: '/applications/{applicationId}/accessKeys/{keyId}',
       path: {
         'applicationId': applicationId,
         'keyId': keyId,
@@ -192,7 +192,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/applications/{id}',
+      url: '/applications/{id}',
       path: {
         'id': id,
       },
@@ -215,7 +215,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/applications/{id}',
+      url: '/applications/{id}',
       path: {
         'id': id,
       },
@@ -237,7 +237,7 @@ export class ApplicationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/applications/{id}',
+      url: '/applications/{id}',
       path: {
         'id': id,
       },

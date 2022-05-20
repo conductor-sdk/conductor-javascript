@@ -22,7 +22,7 @@ export class TokenResourceService {
   ): CancelablePromise<Response> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/token',
+      url: '/token',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -39,7 +39,7 @@ export class TokenResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/token/userInfo',
+      url: '/token/userInfo',
       query: {
         'principal': principal,
       },
