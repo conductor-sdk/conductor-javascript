@@ -50,7 +50,7 @@ export class TaskRunner {
     while (this.#isPolling) {
       try {
         const { workerID } = this.#options
-        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#options.domain ?? undefined)
+        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#worker.domain ?? this.#options.domain ?? undefined)
         if (task && task.taskId) {
           await this.#executeTask(task)
         } else {
