@@ -3,15 +3,14 @@ import {setTimeout} from "timers/promises"
 import type {Mocked} from "jest-mock"
 
 import {RunnerArgs, TaskRunner} from "../TaskRunner"
-import {TaskClient} from "../TaskClient"
-import {TaskResultStatus, TaskRunnerResult} from "../types"
 import {mockLogger} from "./mockLogger"
+import {TaskResourceService} from "../../common/open-api"
 
-const taskClientStub: Mocked<Pick<TaskClient, "pollTask" | "updateTask">> = {
-  pollTask: jest.fn(),
-  updateTask: jest.fn()
+const taskClientStub: Mocked<Pick<TaskResourceService, "poll" | "updateTask1">> = {
+  poll: jest.fn(),
+  updateTask1: jest.fn()
 }
-const mockTaskClient = taskClientStub as unknown as TaskClient
+const mockTaskClient = taskClientStub as unknown as TaskResourceService
 
 test('polls tasks', async () => {
   const workerID = "worker-id"
@@ -24,7 +23,7 @@ test('polls tasks', async () => {
             "hello": "from worker",
             ...inputData
           },
-          status: TaskResultStatus.COMPLETED
+          status: "COMPLETED"
         }
       },
     },
@@ -39,7 +38,7 @@ test('polls tasks', async () => {
   }
   const workflowInstanceId =  "fake-workflow-id"
   const taskId = "fake-task-id"
-  taskClientStub.pollTask.mockResolvedValue({
+  taskClientStub.poll.mockResolvedValue({
     taskId,
     workflowInstanceId,
     status: "IN_PROGRESS",
@@ -53,7 +52,7 @@ test('polls tasks', async () => {
   runner.startPolling()
   await setTimeout(10)
   runner.stopPolling()
-  const expected: TaskRunnerResult = {
+  const expected = {
     taskId,
     workflowInstanceId,
     status: "COMPLETED",
@@ -62,5 +61,5 @@ test('polls tasks', async () => {
       "input": "from workflow"
     }
   }
-  expect(taskClientStub.updateTask).toHaveBeenCalledWith(expected)
+  expect(taskClientStub.updateTask1).toHaveBeenCalledWith(expected)
 })
