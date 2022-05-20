@@ -5,6 +5,6 @@
     "start": "node simple.js"
   },
   "dependencies": {
-    "@orkes/conductor-client": "*"
+    "@conductor-sdk/conductor-client": "*"
   }
 }

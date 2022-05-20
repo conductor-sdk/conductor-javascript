@@ -1,5 +1,4 @@
 const {ConductorClient, TaskManager} = require('@conductor-sdk/conductor-client')
-
 /*
 Ensure you have followd the orkes guide
 https://orkes.io/content/docs/getting-started/run/running-first-worker#adding-worker-implementation
@@ -15,6 +14,7 @@ const client = new ConductorClient({
 const worker = {
   taskDefName: "simple_worker",
   execute: async ({ inputData }) => {
+    console.log("working a task", inputData)
     return {
       outputData: {
         ...inputData,
