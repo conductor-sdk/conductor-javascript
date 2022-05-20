@@ -1,22 +1,29 @@
 import os from "os"
-import {RunnerOptions, TaskRunner} from "./TaskRunner"
+import {TaskRunner} from "./TaskRunner"
 import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
 import {ConductorWorker} from "./Worker"
 import {ConductorClient} from "../common/open-api"
 
+export interface TaskManagerOptions {
+  workerID: string
+  domain: string | undefined
+  pollInterval?: number,
+  concurrency?: number
+}
+
 export interface TaskManagerConfig {
   logger?: ConductorLogger
-  options?: Partial<RunnerOptions>
+  options?: Partial<TaskManagerOptions>
 }
 
-const defaultRunnerOptions: Required<RunnerOptions> = {
+const defaultManagerOptions: Required<TaskManagerOptions> = {
   workerID: '',
   pollInterval: 1000,
-  maxRunner: 1,
-  domain: undefined
+  domain: undefined,
+  concurrency: 1
 }
 
-function workerId (options: Partial<RunnerOptions>) {
+function workerId (options: Partial<TaskManagerOptions>) {
   return options.workerID ?? os.hostname()
 }
 
@@ -25,7 +32,7 @@ export class TaskManager {
   private readonly client: ConductorClient
   private readonly logger: ConductorLogger
   private workers: Array<ConductorWorker>
-  private runnerOptions: Required<RunnerOptions>
+  private readonly taskManageOptions: Required<TaskManagerOptions>
 
   constructor(client: ConductorClient, workers: Array<ConductorWorker>, config: TaskManagerConfig = {}) {
     if (!workers) { throw new Error("No workers supplied to TaskManager. Please pass an array of workers.") }
@@ -33,21 +40,25 @@ export class TaskManager {
     this.logger = config.logger ?? new DefaultLogger()
     this.workers = workers
     const providedOptions = config.options ?? {}
-    this.runnerOptions = {
-      ...defaultRunnerOptions,
+    this.taskManageOptions = {
+      ...defaultManagerOptions,
       workerID: workerId(providedOptions),
     }
   }
 
   startPolling = () => {
-    const maxRunner = this.runnerOptions.maxRunner ?? 1
     this.workers.forEach(worker => {
       this.tasks[worker.taskDefName] = []
-      this.logger.debug(`Starting taskDefName=${worker.taskDefName} runners=${maxRunner} domain=${this.runnerOptions.domain ?? worker.domain}`)
-      for (let i = 0; i < maxRunner; i++) {
+      const options = {
+        ...this.taskManageOptions,
+        concurrency: worker.concurrency ?? this.taskManageOptions.concurrency,
+        domain: worker.domain ?? this.taskManageOptions.domain
+      }
+      this.logger.debug(`Starting taskDefName=${worker.taskDefName} concurrency=${options.concurrency} domain=${options.domain}`)
+      for (let i = 0; i < options.concurrency; i++) {
         const runner = new TaskRunner({
           worker,
-          options: this.runnerOptions,
+          options,
           taskResource: this.client.taskResource,
           logger: this.logger
         })
@@ -66,7 +77,7 @@ export class TaskManager {
   }
 
   #workerId = () : string => {
-    const providedId = this.runnerOptions.workerID
+    const providedId = this.taskManageOptions.workerID
     return providedId ?? os.hostname()
   }
 }

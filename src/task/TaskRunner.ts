@@ -2,20 +2,14 @@ import {setTimeout} from "timers/promises"
 import {ConductorLogger} from "../common/ConductorLogger"
 import {ConductorWorker} from "./Worker"
 import {Task, TaskResourceService} from "../common/open-api"
+import {TaskManagerOptions} from "./TaskManager"
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
-
-export interface RunnerOptions {
-  workerID: string
-  domain: string | undefined
-  pollInterval?: number,
-  maxRunner?: number
-}
 
 export interface RunnerArgs {
   worker: ConductorWorker,
   taskResource: TaskResourceService,
-  options: Required<RunnerOptions>,
+  options: Required<TaskManagerOptions>,
   logger: ConductorLogger
 }
 
@@ -24,7 +18,7 @@ export class TaskRunner {
   #taskResource: TaskResourceService
   #worker: ConductorWorker
   #logger: ConductorLogger
-  #options: Required<RunnerOptions>
+  #options: Required<TaskManagerOptions>
 
   constructor({worker, taskResource, options, logger} : RunnerArgs) {
     this.#taskResource = taskResource
@@ -50,7 +44,7 @@ export class TaskRunner {
     while (this.#isPolling) {
       try {
         const { workerID } = this.#options
-        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#worker.domain ?? this.#options.domain ?? undefined)
+        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#options.domain)
         if (task && task.taskId) {
           await this.#executeTask(task)
         } else {

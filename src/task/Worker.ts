@@ -9,4 +9,8 @@ export interface ConductorWorker {
   taskDefName: string
   execute: (task: Task) => Promise<Omit<TaskResult, "workflowInstanceId" | "taskId">>
   domain?: string
+  /*
+  Number of polling instances to run concurrently
+   */
+  concurrency?: number
 }
