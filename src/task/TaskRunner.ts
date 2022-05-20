@@ -1,5 +1,5 @@
 import {setTimeout} from "timers/promises"
-import {ConductorLogger} from "../common/ConductorLogger"
+import {ConductorLogger} from "../common"
 import {ConductorWorker} from "./Worker"
 import {Task, TaskResourceService} from "../common/open-api"
 import {TaskManagerOptions} from "./TaskManager"
@@ -13,6 +13,15 @@ export interface RunnerArgs {
   logger: ConductorLogger
 }
 
+/**
+ * Responsible for polling and executing tasks from a queue.
+ *
+ * Because a `poll` in conductor "pops" a task off of a conductor queue,
+ * each runner participates in the poll -> work -> update loop.
+ * We could potentially split this work into a separate "poller" and "worker" pools
+ * but that could lead to picking up more work than the pool of workers are actually able to handle.
+ *
+ */
 export class TaskRunner {
   #isPolling = false
   #taskResource: TaskResourceService

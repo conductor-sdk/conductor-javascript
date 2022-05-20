@@ -1,6 +1,6 @@
 import os from "os"
 import {TaskRunner} from "./TaskRunner"
-import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
+import {ConductorLogger, DefaultLogger} from "../common"
 import {ConductorWorker} from "./Worker"
 import {ConductorClient} from "../common/open-api"
 
