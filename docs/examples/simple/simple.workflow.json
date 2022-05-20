@@ -1,0 +1,25 @@
+{
+  "createTime": 1634021619147,
+  "updateTime": 1630694890267,
+  "name": "first_sample_workflow_with_worker",
+  "description": "First Sample Workflow With Worker",
+  "version": 1,
+  "tasks": [
+    {
+      "name": "simple_worker",
+      "taskReferenceName": "simple_worker_ref_1",
+      "inputParameters": {},
+      "type": "SIMPLE"
+    }
+  ],
+  "inputParameters": [],
+  "outputParameters": {
+    "currentTimeOnServer": "${simple_worker_ref_1.output.currentTimeOnServer}",
+    "message": "${simple_worker_ref_1.output.message}"
+  },
+  "schemaVersion": 2,
+  "restartable": true,
+  "ownerEmail": "example@email.com",
+  "timeoutPolicy": "ALERT_ONLY",
+  "timeoutSeconds": 0
+}
