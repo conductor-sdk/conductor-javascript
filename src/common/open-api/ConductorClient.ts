@@ -1,19 +1,21 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { OpenAPIConfig } from './core/OpenAPI';
-import { NodeHttpRequest } from './core/NodeHttpRequest';
+import type {BaseHttpRequest} from './core/BaseHttpRequest'
+import type {OpenAPIConfig} from './core/OpenAPI'
 
-import { AdminResourceService } from './services/AdminResourceService';
-import { EventResourceService } from './services/EventResourceService';
-import { MetadataResourceService } from './services/MetadataResourceService';
-import { QueueAdminResourceService } from './services/QueueAdminResourceService';
-import { TaskResourceService } from './services/TaskResourceService';
-import { WorkflowBulkResourceService } from './services/WorkflowBulkResourceService';
-import { WorkflowResourceService } from './services/WorkflowResourceService';
+import {AdminResourceService} from './services/AdminResourceService'
+import {EventResourceService} from './services/EventResourceService'
+import {MetadataResourceService} from './services/MetadataResourceService'
+import {QueueAdminResourceService} from './services/QueueAdminResourceService'
+import {TaskResourceService} from './services/TaskResourceService'
+import {WorkflowBulkResourceService} from './services/WorkflowBulkResourceService'
+import {WorkflowResourceService} from './services/WorkflowResourceService'
+import {ConductorHttpRequest} from "../RequestCustomizer"
+import {request as baseRequest} from "./core/request"
 
-type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
+// conductor-client-modification
+const defaultRequestHandler: ConductorHttpRequest = (request, config, options) => request(config, options)
 
 export class ConductorClient {
 
@@ -27,8 +29,8 @@ export class ConductorClient {
 
   public readonly request: BaseHttpRequest;
 
-  constructor(config?: Partial<OpenAPIConfig>, HttpRequest: HttpRequestConstructor = NodeHttpRequest) {
-    this.request = new HttpRequest({
+  constructor(config?: Partial<OpenAPIConfig>, requestHandler: ConductorHttpRequest = defaultRequestHandler) { // conductor-client-modification
+    const resolvedConfig = {
       BASE: config?.BASE ?? 'http://localhost:8080',
       VERSION: config?.VERSION ?? '0',
       WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
@@ -39,7 +41,19 @@ export class ConductorClient {
       HEADERS: config?.HEADERS,
       ENCODE_PATH: config?.ENCODE_PATH,
       AGENT: config?.AGENT // conductor-client-modification
-    });
+    }
+    // START conductor-client-modification
+    /* The generated models are all based on the concept of an instantiated base http
+    class. To avoid making edits there, we just create an object that satisfies the same
+    interface. Yay typescript!
+     */
+    this.request = {
+      config: resolvedConfig,
+      request: (apiConfig) => {
+        return requestHandler(baseRequest, resolvedConfig, apiConfig)
+      }
+    }
+    // END conductor-client-modification
 
     this.adminResource = new AdminResourceService(this.request);
     this.eventResource = new EventResourceService(this.request);

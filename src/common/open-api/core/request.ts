@@ -206,7 +206,7 @@ export const sendRequest = async (
     headers,
     method: options.method,
     body: body ?? formData,
-    signal: controller.signal,
+    signal: controller.signal as RequestInit["signal"], // conductor-client-modification
     agent: options.agent
   };
 
