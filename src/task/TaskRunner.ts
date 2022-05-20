@@ -7,7 +7,7 @@ const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
 
 export interface RunnerOptions {
   workerID: string
-  domain?: string
+  domain: string | undefined
   pollInterval?: number,
   maxRunner?: number
 }
@@ -50,7 +50,7 @@ export class TaskRunner {
     while (this.#isPolling) {
       try {
         const { workerID } = this.#options
-        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#options.domain)
+        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#options.domain ?? undefined)
         if (task && task.taskId) {
           await this.#executeTask(task)
         } else {

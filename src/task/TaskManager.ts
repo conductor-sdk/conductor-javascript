@@ -13,7 +13,7 @@ const defaultRunnerOptions: Required<RunnerOptions> = {
   workerID: '',
   pollInterval: 1000,
   maxRunner: 1,
-  domain: ''
+  domain: undefined
 }
 
 function workerId (options: Partial<RunnerOptions>) {
