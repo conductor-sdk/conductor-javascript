@@ -1,8 +1,8 @@
-import {TaskClient} from "./TaskClient"
 import os from "os"
 import {RunnerOptions, TaskRunner} from "./TaskRunner"
 import {ConductorLogger, DefaultLogger} from "../common/ConductorLogger"
 import {ConductorWorker} from "./Worker"
+import {ConductorClient} from "../common/open-api"
 
 export interface TaskManagerConfig {
   logger?: ConductorLogger
@@ -13,7 +13,7 @@ const defaultRunnerOptions: Required<RunnerOptions> = {
   workerID: '',
   pollInterval: 1000,
   maxRunner: 1,
-  domain: ''
+  domain: undefined
 }
 
 function workerId (options: Partial<RunnerOptions>) {
@@ -22,12 +22,12 @@ function workerId (options: Partial<RunnerOptions>) {
 
 export class TaskManager {
   private tasks: Record<string, Array<TaskRunner>> = {}
-  private readonly client: TaskClient
+  private readonly client: ConductorClient
   private readonly logger: ConductorLogger
   private workers: Array<ConductorWorker>
   private runnerOptions: Required<RunnerOptions>
 
-  constructor(client: TaskClient, workers: Array<ConductorWorker>, config: TaskManagerConfig = {}) {
+  constructor(client: ConductorClient, workers: Array<ConductorWorker>, config: TaskManagerConfig = {}) {
     if (!workers) { throw new Error("No workers supplied to TaskManager. Please pass an array of workers.") }
     this.client = client
     this.logger = config.logger ?? new DefaultLogger()
@@ -43,11 +43,12 @@ export class TaskManager {
     const maxRunner = this.runnerOptions.maxRunner ?? 1
     this.workers.forEach(worker => {
       this.tasks[worker.taskDefName] = []
+      this.logger.debug(`Starting taskDefName=${worker.taskDefName} runners=${maxRunner} domain=${this.runnerOptions.domain ?? worker.domain}`)
       for (let i = 0; i < maxRunner; i++) {
         const runner = new TaskRunner({
           worker,
           options: this.runnerOptions,
-          client: this.client,
+          taskResource: this.client.taskResource,
           logger: this.logger
         })
         // TODO(@ntomlin): right now we aren't handling these promises

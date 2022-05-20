@@ -1,34 +1,33 @@
 import {setTimeout} from "timers/promises"
-import {TaskClient} from "./TaskClient"
 import {ConductorLogger} from "../common/ConductorLogger"
-import {Task, TaskResultStatus} from "./types"
 import {ConductorWorker} from "./Worker"
+import {Task, TaskResourceService} from "../common/open-api"
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
 
 export interface RunnerOptions {
   workerID: string
-  domain?: string
+  domain: string | undefined
   pollInterval?: number,
   maxRunner?: number
 }
 
 export interface RunnerArgs {
   worker: ConductorWorker,
-  client: TaskClient,
+  taskResource: TaskResourceService,
   options: Required<RunnerOptions>,
   logger: ConductorLogger
 }
 
 export class TaskRunner {
   #isPolling = false
-  #client: TaskClient
+  #taskResource: TaskResourceService
   #worker: ConductorWorker
   #logger: ConductorLogger
   #options: Required<RunnerOptions>
 
-  constructor({worker, client, options, logger} : RunnerArgs) {
-    this.#client = client
+  constructor({worker, taskResource, options, logger} : RunnerArgs) {
+    this.#taskResource = taskResource
     this.#logger = logger
     this.#worker = worker
     this.#options = options
@@ -51,7 +50,7 @@ export class TaskRunner {
     while (this.#isPolling) {
       try {
         const { workerID } = this.#options
-        const task = await this.#client.pollTask(this.#worker.taskDefName, workerID, this.#options.domain)
+        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#worker.domain ?? this.#options.domain ?? undefined)
         if (task && task.taskId) {
           await this.#executeTask(task)
         } else {
@@ -68,19 +67,19 @@ export class TaskRunner {
   #executeTask = async (task: Task) => {
     try {
       const result = await this.#worker.execute(task)
-      await this.#client.updateTask({
+      await this.#taskResource.updateTask({
         ...result,
-        workflowInstanceId: task.workflowInstanceId,
-        taskId: task.taskId,
+        workflowInstanceId: task.workflowInstanceId!,
+        taskId: task.taskId!,
       })
       this.#logger.debug(`Finished polling for task ${task.taskId}`)
     } catch (error: unknown) {
       this.#logger.error(`Error executing ${task.taskId}`, error)
-      await this.#client.updateTask({
-        workflowInstanceId: task.workflowInstanceId,
-        taskId: task.taskId,
+      await this.#taskResource.updateTask({
+        workflowInstanceId: task.workflowInstanceId!,
+        taskId: task.taskId!,
         reasonForIncompletion: (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,
-        status: TaskResultStatus.FAILED,
+        status: "FAILED",
         outputData: {}
       })
     }
