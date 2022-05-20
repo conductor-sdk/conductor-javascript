@@ -11,24 +11,6 @@ export class EventResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Remove an event handler
-   * @param name
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeEventHandlerStatus(
-    name: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/event/{name}',
-      path: {
-        'name': name,
-      },
-    });
-  }
-
-  /**
    * Get all the event handlers
    * @returns EventHandler OK
    * @throws ApiError
@@ -36,7 +18,7 @@ export class EventResourceService {
   public getEventHandlers(): CancelablePromise<Array<EventHandler>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/event',
+      url: '/api/event',
     });
   }
 
@@ -51,7 +33,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/event',
+      url: '/api/event',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -68,7 +50,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/event',
+      url: '/api/event',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -87,12 +69,30 @@ export class EventResourceService {
   ): CancelablePromise<Array<EventHandler>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/event/{event}',
+      url: '/api/event/{event}',
       path: {
         'event': event,
       },
       query: {
         'activeOnly': activeOnly,
+      },
+    });
+  }
+
+  /**
+   * Remove an event handler
+   * @param name
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeEventHandlerStatus(
+    name: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/event/{name}',
+      path: {
+        'name': name,
       },
     });
   }

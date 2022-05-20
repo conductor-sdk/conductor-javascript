@@ -11,28 +11,6 @@ export class WorkflowBulkResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Terminate workflows execution
-   * @param requestBody
-   * @param reason
-   * @returns BulkResponse OK
-   * @throws ApiError
-   */
-  public terminate(
-    requestBody: Array<string>,
-    reason?: string,
-  ): CancelablePromise<BulkResponse> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/workflow/bulk/terminate',
-      query: {
-        'reason': reason,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
    * Resume the list of workflows
    * @param requestBody
    * @returns BulkResponse OK
@@ -43,24 +21,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/workflow/bulk/resume',
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Retry the last failed task for each workflow from the list
-   * @param requestBody
-   * @returns BulkResponse OK
-   * @throws ApiError
-   */
-  public retry(
-    requestBody: Array<string>,
-  ): CancelablePromise<BulkResponse> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/workflow/bulk/retry',
+      url: '/api/workflow/bulk/resume',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -77,7 +38,46 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/workflow/bulk/pause',
+      url: '/api/workflow/bulk/pause',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Terminate workflows execution
+   * @param requestBody
+   * @param reason
+   * @returns BulkResponse OK
+   * @throws ApiError
+   */
+  public terminate(
+    requestBody: Array<string>,
+    reason?: string,
+  ): CancelablePromise<BulkResponse> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/workflow/bulk/terminate',
+      query: {
+        'reason': reason,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Retry the last failed task for each workflow from the list
+   * @param requestBody
+   * @returns BulkResponse OK
+   * @throws ApiError
+   */
+  public retry1(
+    requestBody: Array<string>,
+  ): CancelablePromise<BulkResponse> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/workflow/bulk/retry',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -96,7 +96,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/workflow/bulk/restart',
+      url: '/api/workflow/bulk/restart',
       query: {
         'useLatestDefinitions': useLatestDefinitions,
       },

@@ -17,8 +17,8 @@
     "prepublishOnly": "npm run build",
     "lint-fix": "npx eslint . --fix --ext .js,.ts",
     "test": "jest",
-    "generateClient:models": "npx openapi-typescript-codegen --input https://play-app.orkes.io/api-docs --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes --exportCore false",
-    "generateClient:core": "npx openapi-typescript-codegen --input https://play-app.orkes.io/api-docs --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes",
+    "generateClient:models": "npx openapi-typescript-codegen --input  http://localhost:8080/api-docs --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes --exportCore false",
+    "generateClient:core": "npx openapi-typescript-codegen --input http://localhost:8080/api-docs  --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes",
     "ci": "npm run lint && npm run test"
   },
   "author": "Conductor community",

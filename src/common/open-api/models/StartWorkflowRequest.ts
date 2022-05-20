@@ -13,5 +13,4 @@ export type StartWorkflowRequest = {
   workflowDef?: WorkflowDef;
   externalInputPayloadStoragePath?: string;
   priority?: number;
-  createdBy?: string;
 };

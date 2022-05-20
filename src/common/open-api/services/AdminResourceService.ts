@@ -11,24 +11,6 @@ export class AdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Verify and repair workflow consistency
-   * @param workflowId
-   * @returns string OK
-   * @throws ApiError
-   */
-  public verifyAndRepairWorkflowConsistency(
-    workflowId: string,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/admin/consistency/verifyAndRepair/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-    });
-  }
-
-  /**
    * Queue up all the running workflows for sweep
    * @param workflowId
    * @returns string OK
@@ -39,7 +21,25 @@ export class AdminResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/admin/sweep/requeue/{workflowId}',
+      url: '/api/admin/sweep/requeue/{workflowId}',
+      path: {
+        'workflowId': workflowId,
+      },
+    });
+  }
+
+  /**
+   * Verify and repair workflow consistency
+   * @param workflowId
+   * @returns string OK
+   * @throws ApiError
+   */
+  public verifyAndRepairWorkflowConsistency(
+    workflowId: string,
+  ): CancelablePromise<string> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/admin/consistency/verifyAndRepair/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -61,7 +61,7 @@ export class AdminResourceService {
   ): CancelablePromise<Array<Task>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/admin/task/{tasktype}',
+      url: '/api/admin/task/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -83,7 +83,7 @@ export class AdminResourceService {
   ): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/admin/queues',
+      url: '/api/admin/queues',
       query: {
         'verbose': verbose,
       },
@@ -91,14 +91,14 @@ export class AdminResourceService {
   }
 
   /**
-   * Get details of redis usage
+   * Get all the configuration parameters
    * @returns any OK
    * @throws ApiError
    */
-  public getRedisUsage(): CancelablePromise<Record<string, any>> {
+  public getAllConfig(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/admin/redisUsage',
+      url: '/api/admin/config',
     });
   }
 

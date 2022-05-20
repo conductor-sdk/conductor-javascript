@@ -20,7 +20,6 @@ export type WorkflowSummary = {
   externalInputPayloadStoragePath?: string;
   externalOutputPayloadStoragePath?: string;
   priority?: number;
-  createdBy?: string;
-  outputSize?: number;
   inputSize?: number;
+  outputSize?: number;
 };

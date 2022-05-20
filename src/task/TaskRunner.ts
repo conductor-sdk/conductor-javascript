@@ -67,7 +67,7 @@ export class TaskRunner {
   #executeTask = async (task: Task) => {
     try {
       const result = await this.#worker.execute(task)
-      await this.#taskResource.updateTask1({
+      await this.#taskResource.updateTask({
         ...result,
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
@@ -75,7 +75,7 @@ export class TaskRunner {
       this.#logger.debug(`Finished polling for task ${task.taskId}`)
     } catch (error: unknown) {
       this.#logger.error(`Error executing ${task.taskId}`, error)
-      await this.#taskResource.updateTask1({
+      await this.#taskResource.updateTask({
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
         reasonForIncompletion: (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,

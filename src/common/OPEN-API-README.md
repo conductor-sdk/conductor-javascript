@@ -8,7 +8,10 @@ Changes are commented with `conductor-client-modification`
 
 ## Updating definitions
 
-To update `service` and `model` definitions run:
+To update `service` and `model` definitions:
+
+1. Run the latest conductor OSS server locally 
+2. Run the npm commands
 
 ```text
 npm run generateClient:models

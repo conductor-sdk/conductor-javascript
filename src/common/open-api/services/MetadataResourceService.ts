@@ -1,7 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { ConductorUser } from '../models/ConductorUser';
 import type { TaskDef } from '../models/TaskDef';
 import type { WorkflowDef } from '../models/WorkflowDef';
 
@@ -13,96 +12,29 @@ export class MetadataResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Gets all task definition
-   * @param access
-   * @returns TaskDef OK
-   * @throws ApiError
-   */
-  public getTaskDefs(
-    access: string = 'READ',
-  ): CancelablePromise<Array<TaskDef>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/metadata/taskdefs',
-      query: {
-        'access': access,
-      },
-    });
-  }
-
-  /**
-   * Update an existing task
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public updateTaskDef(
-    requestBody: {
-      user?: ConductorUser;
-      taskDef?: TaskDef;
-    },
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'PUT',
-      url: '/metadata/taskdefs',
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Create or update task definition(s)
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public registerTaskDef(
-    requestBody: {
-      user?: ConductorUser;
-      taskDefs?: Array<TaskDef>;
-    },
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/metadata/taskdefs',
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
    * Retrieves all workflow definition along with blueprint
-   * @param access
    * @returns WorkflowDef OK
    * @throws ApiError
    */
-  public getAllWorkflows(
-    access: string = 'READ',
-  ): CancelablePromise<Array<WorkflowDef>> {
+  public getAll(): CancelablePromise<Array<WorkflowDef>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/metadata/workflow',
-      query: {
-        'access': access,
-      },
+      url: '/api/metadata/workflow',
     });
   }
 
   /**
-   * Create or update workflow definition(s)
+   * Create or update workflow definition
    * @param requestBody
    * @returns any OK
    * @throws ApiError
    */
   public update(
-    requestBody: {
-      user?: ConductorUser;
-      workflowDefs?: Array<WorkflowDef>;
-    },
+    requestBody: Array<WorkflowDef>,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/metadata/workflow',
+      url: '/api/metadata/workflow',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -115,37 +47,59 @@ export class MetadataResourceService {
    * @throws ApiError
    */
   public create(
-    requestBody: {
-      user?: ConductorUser;
-      workflowDef?: WorkflowDef;
-    },
+    requestBody: WorkflowDef,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/metadata/workflow',
+      url: '/api/metadata/workflow',
       body: requestBody,
       mediaType: 'application/json',
     });
   }
 
   /**
-   * Removes workflow definition. It does not remove workflows associated with the definition.
-   * @param name
-   * @param version
+   * Gets all task definition
+   * @returns TaskDef OK
+   * @throws ApiError
+   */
+  public getTaskDefs(): CancelablePromise<Array<TaskDef>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/metadata/taskdefs',
+    });
+  }
+
+  /**
+   * Update an existing task
+   * @param requestBody
    * @returns any OK
    * @throws ApiError
    */
-  public unregisterWorkflowDef(
-    name: string,
-    version: number,
+  public registerTaskDef(
+    requestBody: TaskDef,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/metadata/workflow/{name}/{version}',
-      path: {
-        'name': name,
-        'version': version,
-      },
+      method: 'PUT',
+      url: '/api/metadata/taskdefs',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Create new task definition(s)
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public registerTaskDef1(
+    requestBody: Array<TaskDef>,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/metadata/taskdefs',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -162,7 +116,7 @@ export class MetadataResourceService {
   ): CancelablePromise<WorkflowDef> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/metadata/workflow/{name}',
+      url: '/api/metadata/workflow/{name}',
       path: {
         'name': name,
       },
@@ -183,7 +137,7 @@ export class MetadataResourceService {
   ): CancelablePromise<TaskDef> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/metadata/taskdefs/{tasktype}',
+      url: '/api/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -201,9 +155,30 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/metadata/taskdefs/{tasktype}',
+      url: '/api/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
+      },
+    });
+  }
+
+  /**
+   * Removes workflow definition. It does not remove workflows associated with the definition.
+   * @param name
+   * @param version
+   * @returns any OK
+   * @throws ApiError
+   */
+  public unregisterWorkflowDef(
+    name: string,
+    version: number,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/metadata/workflow/{name}/{version}',
+      path: {
+        'name': name,
+        'version': version,
       },
     });
   }

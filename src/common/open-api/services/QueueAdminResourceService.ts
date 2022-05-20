@@ -9,26 +9,30 @@ export class QueueAdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Get the queue length
-   * @returns number OK
+   * Publish a message in queue to mark a wait task as completed.
+   * @param workflowId
+   * @param taskRefName
+   * @param status
+   * @param requestBody
+   * @returns any OK
    * @throws ApiError
    */
-  public size(): CancelablePromise<Record<string, number>> {
+  public update1(
+    workflowId: string,
+    taskRefName: string,
+    status: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED',
+    requestBody: Record<string, any>,
+  ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'GET',
-      url: '/queue/size',
-    });
-  }
-
-  /**
-   * Get Queue Names
-   * @returns string OK
-   * @throws ApiError
-   */
-  public names(): CancelablePromise<Record<string, string>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/queue/',
+      method: 'POST',
+      url: '/api/queue/update/{workflowId}/{taskRefName}/{status}',
+      path: {
+        'workflowId': workflowId,
+        'taskRefName': taskRefName,
+        'status': status,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -49,7 +53,7 @@ export class QueueAdminResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/queue/update/{workflowId}/task/{taskId}/{status}',
+      url: '/api/queue/update/{workflowId}/task/{taskId}/{status}',
       path: {
         'workflowId': workflowId,
         'taskId': taskId,
@@ -61,30 +65,26 @@ export class QueueAdminResourceService {
   }
 
   /**
-   * Publish a message in queue to mark a wait task as completed.
-   * @param workflowId
-   * @param taskRefName
-   * @param status
-   * @param requestBody
-   * @returns any OK
+   * Get the queue length
+   * @returns number OK
    * @throws ApiError
    */
-  public update1(
-    workflowId: string,
-    taskRefName: string,
-    status: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED',
-    requestBody: Record<string, any>,
-  ): CancelablePromise<any> {
+  public size1(): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
-      method: 'POST',
-      url: '/queue/update/{workflowId}/{taskRefName}/{status}',
-      path: {
-        'workflowId': workflowId,
-        'taskRefName': taskRefName,
-        'status': status,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
+      method: 'GET',
+      url: '/api/queue/size',
+    });
+  }
+
+  /**
+   * Get Queue Names
+   * @returns string OK
+   * @throws ApiError
+   */
+  public names(): CancelablePromise<Record<string, string>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/queue/',
     });
   }
 
