@@ -26,7 +26,7 @@ export class DefaultLogger implements ConductorLogger {
   private readonly level: number
 
   constructor(config: DefaultLoggerConfig = {}) {
-    const {level = "INFO", tags = []} = config
+    const {level, tags = []} = config
     this.tags = tags
     if (level && level in LOG_LEVELS) {
       this.level = LOG_LEVELS[level]
@@ -44,7 +44,7 @@ export class DefaultLogger implements ConductorLogger {
       name = "INFO"
       resolvedLevel = LOG_LEVELS.INFO
     }
-    if (resolvedLevel > this.level) {
+    if (resolvedLevel >= this.level) {
       console.log(name, ...this.tags, ...args)
     }
   }
