@@ -27,6 +27,9 @@ function workerId (options: Partial<TaskManagerOptions>) {
   return options.workerID ?? os.hostname()
 }
 
+/**
+ * Responsible for initializing and managing the runners that poll and work different task queues.
+ */
 export class TaskManager {
   private tasks: Record<string, Array<TaskRunner>> = {}
   private readonly client: ConductorClient
@@ -73,11 +76,7 @@ export class TaskManager {
   stopPolling = () => {
     for (const taskType in this.tasks) {
       this.tasks[taskType].forEach(runner => runner.stopPolling())
+      this.tasks[taskType] = []
     }
-  }
-
-  #workerId = () : string => {
-    const providedId = this.taskManageOptions.workerID
-    return providedId ?? os.hostname()
   }
 }
