@@ -43,11 +43,12 @@ export class TaskManager {
     const maxRunner = this.runnerOptions.maxRunner ?? 1
     this.workers.forEach(worker => {
       this.tasks[worker.taskDefName] = []
+      this.logger.debug(`Starting ${maxRunner} listeners for ${worker.taskDefName}`)
       for (let i = 0; i < maxRunner; i++) {
         const runner = new TaskRunner({
           worker,
           options: this.runnerOptions,
-          client: this.client.taskResource,
+          taskResource: this.client.taskResource,
           logger: this.logger
         })
         // TODO(@ntomlin): right now we aren't handling these promises

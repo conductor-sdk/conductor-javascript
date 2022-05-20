@@ -35,7 +35,7 @@ test('polls tasks', async () => {
       workerID
     },
     logger: mockLogger,
-    client: mockTaskClient
+    taskResource: mockTaskClient
   }
   const workflowInstanceId =  "fake-workflow-id"
   const taskId = "fake-task-id"

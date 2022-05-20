@@ -14,20 +14,20 @@ export interface RunnerOptions {
 
 export interface RunnerArgs {
   worker: ConductorWorker,
-  client: TaskResourceService,
+  taskResource: TaskResourceService,
   options: Required<RunnerOptions>,
   logger: ConductorLogger
 }
 
 export class TaskRunner {
   #isPolling = false
-  #client: TaskResourceService
+  #taskResource: TaskResourceService
   #worker: ConductorWorker
   #logger: ConductorLogger
   #options: Required<RunnerOptions>
 
-  constructor({worker, client, options, logger} : RunnerArgs) {
-    this.#client = client
+  constructor({worker, taskResource, options, logger} : RunnerArgs) {
+    this.#taskResource = taskResource
     this.#logger = logger
     this.#worker = worker
     this.#options = options
@@ -50,7 +50,7 @@ export class TaskRunner {
     while (this.#isPolling) {
       try {
         const { workerID } = this.#options
-        const task = await this.#client.poll(this.#worker.taskDefName, workerID, this.#options.domain)
+        const task = await this.#taskResource.poll(this.#worker.taskDefName, workerID, this.#options.domain)
         if (task && task.taskId) {
           await this.#executeTask(task)
         } else {
@@ -67,7 +67,7 @@ export class TaskRunner {
   #executeTask = async (task: Task) => {
     try {
       const result = await this.#worker.execute(task)
-      await this.#client.updateTask1({
+      await this.#taskResource.updateTask1({
         ...result,
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
@@ -75,7 +75,7 @@ export class TaskRunner {
       this.#logger.debug(`Finished polling for task ${task.taskId}`)
     } catch (error: unknown) {
       this.#logger.error(`Error executing ${task.taskId}`, error)
-      await this.#client.updateTask1({
+      await this.#taskResource.updateTask1({
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
         reasonForIncompletion: (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,
