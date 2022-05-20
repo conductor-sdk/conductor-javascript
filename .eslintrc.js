@@ -19,7 +19,7 @@ module.exports = {
     "plugins": [
         "@typescript-eslint"
     ],
-    "ignorePatterns": "dist",
+    "ignorePatterns": ["dist", "src/common/open-api", "docs"],
     // https://stackoverflow.com/a/63833015/1048479
     "rules": {
         "@typescript-eslint/no-unused-vars": "error",
