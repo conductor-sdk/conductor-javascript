@@ -1,3 +1,3 @@
-export {TaskRunner} from "./TaskRunner"
-export {TaskManager} from "./TaskManager"
+export *  from "./TaskRunner"
+export * from "./TaskManager"
 export * from "./Worker"

@@ -7,7 +7,7 @@ import {RequestInit} from "node-fetch"
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
 
-export type OpenAPIConfig = {
+export interface OpenAPIConfig {
   BASE: string;
   VERSION: string;
   WITH_CREDENTIALS: boolean;

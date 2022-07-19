@@ -22,4 +22,5 @@ import {request as baseRequest} from "./open-api/core/request"
  * @param config @see OpenAPIConfig
  * @param options {see ApiRequestOptions}
  */
-export type ConductorHttpRequest = <T>(request: typeof baseRequest, config: OpenAPIConfig, options: ApiRequestOptions) => CancelablePromise<T>
+export type RequestType = typeof baseRequest;
+export type ConductorHttpRequest = <T>(request: RequestType, config: OpenAPIConfig, options: ApiRequestOptions) => CancelablePromise<T>
