@@ -6,3 +6,4 @@ export type BulkResponse = {
   bulkErrorResults?: Record<string, string>;
   bulkSuccessfulResults?: Array<string>;
 };
+

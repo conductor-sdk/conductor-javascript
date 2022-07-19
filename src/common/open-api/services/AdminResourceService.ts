@@ -11,24 +11,6 @@ export class AdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Queue up all the running workflows for sweep
-   * @param workflowId
-   * @returns string OK
-   * @throws ApiError
-   */
-  public requeueSweep(
-    workflowId: string,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/admin/sweep/requeue/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-    });
-  }
-
-  /**
    * Verify and repair workflow consistency
    * @param workflowId
    * @returns string OK
@@ -43,6 +25,18 @@ export class AdminResourceService {
       path: {
         'workflowId': workflowId,
       },
+    });
+  }
+
+  /**
+   * Get details of redis usage
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getRedisUsage(): CancelablePromise<Record<string, any>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/admin/redisUsage',
     });
   }
 
@@ -73,6 +67,24 @@ export class AdminResourceService {
   }
 
   /**
+   * Queue up all the running workflows for sweep
+   * @param workflowId
+   * @returns string OK
+   * @throws ApiError
+   */
+  public requeueSweep(
+    workflowId: string,
+  ): CancelablePromise<string> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/admin/sweep/requeue/{workflowId}',
+      path: {
+        'workflowId': workflowId,
+      },
+    });
+  }
+
+  /**
    * Get registered queues
    * @param verbose
    * @returns any OK
@@ -87,18 +99,6 @@ export class AdminResourceService {
       query: {
         'verbose': verbose,
       },
-    });
-  }
-
-  /**
-   * Get all the configuration parameters
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getAllConfig(): CancelablePromise<Record<string, any>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/admin/config',
     });
   }
 

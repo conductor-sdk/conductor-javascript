@@ -12,3 +12,4 @@ export type EventHandler = {
   active?: boolean;
   evaluatorType?: string;
 };
+

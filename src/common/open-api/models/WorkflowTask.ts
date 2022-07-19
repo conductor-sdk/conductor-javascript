@@ -12,10 +12,19 @@ export type WorkflowTask = {
   inputParameters?: Record<string, any>;
   type?: string;
   dynamicTaskNameParam?: string;
+  /**
+   * @deprecated
+   */
   caseValueParam?: string;
+  /**
+   * @deprecated
+   */
   caseExpression?: string;
   scriptExpression?: string;
   decisionCases?: Record<string, Array<WorkflowTask>>;
+  /**
+   * @deprecated
+   */
   dynamicForkJoinTasksParam?: string;
   dynamicForkTasksParam?: string;
   dynamicForkTasksInputParamName?: string;
@@ -35,5 +44,6 @@ export type WorkflowTask = {
   retryCount?: number;
   evaluatorType?: string;
   expression?: string;
-  workflowTaskType?: 'SIMPLE' | 'DYNAMIC' | 'FORK_JOIN' | 'FORK_JOIN_DYNAMIC' | 'DECISION' | 'SWITCH' | 'JOIN' | 'DO_WHILE' | 'SUB_WORKFLOW' | 'START_WORKFLOW' | 'EVENT' | 'WAIT' | 'USER_DEFINED' | 'HTTP' | 'LAMBDA' | 'INLINE' | 'EXCLUSIVE_JOIN' | 'TERMINATE' | 'KAFKA_PUBLISH' | 'JSON_JQ_TRANSFORM' | 'SET_VARIABLE';
+  workflowTaskType?: 'SIMPLE' | 'DYNAMIC' | 'FORK_JOIN' | 'FORK_JOIN_DYNAMIC' | 'DECISION' | 'SWITCH' | 'JOIN' | 'DO_WHILE' | 'SUB_WORKFLOW' | 'START_WORKFLOW' | 'EVENT' | 'WAIT' | 'HUMAN' | 'USER_DEFINED' | 'HTTP' | 'LAMBDA' | 'INLINE' | 'EXCLUSIVE_JOIN' | 'TERMINATE' | 'KAFKA_PUBLISH' | 'JSON_JQ_TRANSFORM' | 'SET_VARIABLE';
 };
+

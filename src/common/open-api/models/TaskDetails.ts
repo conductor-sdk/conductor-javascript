@@ -8,3 +8,4 @@ export type TaskDetails = {
   output?: Record<string, any>;
   taskId?: string;
 };
+

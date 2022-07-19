@@ -8,3 +8,4 @@ export type SearchResultWorkflowSummary = {
   totalHits?: number;
   results?: Array<WorkflowSummary>;
 };
+

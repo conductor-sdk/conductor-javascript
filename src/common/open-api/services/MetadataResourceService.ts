@@ -13,28 +13,48 @@ export class MetadataResourceService {
 
   /**
    * Retrieves all workflow definition along with blueprint
+   * @param access
+   * @param metadata
+   * @param tagKey
+   * @param tagValue
    * @returns WorkflowDef OK
    * @throws ApiError
    */
-  public getAll(): CancelablePromise<Array<WorkflowDef>> {
+  public getAllWorkflows(
+    access: string = 'READ',
+    metadata: boolean = false,
+    tagKey?: string,
+    tagValue?: string,
+  ): CancelablePromise<Array<WorkflowDef>> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/metadata/workflow',
+      query: {
+        'access': access,
+        'metadata': metadata,
+        'tagKey': tagKey,
+        'tagValue': tagValue,
+      },
     });
   }
 
   /**
-   * Create or update workflow definition
+   * Create or update workflow definition(s)
    * @param requestBody
+   * @param overwrite
    * @returns any OK
    * @throws ApiError
    */
   public update(
     requestBody: Array<WorkflowDef>,
+    overwrite: boolean = true,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
       url: '/api/metadata/workflow',
+      query: {
+        'overwrite': overwrite,
+      },
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -43,15 +63,20 @@ export class MetadataResourceService {
   /**
    * Create a new workflow definition
    * @param requestBody
+   * @param overwrite
    * @returns any OK
    * @throws ApiError
    */
   public create(
     requestBody: WorkflowDef,
+    overwrite: boolean = false,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/api/metadata/workflow',
+      query: {
+        'overwrite': overwrite,
+      },
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -59,13 +84,28 @@ export class MetadataResourceService {
 
   /**
    * Gets all task definition
+   * @param access
+   * @param metadata
+   * @param tagKey
+   * @param tagValue
    * @returns TaskDef OK
    * @throws ApiError
    */
-  public getTaskDefs(): CancelablePromise<Array<TaskDef>> {
+  public getTaskDefs(
+    access: string = 'READ',
+    metadata: boolean = false,
+    tagKey?: string,
+    tagValue?: string,
+  ): CancelablePromise<Array<TaskDef>> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/metadata/taskdefs',
+      query: {
+        'access': access,
+        'metadata': metadata,
+        'tagKey': tagKey,
+        'tagValue': tagValue,
+      },
     });
   }
 
@@ -75,7 +115,7 @@ export class MetadataResourceService {
    * @returns any OK
    * @throws ApiError
    */
-  public registerTaskDef(
+  public updateTaskDef(
     requestBody: TaskDef,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
@@ -87,12 +127,12 @@ export class MetadataResourceService {
   }
 
   /**
-   * Create new task definition(s)
+   * Create or update task definition(s)
    * @param requestBody
    * @returns any OK
    * @throws ApiError
    */
-  public registerTaskDef1(
+  public registerTaskDef(
     requestBody: Array<TaskDef>,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
@@ -104,42 +144,24 @@ export class MetadataResourceService {
   }
 
   /**
-   * Retrieves workflow definition along with blueprint
-   * @param name
-   * @param version
-   * @returns WorkflowDef OK
-   * @throws ApiError
-   */
-  public get(
-    name: string,
-    version?: number,
-  ): CancelablePromise<WorkflowDef> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/metadata/workflow/{name}',
-      path: {
-        'name': name,
-      },
-      query: {
-        'version': version,
-      },
-    });
-  }
-
-  /**
    * Gets the task definition
    * @param tasktype
+   * @param metadata
    * @returns TaskDef OK
    * @throws ApiError
    */
   public getTaskDef(
     tasktype: string,
+    metadata: boolean = false,
   ): CancelablePromise<TaskDef> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
+      },
+      query: {
+        'metadata': metadata,
       },
     });
   }
@@ -158,6 +180,32 @@ export class MetadataResourceService {
       url: '/api/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
+      },
+    });
+  }
+
+  /**
+   * Retrieves workflow definition along with blueprint
+   * @param name
+   * @param version
+   * @param metadata
+   * @returns WorkflowDef OK
+   * @throws ApiError
+   */
+  public get(
+    name: string,
+    version?: number,
+    metadata: boolean = false,
+  ): CancelablePromise<WorkflowDef> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/metadata/workflow/{name}',
+      path: {
+        'name': name,
+      },
+      query: {
+        'version': version,
+        'metadata': metadata,
       },
     });
   }

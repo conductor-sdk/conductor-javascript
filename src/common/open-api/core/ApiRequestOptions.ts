@@ -1,8 +1,6 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import {RequestInit} from "node-fetch"
-
 export type ApiRequestOptions = {
   readonly method: 'GET' | 'PUT' | 'POST' | 'DELETE' | 'OPTIONS' | 'HEAD' | 'PATCH';
   readonly url: string;
@@ -15,4 +13,4 @@ export type ApiRequestOptions = {
   readonly mediaType?: string;
   readonly responseHeader?: string;
   readonly errors?: Record<number, string>;
-} & Pick<RequestInit, "agent">; // conductor-client-modification
+};

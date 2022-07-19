@@ -31,7 +31,8 @@ export type Workflow = {
   priority?: number;
   variables?: Record<string, any>;
   lastRetriedTime?: number;
+  startTime?: number;
   workflowName?: string;
   workflowVersion?: number;
-  startTime?: number;
 };
+

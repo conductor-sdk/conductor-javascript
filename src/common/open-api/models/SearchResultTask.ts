@@ -8,3 +8,4 @@ export type SearchResultTask = {
   totalHits?: number;
   results?: Array<Task>;
 };
+

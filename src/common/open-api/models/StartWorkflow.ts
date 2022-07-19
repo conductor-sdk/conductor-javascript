@@ -9,3 +9,4 @@ export type StartWorkflow = {
   input?: Record<string, any>;
   taskToDomain?: Record<string, string>;
 };
+

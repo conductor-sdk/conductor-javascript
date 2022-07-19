@@ -12,3 +12,4 @@ export type Action = {
   fail_task?: TaskDetails;
   expandInlineJSON?: boolean;
 };
+

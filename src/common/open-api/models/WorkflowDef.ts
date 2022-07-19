@@ -26,3 +26,4 @@ export type WorkflowDef = {
   variables?: Record<string, any>;
   inputTemplate?: Record<string, any>;
 };
+

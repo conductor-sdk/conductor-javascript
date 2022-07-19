@@ -2,12 +2,11 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { ApiRequestOptions } from './ApiRequestOptions';
-import {RequestInit} from "node-fetch"
 
 type Resolver<T> = (options: ApiRequestOptions) => Promise<T>;
 type Headers = Record<string, string>;
 
-export interface OpenAPIConfig {
+export type OpenAPIConfig = {
   BASE: string;
   VERSION: string;
   WITH_CREDENTIALS: boolean;
@@ -17,11 +16,10 @@ export interface OpenAPIConfig {
   PASSWORD?: string | Resolver<string>;
   HEADERS?: Headers | Resolver<Headers>;
   ENCODE_PATH?: (path: string) => string;
-  AGENT?: RequestInit["agent"] // conductor-client-modification
 };
 
 export const OpenAPI: OpenAPIConfig = {
-  BASE: 'https://play.orkes.io',
+  BASE: 'http://localhost:8080',
   VERSION: '0',
   WITH_CREDENTIALS: false,
   CREDENTIALS: 'include',

@@ -10,6 +10,7 @@ import type { ApiResult } from './ApiResult';
 import { CancelablePromise } from './CancelablePromise';
 import type { OnCancel } from './CancelablePromise';
 import type { OpenAPIConfig } from './OpenAPI';
+import { AbortSignal } from 'node-fetch/externals';
 
 const isDefined = <T>(value: T | null | undefined): value is Exclude<T, null | undefined> => {
   return value !== undefined && value !== null;
@@ -156,7 +157,7 @@ const getHeaders = async (config: OpenAPIConfig, options: ApiRequestOptions): Pr
     }), {} as Record<string, string>);
 
   if (isStringWithValue(token)) {
-    headers['Authorization'] = `Bearer ${token}`;
+    headers['X-AUTHORIZATION'] = token;
   }
 
   if (isStringWithValue(username) && isStringWithValue(password)) {
@@ -206,8 +207,7 @@ export const sendRequest = async (
     headers,
     method: options.method,
     body: body ?? formData,
-    signal: controller.signal as RequestInit["signal"], // conductor-client-modification
-    agent: options.agent
+    signal: controller.signal as AbortSignal,
   };
 
   onCancel(() => controller.abort());
@@ -258,11 +258,11 @@ const catchErrorCodes = (options: ApiRequestOptions, result: ApiResult): void =>
 
   const error = errors[result.status];
   if (error) {
-    throw new ApiError(result, error);
+    throw new ApiError(options, result, error);
   }
 
   if (!result.ok) {
-    throw new ApiError(result, 'Generic Error');
+    throw new ApiError(options, result, 'Generic Error');
   }
 };
 
@@ -280,7 +280,7 @@ export const request = <T>(config: OpenAPIConfig, options: ApiRequestOptions): C
       const formData = getFormData(options);
       const body = getRequestBody(options);
       const headers = await getHeaders(config, options);
-      if (config.AGENT) { options.agent = config.AGENT } // conductor-client-modification
+
       if (!onCancel.isCancelled) {
         const response = await sendRequest(options, url, body, formData, headers, onCancel);
         const responseBody = await getResponseBody(response);

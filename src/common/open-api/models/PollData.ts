@@ -8,3 +8,4 @@ export type PollData = {
   workerId?: string;
   lastPollTime?: number;
 };
+

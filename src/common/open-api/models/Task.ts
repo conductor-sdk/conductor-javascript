@@ -45,6 +45,7 @@ export type Task = {
   subWorkflowId?: string;
   subworkflowChanged?: boolean;
   taskDefinition?: TaskDef;
-  queueWaitTime?: number;
   loopOverTask?: boolean;
+  queueWaitTime?: number;
 };
+

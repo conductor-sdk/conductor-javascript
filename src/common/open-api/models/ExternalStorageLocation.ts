@@ -6,3 +6,4 @@ export type ExternalStorageLocation = {
   uri?: string;
   path?: string;
 };
+
