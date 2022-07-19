@@ -1,12 +1,10 @@
 import type { OpenAPIConfig } from "../open-api/core/OpenAPI";
 import { ConductorHttpRequest } from "../RequestCustomizer";
 import { ConductorClient } from "../open-api/ConductorClient";
+import { GenerateTokenRequest } from "../open-api";
 import fetch from "node-fetch";
 
-export interface OrkesApiConfig extends OpenAPIConfig {
-  keyId?: string;
-  keySecret?: string;
-}
+export type OrkesApiConfig= OpenAPIConfig & GenerateTokenRequest; 
 
 const defaultRequestHandler: ConductorHttpRequest = (
   request,
