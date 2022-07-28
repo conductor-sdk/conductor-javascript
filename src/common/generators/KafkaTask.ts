@@ -1,23 +1,9 @@
-import { CommonTaskDef, TaskType } from "./types";
+import { KafkaPublishTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
-export interface KafkaPublishTask extends CommonTaskDef {
-  inputParameters: {
-    kafka_request: {
-      topic: string;
-      value: string;
-      bootStrapServers: string;
-      headers: Record<string, string>;
-      key: string;
-      keySerializser: string;
-    };
-  };
-  type: TaskType.KAFKA_PUBLISH;
-}
-
 export const generateKafkaPublishTask = (
-  overrides: Partial<KafkaPublishTask>
-): KafkaPublishTask => ({
+  overrides: Partial<KafkaPublishTaskDef>
+): KafkaPublishTaskDef => ({
   ...nameTaskNameGenerator("kafka"),
   inputParameters: {
     kafka_request: {

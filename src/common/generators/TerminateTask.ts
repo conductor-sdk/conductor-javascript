@@ -1,15 +1,5 @@
-import { CommonTaskDef, TaskType } from "./types";
+import { TerminateTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
-
-export interface TerminateTaskDef extends CommonTaskDef {
-  inputParameters: {
-    terminationStatus: string; // TODO it aint string.
-    workflowOutput: Record<string, string>;
-  };
-  type: TaskType.TERMINATE;
-  startDelay: number;
-  optional: boolean;
-}
 
 export const generateTerminateTask = (
   overrides: Partial<TerminateTaskDef>

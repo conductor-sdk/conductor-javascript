@@ -1,18 +1,9 @@
-import { CommonTaskDef, TaskType } from "./types";
+import { SubWokflowTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
-export interface SubWokflowTask extends CommonTaskDef {
-  type: TaskType.SUB_WORKFLOW;
-  subWorkflowParam: {
-    name: string;
-    version: number;
-    taskToDomain: Record<string, string>;
-  };
-}
-
 export const generateSubWorkflowTask = (
-  overrides: Partial<SubWokflowTask>
-): SubWokflowTask => ({
+  overrides: Partial<SubWokflowTaskDef>
+): SubWokflowTaskDef => ({
   ...nameTaskNameGenerator("subWorkflow"),
   type: TaskType.SUB_WORKFLOW,
   subWorkflowParam: {

@@ -1,14 +1,10 @@
-import { CommonTaskDef, TaskType } from "./types";
+import { SetVariableTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
-export interface SetVariableTask extends CommonTaskDef {
-  type: TaskType.SET_VARIABLE;
-  inputParameters: Record<string, string>;
-}
 
 export const generateSetVariableTask = (
-  overrides: Partial<SetVariableTask>
-): SetVariableTask => ({
+  overrides: Partial<SetVariableTaskDef>
+): SetVariableTaskDef => ({
   ...nameTaskNameGenerator("setVariable"),
   inputParameters: {},
   type: TaskType.SET_VARIABLE,

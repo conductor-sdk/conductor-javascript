@@ -1,15 +1,5 @@
-import { CommonTaskDef, TaskType } from "./types";
+import { JsonJQTransformTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
-
-interface ContainingQueryExpression {
-  queryExpression: string;
-  [x: string | number | symbol]: unknown;
-}
-
-export interface JsonJQTransformTaskDef extends CommonTaskDef {
-  type: TaskType.JSON_JQ_TRANSFORM;
-  inputParameters: ContainingQueryExpression;
-}
 
 export const generateJQTransformTask = (
   overrides: Partial<JsonJQTransformTaskDef>
