@@ -1,6 +1,11 @@
 import { workflowGenerator } from "./WorkflowGenerator";
-import { TaskType } from "./types";
-import { WorkflowDef } from "./WorkflowGenerator";
+import { mapArrValues } from "./common";
+import {
+  TaskType,
+  WorkflowDefGen,
+  TaskDefTypesGen,
+  SwitchTaskDef,
+} from "./types";
 import { generateSimpleTask } from "./SimpleTask";
 import { generateDoWhileTask } from "./DoWhileTask";
 import { generateEventTask } from "./EventTask";
@@ -14,6 +19,7 @@ import { generateSubWorkflowTask } from "./SubWorkflowTask";
 import { generateSetVariableTask } from "./SetVariableTask";
 import { generateTerminateTask } from "./TerminateTask";
 import { generateWaitTask } from "./WaitTask";
+import { generateSwitchTask } from "./SwitchTask";
 import {
   SimpleTaskDef,
   DoWhileTaskDef,
@@ -48,21 +54,31 @@ export {
   generateWaitTask,
 };
 
-const filledTaskDef = (task: Partial<TaskDefTypes>): TaskDefTypes => {
+const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
   const taskType = task.type;
   switch (taskType) {
+    case TaskType.SWITCH:
+      const switchTask: Partial<SwitchTaskDef> = {
+        decisionCases: mapArrValues(taskGenMapper, task.decisionCases || {}),
+        defaultCase: taskGenMapper(task.defaultCase || []),
+      };
+      return generateSwitchTask(switchTask);
     case TaskType.SIMPLE:
       return generateSimpleTask(task as SimpleTaskDef);
     case TaskType.DO_WHILE:
-      return generateDoWhileTask(task as DoWhileTaskDef);
+      const doWhileTask: Partial<DoWhileTaskDef> = {
+        ...task,
+        loopOver: taskGenMapper(task.loopOver || []),
+      };
+      return generateDoWhileTask(doWhileTask);
     case TaskType.EVENT:
       return generateEventTask(task as EventTaskDef);
     case TaskType.FORK_JOIN:
-      /* const forkTaskWithTasks = { */
-      /*   ...task, */
-      /*   forkTasks: (task.forkTasks || []).map(taskMapper), */
-      /* }; */
-      return generateForkJoinTask(task as ForkJoinTaskDef);
+      const forkTaskWithTasks: Partial<ForkJoinTaskDef> = {
+        ...task,
+        forkTasks: (task.forkTasks || []).map(taskGenMapper),
+      };
+      return generateForkJoinTask(forkTaskWithTasks);
     case TaskType.FORK_JOIN_DYNAMIC:
       return generateForkJoinDynamic(task as ForkJoinDynamicDef);
     case TaskType.HTTP:
@@ -88,7 +104,9 @@ const filledTaskDef = (task: Partial<TaskDefTypes>): TaskDefTypes => {
   }
 };
 
-export const taskGenMapper = (tasks: Partial<TaskDefTypes>[]): TaskDefTypes[] =>
+export const taskGenMapper = (
+  tasks: Partial<TaskDefTypesGen>[]
+): TaskDefTypes[] =>
   tasks.reduce((acc: TaskDefTypes[], task, idx): TaskDefTypes[] => {
     const filledTask = filledTaskDef(task);
     const maybeNextTask = tasks.length >= idx + 1 ? tasks[idx + 1] : undefined;
@@ -97,7 +115,7 @@ export const taskGenMapper = (tasks: Partial<TaskDefTypes>[]): TaskDefTypes[] =>
 
 const maybeAddJoinTask = (
   currentTask: TaskDefTypes,
-  maybeNextTask?: Partial<TaskDefTypes>
+  maybeNextTask?: Partial<TaskDefTypesGen>
 ) => {
   if (
     currentTask.type === TaskType.FORK_JOIN ||
@@ -110,8 +128,8 @@ const maybeAddJoinTask = (
   return currentTask;
 };
 
-export const generate = (overrides: Partial<WorkflowDef>) => {
-  const maybeTasks: Partial<TaskDefTypes>[] = overrides.tasks || [];
+export const generate = (overrides: Partial<WorkflowDefGen>) => {
+  const maybeTasks: Partial<TaskDefTypesGen>[] = overrides.tasks || [];
   const generatedTasks: TaskDefTypes[] = taskGenMapper(maybeTasks);
   return workflowGenerator({ tasks: generatedTasks });
 };

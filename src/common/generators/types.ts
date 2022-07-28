@@ -1,33 +1,35 @@
+import { WorkflowDef as OriginalWorkflowDef } from "../open-api/models/WorkflowDef";
+
 export interface CommonTaskDef {
-    name:string;
-    taskReferenceName:string;
+  name: string;
+  taskReferenceName: string;
 }
 
 export enum TaskType {
-    START = "START",
-    SIMPLE = "SIMPLE",
-    DYNAMIC = "DYNAMIC",
-    FORK_JOIN = "FORK_JOIN",
-    FORK_JOIN_DYNAMIC = "FORK_JOIN_DYNAMIC",
-    DECISION = "DECISION",
-    SWITCH = "SWITCH",
-    JOIN = "JOIN",
-    DO_WHILE = "DO_WHILE",
-    SUB_WORKFLOW = "SUB_WORKFLOW",
-    EVENT = "EVENT",
-    WAIT = "WAIT",
-    USER_DEFINED = "USER_DEFINED",
-    HTTP = "HTTP",
-    LAMBDA = "LAMBDA",
-    INLINE = "INLINE",
-    EXCLUSIVE_JOIN = "EXCLUSIVE_JOIN",
-    TERMINAL = "TERMINAL",
-    TERMINATE = "TERMINATE",
-    KAFKA_PUBLISH = "KAFKA_PUBLISH",
-    JSON_JQ_TRANSFORM = "JSON_JQ_TRANSFORM",
-    SET_VARIABLE = "SET_VARIABLE",
-  }
-  
+  START = "START",
+  SIMPLE = "SIMPLE",
+  DYNAMIC = "DYNAMIC",
+  FORK_JOIN = "FORK_JOIN",
+  FORK_JOIN_DYNAMIC = "FORK_JOIN_DYNAMIC",
+  DECISION = "DECISION",
+  SWITCH = "SWITCH",
+  JOIN = "JOIN",
+  DO_WHILE = "DO_WHILE",
+  SUB_WORKFLOW = "SUB_WORKFLOW",
+  EVENT = "EVENT",
+  WAIT = "WAIT",
+  USER_DEFINED = "USER_DEFINED",
+  HTTP = "HTTP",
+  LAMBDA = "LAMBDA",
+  INLINE = "INLINE",
+  EXCLUSIVE_JOIN = "EXCLUSIVE_JOIN",
+  TERMINAL = "TERMINAL",
+  TERMINATE = "TERMINATE",
+  KAFKA_PUBLISH = "KAFKA_PUBLISH",
+  JSON_JQ_TRANSFORM = "JSON_JQ_TRANSFORM",
+  SET_VARIABLE = "SET_VARIABLE",
+}
+
 export type TaskDefTypes =
   | SimpleTaskDef
   | DoWhileTaskDef
@@ -61,7 +63,7 @@ export interface EventTaskDef extends CommonTaskDef {
   sink: string;
   asyncComplete: boolean;
 }
-  
+
 export interface ForkJoinTaskDef extends CommonTaskDef {
   type: TaskType.FORK_JOIN;
   inputParameters: Record<string, string>;
@@ -88,7 +90,6 @@ export interface ForkJoinDynamicDef extends CommonTaskDef {
   optional: boolean;
   asyncComplete: boolean;
 }
-
 
 export interface HttpTaskDef extends CommonTaskDef {
   inputParameters: {
@@ -181,3 +182,44 @@ export interface TerminateTaskDef extends CommonTaskDef {
 export interface WaitTaskDef extends CommonTaskDef {
   type: TaskType.WAIT;
 }
+
+export type TaskDefTypesGen =
+  | SimpleTaskDef
+  | DoWhileTaskDefGen
+  | EventTaskDef
+  | ForkJoinTaskDefGen
+  | ForkJoinDynamicDef
+  | HttpTaskDef
+  | InlineTaskDef
+  | JsonJQTransformTaskDef
+  | KafkaPublishTaskDef
+  | SetVariableTaskDef
+  | SubWokflowTaskDef
+  | SwitchTaskDefGen
+  | TerminateTaskDef
+  | JoinTaskDef
+  | WaitTaskDef;
+
+export type WorkflowDef = Omit<OriginalWorkflowDef, "tasks"> & {
+  tasks: TaskDefTypes[];
+};
+
+export type WorkflowDefGen = Omit<OriginalWorkflowDef, "tasks"> & {
+  tasks: Partial<TaskDefTypesGen>[];
+};
+
+export type ForkJoinTaskDefGen = Omit<ForkJoinTaskDef, "forkTasks"> & {
+  forkTasks: Array<Array<Partial<TaskDefTypesGen>>>;
+};
+
+export type SwitchTaskDefGen = Omit<
+  SwitchTaskDef,
+  "decisionCases" | "defaultCase"
+> & {
+  decisionCases: Record<string, Partial<TaskDefTypesGen>[]>;
+  defaultCase: Partial<TaskDefTypesGen>[];
+};
+
+export type DoWhileTaskDefGen = Omit<DoWhileTaskDef, "loopOver"> & {
+  loopOver: Partial<TaskDefTypesGen>[];
+};

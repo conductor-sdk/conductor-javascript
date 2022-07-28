@@ -1,9 +1,4 @@
-import { WorkflowDef as OriginalWorkflowDef } from "../open-api/models/WorkflowDef";
-import { TaskDefTypes } from "./types";
-
-export type WorkflowDef = Omit<OriginalWorkflowDef, "tasks"> & {
-  tasks: Partial<TaskDefTypes>[];
-};
+import { WorkflowDefGen, WorkflowDef } from "./types";
 
 export const workflowGenerator = (
   overrides: Partial<WorkflowDef>
