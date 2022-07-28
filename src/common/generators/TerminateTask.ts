@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 export const generateTerminateTask = (
   overrides: Partial<TerminateTaskDef>
 ): TerminateTaskDef => ({
-  ...nameTaskNameGenerator("terminate"),
+  ...nameTaskNameGenerator("terminate", overrides),
   inputParameters: {
     terminationStatus: "COMPLETED",
     workflowOutput: {},

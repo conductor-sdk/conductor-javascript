@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 export const generateForkJoinTask = (
   overrides: Partial<ForkJoinTaskDef>
 ): ForkJoinTaskDef => ({
-  ...nameTaskNameGenerator("forkJoin"),
+  ...nameTaskNameGenerator("forkJoin", overrides),
   inputParameters: {},
   forkTasks: [[]],
   type: TaskType.FORK_JOIN,
@@ -14,7 +14,7 @@ export const generateForkJoinTask = (
 export const generateJoinTask = (
   overrides: Partial<JoinTaskDef>
 ): JoinTaskDef => ({
-  ...nameTaskNameGenerator("join"),
+  ...nameTaskNameGenerator("join", overrides),
   type: TaskType.JOIN,
   inputParameters: {},
   joinOn: [],

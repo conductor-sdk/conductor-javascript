@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 export const generateJQTransformTask = (
   overrides: Partial<JsonJQTransformTaskDef>
 ): JsonJQTransformTaskDef => ({
-  ...nameTaskNameGenerator("jqTransform"),
+  ...nameTaskNameGenerator("jqTransform",overrides),
   inputParameters: {
     key1: {
       value1: ["a", "b"],

@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 export const generateKafkaPublishTask = (
   overrides: Partial<KafkaPublishTaskDef>
 ): KafkaPublishTaskDef => ({
-  ...nameTaskNameGenerator("kafka"),
+  ...nameTaskNameGenerator("kafka", overrides),
   inputParameters: {
     kafka_request: {
       topic: "topic",
