@@ -2,7 +2,7 @@ import { ForkJoinDynamicDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateForkJoinDynamic = (
-  overrides: Partial<ForkJoinDynamicDef>
+  overrides: Partial<ForkJoinDynamicDef> = {}
 ): ForkJoinDynamicDef => ({
   ...nameTaskNameGenerator("forkJoinDynamic", overrides),
   inputParameters: {

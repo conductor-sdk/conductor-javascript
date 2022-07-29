@@ -2,7 +2,7 @@ import { EventTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateEventTask = (
-  overrides: Partial<EventTaskDef>
+  overrides: Partial<EventTaskDef>= {}
 ): EventTaskDef => ({
   ...nameTaskNameGenerator("event", overrides),
   sink: "sqs:sqs_queue_name",

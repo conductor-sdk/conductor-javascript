@@ -2,7 +2,7 @@ import { InlineTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateInlineTask = (
-  override: Partial<InlineTaskDef>
+  override: Partial<InlineTaskDef> = {}
 ): InlineTaskDef => ({
   ...nameTaskNameGenerator("terminate", override),
   type: TaskType.INLINE,

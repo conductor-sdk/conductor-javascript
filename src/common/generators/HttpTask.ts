@@ -2,7 +2,7 @@ import { HttpTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateHTTPTask = (
-  overrides: Partial<HttpTaskDef>
+  overrides: Partial<HttpTaskDef> = {}
 ): HttpTaskDef => ({
   ...nameTaskNameGenerator("terminate", overrides),
   inputParameters: {

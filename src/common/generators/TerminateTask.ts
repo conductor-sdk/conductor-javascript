@@ -2,7 +2,7 @@ import { TerminateTaskDef, TaskType } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateTerminateTask = (
-  overrides: Partial<TerminateTaskDef>
+  overrides: Partial<TerminateTaskDef> = {}
 ): TerminateTaskDef => ({
   ...nameTaskNameGenerator("terminate", overrides),
   inputParameters: {

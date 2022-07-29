@@ -2,7 +2,7 @@ import { TaskType, DoWhileTaskDef } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateDoWhileTask = (
-  overrides: Partial<DoWhileTaskDef>
+  overrides: Partial<DoWhileTaskDef> = {}
 ): DoWhileTaskDef => ({
   ...nameTaskNameGenerator("doWhile", overrides),
   inputParameters: {},
