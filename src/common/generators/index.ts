@@ -29,4 +29,46 @@ export {
   generateSwitchTask,
 };
 
+import {
+  TaskType,
+  TaskDefTypes,
+  DoWhileTaskDef,
+  EventTaskDef,
+  ForkJoinTaskDef,
+  JoinTaskDef,
+  ForkJoinDynamicDef,
+  HttpTaskDef,
+  InlineTaskDef,
+  JsonJQTransformTaskDef,
+  KafkaPublishTaskDef,
+  SetVariableTaskDef,
+  SimpleTaskDef,
+  SubWokflowTaskDef,
+  SwitchTaskDef,
+  TerminateTaskDef,
+  WaitTaskDef,
+  WorkflowDef,
+} from "./types";
+
+export {
+  TaskType,
+  TaskDefTypes,
+  DoWhileTaskDef,
+  EventTaskDef,
+  ForkJoinTaskDef,
+  JoinTaskDef,
+  ForkJoinDynamicDef,
+  HttpTaskDef,
+  InlineTaskDef,
+  JsonJQTransformTaskDef,
+  KafkaPublishTaskDef,
+  SetVariableTaskDef,
+  SimpleTaskDef,
+  SubWokflowTaskDef,
+  SwitchTaskDef,
+  TerminateTaskDef,
+  WaitTaskDef,
+  WorkflowDef,
+};
+
 export * from "./generator";
