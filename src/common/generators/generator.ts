@@ -80,7 +80,7 @@ const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
     case TaskType.HTTP:
       return generateHTTPTask(task as HttpTaskDef);
     case TaskType.INLINE:
-      return generateInlineTask(task as InlineTaskDef);
+      return generateInlineTask(task as Partial<InlineTaskDef>);
     case TaskType.JOIN:
       return generateJoinTask(task as JoinTaskDef);
     case TaskType.JSON_JQ_TRANSFORM:
