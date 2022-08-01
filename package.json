@@ -1,7 +1,7 @@
 {
-  "name": "@conductor-sdk/conductor-client",
-  "description": "JavaScript Client for Netflix Conductor",
-  "version": "1.0.0",
+  "name": "@io-orkes/conductor-typescript",
+  "description": "Typescript Client for Netflix Conductor",
+  "version": "0.0.1",
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -9,6 +9,18 @@
       "types": "./dist/index.d.ts"
     }
   },
+  "private": false,
+  "homepage": "https://orkes.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conductor-sdk/conductor-typescript"
+  },
+  "keywords": [
+    "conductor",
+    "workflow",
+    "orchestration",
+    "microservice"
+  ],
   "types": "dist/index.d.ts",
   "main": "dist/index.js",
   "scripts": {
@@ -33,6 +45,9 @@
     },
     {
       "name": "Nick Tomlin"
+    },
+    {
+      "name": "James Stuart Milne"
     }
   ],
   "devDependencies": {
@@ -54,7 +69,10 @@
   "tsup": {
     "target": "node16",
     "sourcemap": true,
-    "format": ["esm", "cjs"],
+    "format": [
+      "esm",
+      "cjs"
+    ],
     "dts": true,
     "clean": true
   },
