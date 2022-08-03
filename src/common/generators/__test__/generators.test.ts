@@ -1,7 +1,8 @@
 import { expect, describe, it } from "@jest/globals";
 import { generate, generateSimpleTask } from "../index";
-import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../types";
+import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../../types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
+import { orkesConductorClient } from "../../orkes";
 
 describe("Generate", () => {
   describe("InlineTask", () => {
@@ -26,6 +27,7 @@ describe("Generate", () => {
       });
       it("Should generate the expression if passed javascript code", () => {
         const generatedInputParameters = generateEvaluationCode({
+          value: "${workflow.input.someNumber}",
           evaluatorType: InlineEvaluatorType.JAVASCRIPT,
           expression: function ($: any) {
             return function () {
@@ -38,7 +40,7 @@ describe("Generate", () => {
           },
         });
         expect(generatedInputParameters).toEqual({
-          value: "${workflow.input.value}",
+          value: "${workflow.input.someNumber}",
           evaluatorType: "javascript",
           expression:
             "(function () {\n                            if ($.value === 1) {\n                                return { result: true };\n                            }\n                            else {\n                                return { result: false };\n                            }\n                        })();",
@@ -110,6 +112,7 @@ describe("Generate", () => {
   it("Should generate a workflow and take into account nested tasks", () => {
     const wf = generate({
       name: "tripReservation",
+      inputParameters: ["some"],
       tasks: [
         {
           type: TaskType.FORK_JOIN,
@@ -148,6 +151,7 @@ describe("Generate", () => {
         generateSimpleTask({ name: "send_email" }),
       ],
     });
+
     expect(
       wf.tasks.every(
         ({ name, taskReferenceName }) => name !== "" && taskReferenceName !== ""
