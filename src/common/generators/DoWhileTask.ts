@@ -6,7 +6,6 @@ export const generateDoWhileTask = (
 ): DoWhileTaskDef => ({
   ...nameTaskNameGenerator("doWhile", overrides),
   inputParameters: {},
-  type: TaskType.DO_WHILE,
   decisionCases: {},
   startDelay: 0,
   optional: false,
@@ -14,4 +13,5 @@ export const generateDoWhileTask = (
   loopCondition: "",
   loopOver: [],
   ...overrides,
+  type: TaskType.DO_WHILE,
 });

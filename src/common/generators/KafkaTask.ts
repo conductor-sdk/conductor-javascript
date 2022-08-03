@@ -15,6 +15,6 @@ export const generateKafkaPublishTask = (
       keySerializser: "org.apache.kafka.common.serialization.IntegerSerializer",
     },
   },
-  type: TaskType.KAFKA_PUBLISH,
   ...overrides,
+  type: TaskType.KAFKA_PUBLISH,
 });

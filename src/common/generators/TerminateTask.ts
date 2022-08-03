@@ -11,6 +11,6 @@ export const generateTerminateTask = (
   },
   startDelay: 0,
   optional: false,
-  type: TaskType.TERMINATE,
   ...overrides,
+  type: TaskType.TERMINATE,
 });

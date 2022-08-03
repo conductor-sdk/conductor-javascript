@@ -11,6 +11,6 @@ export const generateHTTPTask = (
       method: "GET",
     },
   },
-  type: TaskType.HTTP,
   ...overrides,
+  type: TaskType.HTTP,
 });

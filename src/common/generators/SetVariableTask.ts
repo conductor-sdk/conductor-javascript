@@ -6,6 +6,6 @@ export const generateSetVariableTask = (
 ): SetVariableTaskDef => ({
   ...nameTaskNameGenerator("setVariable", overrides),
   inputParameters: {},
-  type: TaskType.SET_VARIABLE,
   ...overrides,
+  type: TaskType.SET_VARIABLE,
 });

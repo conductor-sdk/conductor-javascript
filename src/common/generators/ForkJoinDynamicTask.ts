@@ -9,11 +9,11 @@ export const generateForkJoinDynamic = (
     dynamicTasks: "",
     dynamicTasksInput: "",
   },
-  type: TaskType.FORK_JOIN_DYNAMIC,
   dynamicForkTasksParam: "dynamicTasks",
   dynamicForkTasksInputParamName: "dynamicTasksInput",
   startDelay: 0,
   optional: false,
   asyncComplete: false,
   ...overrides,
+  type: TaskType.FORK_JOIN_DYNAMIC,
 });

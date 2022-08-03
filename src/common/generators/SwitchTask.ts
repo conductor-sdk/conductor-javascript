@@ -8,10 +8,10 @@ export const generateSwitchTask = (
   inputParameters: {
     switchCaseValue: "",
   },
-  type: TaskType.SWITCH,
   decisionCases: {},
   defaultCase: [],
   evaluatorType: "value-param",
   expression: "switchCaseValue",
   ...overrides,
+  type: TaskType.SWITCH,
 });

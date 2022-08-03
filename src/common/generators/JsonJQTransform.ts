@@ -14,6 +14,6 @@ export const generateJQTransformTask = (
     },
     queryExpression: "{ key3: (.key1.value1 + .key2.value2) }",
   },
-  type: TaskType.JSON_JQ_TRANSFORM,
   ...overrides,
+  type: TaskType.JSON_JQ_TRANSFORM,
 });

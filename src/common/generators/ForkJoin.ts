@@ -15,10 +15,10 @@ export const generateJoinTask = (
   overrides: Partial<JoinTaskDef> = {}
 ): JoinTaskDef => ({
   ...nameTaskNameGenerator("join", overrides),
-  type: TaskType.JOIN,
   inputParameters: {},
   joinOn: [],
   optional: false,
   asyncComplete: false,
   ...overrides,
+  type: TaskType.JOIN,
 });

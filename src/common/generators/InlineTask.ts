@@ -57,7 +57,7 @@ export const generateInlineTask = (
   override: Partial<InlineTaskDef> = {}
 ): InlineTaskDef => ({
   ...nameTaskNameGenerator("inline", override),
-  type: TaskType.INLINE,
   ...override,
   inputParameters: generateEvaluationCode(override?.inputParameters || {}),
+  type: TaskType.INLINE,
 });

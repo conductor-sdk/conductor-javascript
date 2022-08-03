@@ -5,11 +5,12 @@ export const generateSubWorkflowTask = (
   overrides: Partial<SubWokflowTaskDef> = {}
 ): SubWokflowTaskDef => ({
   ...nameTaskNameGenerator("subWorkflow", overrides),
-  type: TaskType.SUB_WORKFLOW,
+  inputParameters: {},
   subWorkflowParam: {
     name: "name",
     version: 1,
     taskToDomain: {},
   },
   ...overrides,
+  type: TaskType.SUB_WORKFLOW,
 });
