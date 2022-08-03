@@ -5,6 +5,7 @@ export const generateSimpleTask = (
   overrides: Partial<SimpleTaskDef> = {}
 ): SimpleTaskDef => ({
   ...nameTaskNameGenerator("simple", overrides),
+  inputParameters: {},
   ...overrides,
   type: TaskType.SIMPLE,
 });
