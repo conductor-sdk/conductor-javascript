@@ -1,4 +1,4 @@
-import { HttpTaskDef, TaskType } from "./types";
+import { HttpTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateHTTPTask = (

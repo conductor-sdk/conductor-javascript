@@ -1,4 +1,4 @@
-import { SetVariableTaskDef, TaskType } from "./types";
+import { SetVariableTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateSetVariableTask = (

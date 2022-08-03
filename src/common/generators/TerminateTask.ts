@@ -1,4 +1,4 @@
-import { TerminateTaskDef, TaskType } from "./types";
+import { TerminateTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateTerminateTask = (

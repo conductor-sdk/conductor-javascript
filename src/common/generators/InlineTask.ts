@@ -4,7 +4,7 @@ import {
   InlineEvaluatorType,
   InlineInputParametersValueParam,
   InlineInputParametersJavascript,
-} from "./types";
+} from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 const defaultInputParams: InlineInputParametersValueParam = {
@@ -32,7 +32,6 @@ export const generateEvaluationCode = (
       const resultingFunctionAsString = resultingFunction.toString();
 
       const toReturn = {
-        value: "${workflow.input.value}",
         evaluatorType: InlineEvaluatorType.JAVASCRIPT,
         ...(inputParametersPartial as Partial<InlineInputParametersJavascript>),
         expression: `(${resultingFunctionAsString})();`,

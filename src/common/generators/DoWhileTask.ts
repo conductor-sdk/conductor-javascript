@@ -1,4 +1,4 @@
-import { TaskType, DoWhileTaskDef } from "./types";
+import { TaskType, DoWhileTaskDef } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateDoWhileTask = (

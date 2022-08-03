@@ -1,4 +1,4 @@
-import { SimpleTaskDef, TaskType } from "./types";
+import { SimpleTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateSimpleTask = (

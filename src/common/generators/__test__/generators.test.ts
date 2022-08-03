@@ -1,6 +1,6 @@
 import { expect, describe, it } from "@jest/globals";
 import { generate, generateSimpleTask } from "../index";
-import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../../types";
+import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
 import { orkesConductorClient } from "../../orkes";
 

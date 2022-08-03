@@ -1,4 +1,4 @@
-import { JsonJQTransformTaskDef, TaskType } from "./types";
+import { JsonJQTransformTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateJQTransformTask = (

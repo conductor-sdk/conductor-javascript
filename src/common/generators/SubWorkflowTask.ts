@@ -1,4 +1,4 @@
-import { SubWokflowTaskDef, TaskType } from "./types";
+import { SubWokflowTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateSubWorkflowTask = (

@@ -1,4 +1,4 @@
-import { EventTaskDef, TaskType } from "./types";
+import { EventTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateEventTask = (

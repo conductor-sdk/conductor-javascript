@@ -1,4 +1,4 @@
-import { WaitTaskDef, TaskType } from "./types";
+import { WaitTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateWaitTask = (

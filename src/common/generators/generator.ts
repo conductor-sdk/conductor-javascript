@@ -1,12 +1,11 @@
 import { workflowGenerator } from "./WorkflowGenerator";
 import { mapArrValues } from "./common";
 import {
-  TaskType,
   WorkflowDefGen,
   TaskDefTypesGen,
-  SwitchTaskDef,
   SwitchTaskDefGen,
   ForkJoinTaskDefGen,
+  DoWhileTaskDefGen,
 } from "./types";
 import { generateSimpleTask } from "./SimpleTask";
 import { generateDoWhileTask } from "./DoWhileTask";
@@ -38,8 +37,9 @@ import {
   TerminateTaskDef,
   WaitTaskDef,
   TaskDefTypes,
-  DoWhileTaskDefGen,
-} from "./types";
+  TaskType,
+  SwitchTaskDef,
+} from "../types";
 
 const fillSwitchTaskBranches = (
   task: Partial<SwitchTaskDefGen>
@@ -127,5 +127,5 @@ const maybeAddJoinTask = (
 export const generate = (overrides: Partial<WorkflowDefGen>) => {
   const maybeTasks: Partial<TaskDefTypesGen>[] = overrides.tasks || [];
   const generatedTasks: TaskDefTypes[] = taskGenMapper(maybeTasks);
-  return workflowGenerator({ tasks: generatedTasks });
+  return workflowGenerator({ ...overrides, tasks: generatedTasks });
 };

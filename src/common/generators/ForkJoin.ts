@@ -1,4 +1,4 @@
-import { ForkJoinTaskDef, JoinTaskDef, TaskType } from "./types";
+import { ForkJoinTaskDef, JoinTaskDef, TaskType } from "../types";
 import { nameTaskNameGenerator } from "./common";
 
 export const generateForkJoinTask = (
