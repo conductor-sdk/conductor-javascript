@@ -162,15 +162,16 @@ export interface SetVariableTaskDef extends CommonTaskDef {
 
 export interface SimpleTaskDef extends CommonTaskDef {
   type: TaskType.SIMPLE;
+  inputParameters?: Record<string, unknown>;
 }
 
 export interface SubWokflowTaskDef extends CommonTaskDef {
   type: TaskType.SUB_WORKFLOW;
+  inputParameters?: Record<string, unknown>;
   subWorkflowParam: {
     name: string;
     version?: number;
     taskToDomain?: Record<string, string>;
-    workflowInput?: Record<string, unknown>;
   };
 }
 
