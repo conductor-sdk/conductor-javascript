@@ -2,9 +2,25 @@ import { expect, describe, it } from "@jest/globals";
 import { generate, generateSimpleTask } from "../index";
 import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
-import { orkesConductorClient } from "../../orkes";
+import { generateSubWorkflowTask } from "../index";
 
 describe("Generate", () => {
+  describe("SubWorkflowTask", () => {
+    it("Should generate default input parameters", () => {
+      const generatedSubWorkflowTask = generateSubWorkflowTask();
+      expect(generatedSubWorkflowTask).toEqual(
+        expect.objectContaining({
+          type: TaskType.SUB_WORKFLOW,
+          subWorkflowParam: {
+            name: "name",
+            version: 1,
+            taskToDomain: {},
+          },
+          inputParameters: {},
+        })
+      );
+    });
+  });
   describe("InlineTask", () => {
     describe("InputParameters ", () => {
       it("Should generate default inputParameters", () => {
