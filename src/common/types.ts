@@ -93,6 +93,7 @@ export interface ForkJoinDynamicDef extends CommonTaskDef {
 
 export interface HttpTaskDef extends CommonTaskDef {
   inputParameters: {
+    [x: string]: unknown;
     http_request: {
       uri: string;
       method: "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS" | "HEAD";
@@ -124,11 +125,16 @@ export interface InlineInputParametersValueParam {
   expression: string;
 }
 
+export interface InlineTaskInputParameters {
+  evaluatorType:
+    | InlineEvaluatorType.VALUE_PARAM
+    | InlineEvaluatorType.JAVASCRIPT;
+  expression: string;
+}
+
 export interface InlineTaskDef extends CommonTaskDef {
   type: TaskType.INLINE;
-  inputParameters:
-    | InlineInputParametersJavascript
-    | InlineInputParametersValueParam;
+  inputParameters: InlineTaskInputParameters;
 }
 
 interface ContainingQueryExpression {
@@ -176,13 +182,11 @@ export interface SubWokflowTaskDef extends CommonTaskDef {
 }
 
 export interface SwitchTaskDef extends CommonTaskDef {
-  inputParameters: {
-    switchCaseValue: string;
-  };
+  inputParameters: Record<string, unknown>;
   type: TaskType.SWITCH;
   decisionCases: Record<string, TaskDefTypes[]>;
   defaultCase: TaskDefTypes[];
-  evaluatorType: string; // TODO this is not string
+  evaluatorType: "value-param" | "javascript";
   expression: string; // TODO this is not string "switchCaseValue"
 }
 
