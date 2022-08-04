@@ -1,8 +1,11 @@
 import { TaskType, DoWhileTaskDef } from "../types";
+import { DoWhileTaskDefGen, NestedTaskMapper } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
+
 export const generateDoWhileTask = (
-  overrides: Partial<DoWhileTaskDef> = {}
+  overrides: Partial<DoWhileTaskDefGen> = {},
+  nestedTasksMapper: NestedTaskMapper
 ): DoWhileTaskDef => ({
   ...nameTaskNameGenerator("doWhile", overrides),
   inputParameters: {},
@@ -10,8 +13,8 @@ export const generateDoWhileTask = (
   startDelay: 0,
   optional: false,
   asyncComplete: false,
-  loopCondition: "",
-  loopOver: [],
+  loopCondition:"",
   ...overrides,
+  loopOver: nestedTasksMapper(overrides?.loopOver || []),
   type: TaskType.DO_WHILE,
 });

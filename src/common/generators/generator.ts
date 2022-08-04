@@ -1,12 +1,5 @@
 import { workflowGenerator } from "./WorkflowGenerator";
-import { mapArrValues } from "./common";
-import {
-  WorkflowDefGen,
-  TaskDefTypesGen,
-  SwitchTaskDefGen,
-  ForkJoinTaskDefGen,
-  DoWhileTaskDefGen,
-} from "./types";
+import { WorkflowDefGen, TaskDefTypesGen, ForkJoinTaskDefGen } from "./types";
 import { generateSimpleTask } from "./SimpleTask";
 import { generateDoWhileTask } from "./DoWhileTask";
 import { generateEventTask } from "./EventTask";
@@ -23,13 +16,10 @@ import { generateWaitTask } from "./WaitTask";
 import { generateSwitchTask } from "./SwitchTask";
 import {
   SimpleTaskDef,
-  DoWhileTaskDef,
   EventTaskDef,
-  ForkJoinTaskDef,
   JoinTaskDef,
   ForkJoinDynamicDef,
   HttpTaskDef,
-  InlineTaskDef,
   JsonJQTransformTaskDef,
   KafkaPublishTaskDef,
   SubWokflowTaskDef,
@@ -38,49 +28,27 @@ import {
   WaitTaskDef,
   TaskDefTypes,
   TaskType,
-  SwitchTaskDef,
 } from "../types";
-
-const fillSwitchTaskBranches = (
-  task: Partial<SwitchTaskDefGen>
-): Partial<SwitchTaskDef> => ({
-  decisionCases: mapArrValues(taskGenMapper, task?.decisionCases || {}),
-  defaultCase: taskGenMapper(task?.defaultCase || []),
-});
-
-const fillDoWhileTaskBranches = (
-  task: Partial<DoWhileTaskDefGen>
-): Partial<DoWhileTaskDef> => ({
-  ...task,
-  loopOver: taskGenMapper(task.loopOver || []),
-});
-
-const fillForkTasksBranches = (
-  task: Partial<ForkJoinTaskDefGen>
-): Partial<ForkJoinTaskDef> => ({
-  ...task,
-  forkTasks: (task.forkTasks || []).map(taskGenMapper),
-});
 
 const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
   const taskType = task.type;
   switch (taskType) {
     case TaskType.SWITCH:
-      return generateSwitchTask(fillSwitchTaskBranches(task));
+      return generateSwitchTask(task, taskGenMapper);
     case TaskType.SIMPLE:
       return generateSimpleTask(task as SimpleTaskDef);
     case TaskType.DO_WHILE:
-      return generateDoWhileTask(fillDoWhileTaskBranches(task));
+      return generateDoWhileTask(task, taskGenMapper);
     case TaskType.EVENT:
       return generateEventTask(task as EventTaskDef);
     case TaskType.FORK_JOIN:
-      return generateForkJoinTask(fillForkTasksBranches(task));
+      return generateForkJoinTask(task, taskGenMapper);
     case TaskType.FORK_JOIN_DYNAMIC:
       return generateForkJoinDynamic(task as ForkJoinDynamicDef);
     case TaskType.HTTP:
       return generateHTTPTask(task as HttpTaskDef);
     case TaskType.INLINE:
-      return generateInlineTask(task as Partial<InlineTaskDef>);
+      return generateInlineTask(task);
     case TaskType.JOIN:
       return generateJoinTask(task as JoinTaskDef);
     case TaskType.JSON_JQ_TRANSFORM:

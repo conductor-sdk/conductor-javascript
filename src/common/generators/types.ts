@@ -14,9 +14,10 @@ import {
   SubWokflowTaskDef,
   TerminateTaskDef,
   JoinTaskDef,
-  WaitTaskDef
+  WaitTaskDef,
+  InlineEvaluatorType,
+  TaskDefTypes,
 } from "../types";
-
 
 export type TaskDefTypesGen =
   | SimpleTaskDef
@@ -25,7 +26,7 @@ export type TaskDefTypesGen =
   | ForkJoinTaskDefGen
   | ForkJoinDynamicDef
   | HttpTaskDef
-  | InlineTaskDef
+  | InlineTaskDefGen
   | JsonJQTransformTaskDef
   | KafkaPublishTaskDef
   | SetVariableTaskDef
@@ -51,6 +52,30 @@ export type SwitchTaskDefGen = Omit<
   defaultCase: Partial<TaskDefTypesGen>[];
 };
 
-export type DoWhileTaskDefGen = Omit<DoWhileTaskDef, "loopOver"> & {
+export type DoWhileTaskDefGen = Omit<
+  DoWhileTaskDef,
+  "loopOver" 
+> & {
   loopOver: Partial<TaskDefTypesGen>[];
 };
+
+
+export interface InlineInputParametersJavascript {
+  expression: string | Function;
+  evaluatorType: InlineEvaluatorType.JAVASCRIPT;
+  [x: string]: unknown;
+}
+
+export interface InlineInputParametersValueParam {
+  [x: string]: string;
+  evaluatorType: InlineEvaluatorType.VALUE_PARAM;
+  expression: string;
+}
+
+export interface InlineTaskDefGen extends Omit<InlineTaskDef,"inputParameters"> {
+  inputParameters:
+    | InlineInputParametersJavascript
+    | InlineInputParametersValueParam;
+}
+
+export type NestedTaskMapper = { (tasks: Partial<TaskDefTypesGen>[]): TaskDefTypes[] }

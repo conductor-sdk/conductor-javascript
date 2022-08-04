@@ -1,10 +1,35 @@
 import { expect, describe, it } from "@jest/globals";
-import { generate, generateSimpleTask } from "../index";
+import { generate, taskGenMapper } from "../generator";
+import { generateSimpleTask } from "../SimpleTask";
 import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
-import { generateSubWorkflowTask } from "../index";
+import { generateDoWhileTask } from "../DoWhileTask";
+import { generateSubWorkflowTask } from "../SubWorkflowTask";
 
 describe("Generate", () => {
+  describe("DoWhileTask", () => {
+    it("Should generate a DoWhileTask with default values", () => {
+      const doWhileTask = generateDoWhileTask({}, taskGenMapper);
+      expect(doWhileTask).toEqual(
+        expect.objectContaining({
+          type: TaskType.DO_WHILE,
+          inputParameters: {},
+          loopOver: [],
+          loopCondition: "",
+        })
+      );
+    });
+    it("Should generate a DoWhileTask filling in the blanks for loopOver", () => {
+      const doWhileTask = generateDoWhileTask(
+        { loopOver: [{ type: TaskType.SIMPLE }] },
+        taskGenMapper
+      );
+      doWhileTask.loopOver.forEach((t) => {
+        expect(t.type).toEqual(TaskType.SIMPLE);
+        expect(t.name).toEqual(expect.stringContaining("simple"));
+      });
+    });
+  });
   describe("SubWorkflowTask", () => {
     it("Should generate default input parameters", () => {
       const generatedSubWorkflowTask = generateSubWorkflowTask();

@@ -4,7 +4,9 @@ import {
   InlineEvaluatorType,
   InlineInputParametersValueParam,
   InlineInputParametersJavascript,
+  InlineTaskInputParameters
 } from "../types";
+import { InlineTaskDefGen } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 const defaultInputParams: InlineInputParametersValueParam = {
@@ -17,7 +19,7 @@ export const generateEvaluationCode = (
   inputParametersPartial:
     | Partial<InlineInputParametersJavascript>
     | Partial<InlineInputParametersValueParam> = {}
-): InlineInputParametersJavascript | InlineInputParametersValueParam => {
+): InlineTaskInputParameters => {
   if (
     inputParametersPartial?.evaluatorType === InlineEvaluatorType.JAVASCRIPT
   ) {
@@ -41,9 +43,9 @@ export const generateEvaluationCode = (
       return {
         value: "${workflow.input.value}",
         expression: "true",
-        ...(inputParametersPartial as Partial<InlineInputParametersJavascript>),
+        ...inputParametersPartial,
         evaluatorType: InlineEvaluatorType.JAVASCRIPT,
-      } as InlineInputParametersJavascript;
+      } as InlineTaskInputParameters;
     }
   }
 
@@ -54,7 +56,7 @@ export const generateEvaluationCode = (
 };
 
 export const generateInlineTask = (
-  override: Partial<InlineTaskDef> = {}
+  override: Partial<InlineTaskDefGen> = {}
 ): InlineTaskDef => ({
   ...nameTaskNameGenerator("inline", override),
   ...override,
