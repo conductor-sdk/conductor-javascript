@@ -1,17 +1,23 @@
-import {setTimeout} from "timers/promises"
-import {ConductorLogger} from "../common"
-import {ConductorWorker} from "./Worker"
-import {Task, TaskResourceService} from "../common/open-api"
-import {TaskManagerOptions} from "./TaskManager"
+import { setTimeout } from "timers/promises";
+import { ConductorLogger } from "../common";
+import { ConductorWorker } from "./Worker";
+import { Task, TaskResourceService } from "../common/open-api";
+import { TaskManagerOptions } from "./TaskManager";
 
-const DEFAULT_ERROR_MESSAGE = "An unknown error occurred"
+const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 
 export interface RunnerArgs {
-  worker: ConductorWorker,
-  taskResource: TaskResourceService,
-  options: Required<TaskManagerOptions>,
-  logger: ConductorLogger
+  worker: ConductorWorker;
+  taskResource: TaskResourceService;
+  options: Required<TaskManagerOptions>;
+  logger?: ConductorLogger;
 }
+
+const noopLogger: ConductorLogger = {
+  debug: (...args: any) => {},
+  info: (...args: any) => {},
+  error: (...args: any) => {},
+};
 
 /**
  * Responsible for polling and executing tasks from a queue.
@@ -23,76 +29,92 @@ export interface RunnerArgs {
  *
  */
 export class TaskRunner {
-  isPolling = false
-  taskResource: TaskResourceService
-  worker: ConductorWorker
-  logger: ConductorLogger
-  options: Required<TaskManagerOptions>
+  isPolling = false;
+  taskResource: TaskResourceService;
+  worker: ConductorWorker;
+  logger: ConductorLogger;
+  options: Required<TaskManagerOptions>;
 
-  constructor({worker, taskResource, options, logger} : RunnerArgs) {
-    this.taskResource = taskResource
-    this.logger = logger
-    this.worker = worker
-    this.options = options
+  constructor({
+    worker,
+    taskResource,
+    options,
+    logger = noopLogger,
+  }: RunnerArgs) {
+    this.taskResource = taskResource;
+    this.logger = logger;
+    this.worker = worker;
+    this.options = options;
   }
 
   startPolling = () => {
     if (this.isPolling) {
-      throw new Error('Runner is already started')
+      throw new Error("Runner is already started");
     }
 
-    this.isPolling = true
-    return this.poll()
-  }
+    this.isPolling = true;
+    return this.poll();
+  };
 
   stopPolling = () => {
-    this.isPolling = false
-  }
+    this.isPolling = false;
+  };
 
   poll = async () => {
     while (this.isPolling) {
       try {
-        const { workerID } = this.options
-        const task = await this.taskResource.poll(this.worker.taskDefName, workerID, this.options.domain)
+        const { workerID } = this.options;
+        const task = await this.taskResource.poll(
+          this.worker.taskDefName,
+          workerID,
+          this.options.domain
+        );
         if (task && task.taskId) {
-          await this.executeTask(task)
+          await this.executeTask(task);
         } else {
-          this.logger.debug(`No tasks for ${this.worker.taskDefName}`)
+          this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
         }
       } catch (unknownError: unknown) {
-        this.handleUnknownError(unknownError)
+        this.handleUnknownError(unknownError);
       }
 
-      await setTimeout(this.options.pollInterval)
+      await setTimeout(this.options.pollInterval);
     }
-  }
+  };
 
   executeTask = async (task: Task) => {
     try {
-      const result = await this.worker.execute(task)
+      const result = await this.worker.execute(task);
       await this.taskResource.updateTask({
         ...result,
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
-      })
-      this.logger.debug(`Finished polling for task ${task.taskId}`)
+      });
+      this.logger.debug(`Finished polling for task ${task.taskId}`);
     } catch (error: unknown) {
-      this.logger.error(`Error executing ${task.taskId}`, error)
+      this.logger.error(`Error executing ${task.taskId}`, error);
       await this.taskResource.updateTask({
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
-        reasonForIncompletion: (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,
+        reasonForIncompletion:
+          (error as Record<string, string>)?.message ?? DEFAULT_ERROR_MESSAGE,
         status: "FAILED",
-        outputData: {}
-      })
+        outputData: {},
+      });
     }
-  }
+  };
 
   handleUnknownError = (unknownError: unknown) => {
-    let message = ""
-    let stack: string | undefined = ""
-    if ((unknownError as Error).stack) { stack = (unknownError as Error).stack}
-    if ((unknownError as Error).message) { message = (unknownError as Error).message}
-    this.logger.error(`Error for ${this.worker.taskDefName}: error: ${message}, stack: ${stack}`)
-  }
+    let message = "";
+    let stack: string | undefined = "";
+    if ((unknownError as Error).stack) {
+      stack = (unknownError as Error).stack;
+    }
+    if ((unknownError as Error).message) {
+      message = (unknownError as Error).message;
+    }
+    this.logger.error(
+      `Error for ${this.worker.taskDefName}: error: ${message}, stack: ${stack}`
+    );
+  };
 }
