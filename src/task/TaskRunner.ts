@@ -12,10 +12,12 @@ export interface RunnerArgs {
   options: Required<TaskManagerOptions>;
   logger?: ConductorLogger;
 }
-
 const noopLogger: ConductorLogger = {
+  //eslint-disable-next-line
   debug: (...args: any) => {},
+  //eslint-disable-next-line
   info: (...args: any) => {},
+  //eslint-disable-next-line
   error: (...args: any) => {},
 };
 

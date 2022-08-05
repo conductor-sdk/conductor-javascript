@@ -106,7 +106,7 @@ describe("Generate", () => {
         inputParameters: {
           value: "${workflow.param.value}",
           evaluatorType: InlineEvaluatorType.JAVASCRIPT,
-          expression: function ($: any) {
+          expression: function () {
             return function () {
               return true;
             };

@@ -1,5 +1,5 @@
 import { workflowGenerator } from "./WorkflowGenerator";
-import { WorkflowDefGen, TaskDefTypesGen, ForkJoinTaskDefGen } from "./types";
+import { WorkflowDefGen, TaskDefTypesGen } from "./types";
 import { generateSimpleTask } from "./SimpleTask";
 import { generateDoWhileTask } from "./DoWhileTask";
 import { generateEventTask } from "./EventTask";
