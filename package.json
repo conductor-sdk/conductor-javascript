@@ -1,7 +1,7 @@
 {
   "name": "@io-orkes/conductor-typescript",
   "description": "Typescript Client for Netflix Conductor",
-  "version": "0.0.1",
+  "version": "0.0.2",
   "exports": {
     ".": {
       "require": "./dist/index.js",
