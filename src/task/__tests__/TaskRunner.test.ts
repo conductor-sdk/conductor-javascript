@@ -6,9 +6,9 @@ import {RunnerArgs, TaskRunner} from "../TaskRunner"
 import {mockLogger} from "./mockLogger"
 import {TaskResourceService} from "../../common/open-api"
 
-const taskClientStub: Mocked<Pick<TaskResourceService, "poll" | "updateTask">> = {
+const taskClientStub: Mocked<Pick<TaskResourceService, "poll" | "updateTask1">> = {
   poll: jest.fn(),
-  updateTask: jest.fn()
+  updateTask1: jest.fn()
 }
 const mockTaskClient = taskClientStub as unknown as TaskResourceService
 
@@ -61,5 +61,5 @@ test('polls tasks', async () => {
       "input": "from workflow"
     }
   }
-  expect(taskClientStub.updateTask).toHaveBeenCalledWith(expected)
+  expect(taskClientStub.updateTask1).toHaveBeenCalledWith(expected)
 })
