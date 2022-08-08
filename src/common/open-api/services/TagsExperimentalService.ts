@@ -30,6 +30,28 @@ export class TagsExperimentalService {
   }
 
   /**
+   * Set the tags of the workflow
+   * @param name
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public setWorkflowTags(
+    name: string,
+    requestBody: Array<TagObject>,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PUT',
+      url: '/api/metadata/workflow/{name}/tags',
+      path: {
+        'name': name,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
    * Adds the tag to the workflow
    * @param name
    * @param requestBody
@@ -88,6 +110,28 @@ export class TagsExperimentalService {
       path: {
         'taskName': taskName,
       },
+    });
+  }
+
+  /**
+   * Adds the tag to the task
+   * @param taskName
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public setTaskTags(
+    taskName: string,
+    requestBody: Array<TagObject>,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PUT',
+      url: '/api/metadata/task/{taskName}/tags',
+      path: {
+        'taskName': taskName,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
