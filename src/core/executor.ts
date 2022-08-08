@@ -1,35 +1,25 @@
 import { ConductorClient, WorkflowDef } from "../common";
+import { Workflow } from "../common/open-api";
+import {
+  StartWorkflowRequest,
+  RerunWorkflowRequest,
+  SkipTaskRequest,
+  TaskResult,
+  ConductorError,
+} from "./types";
 
-interface StartWorkflowRequest<I = Record<string, any>> {
-  name: string;
-  version: number;
-  correlationId?: string;
-  input?: I;
-  taskToDomain?: Record<string, string>;
-  workflowDef?: WorkflowDef; // TODO ask someone
-  externalInputPayloadStoragePath?: string;
-  priority?: number;
-}
+const RETRY_TIME_IN_MILLISECONDS = 10000;
 
-interface RerunWorkflowRequest<I = Record<string, any>> {
-  rerunFromWorkflowId: string;
-  workflowInput: I;
-  rerunFromTaskId?: Record<string, any>;
-  taskInput: Record<string, any>;
-  correlationId: string;
-}
+const errorMapper = (error: any): ConductorError =>
+  new ConductorError(error?.body?.message, error);
 
-interface SkipTaskRequest {
-  taskInput: Record<string, any>;
-  taskOutput: Record<string, any>;
-}
-
-enum TaskResult {
-  IN_PROGRESS = "IN_PROGRESS",
-  FAILED = "FAILED",
-  FAILED_WITH_TERMINAL_ERROR = "FAILED_WITH_TERMINAL_ERROR",
-  COMPLETED = "COMPLETED",
-}
+const tryCatchReThrow = (fn: Function) => {
+  try {
+    return fn();
+  } catch (error) {
+    throw errorMapper(error);
+  }
+};
 
 export class WorkflowExecutor {
   public readonly _client: ConductorClient;
@@ -39,47 +29,44 @@ export class WorkflowExecutor {
   }
 
   public registerWorkflow(override: boolean, workflow: WorkflowDef) {
-    this._client.metadataResource.create(workflow, override);
+    return tryCatchReThrow(() =>
+      this._client.metadataResource.create(workflow, override)
+    );
   }
 
-  // I have missing params here. update and check
   public startWorkflow(workflowRequest: StartWorkflowRequest): Promise<string> {
-    return this._client.workflowResource.startWorkflow(
-      workflowRequest.name,
-      workflowRequest.input || {},
-      workflowRequest.version,
-      workflowRequest.correlationId,
-      workflowRequest.priority
-    );
+    return tryCatchReThrow(()=>this._client.workflowResource.startWorkflow(workflowRequest));
   }
 
   public startWorkflows(
     workflowsRequest: StartWorkflowRequest[]
   ): Promise<string>[] {
-    return workflowsRequest.map(this.startWorkflow);
+    return tryCatchReThrow(()=>workflowsRequest.map(this.startWorkflow));
   }
-  // TODO wait for running workflows....
 
-  public getWorkflowRetry(
-    retry: number,
+  public async getWorkflow(
     executionId: string,
-    includeTasks: boolean
-  ) {
-    // missing retry logic
-    const workflowStatus = this._client.workflowResource.getExecutionStatus(
-      executionId,
-      includeTasks
-    );
-    return workflowStatus;
-  }
+    includeTasks: boolean,
+    retry: number = 0
+  ): Promise<Workflow> {
+    try {
+      const workflowStatus =
+        await this._client.workflowResource.getExecutionStatus(
+          executionId,
+          includeTasks
+        );
+      return workflowStatus;
+    } catch (error: any) {
+      if (![500, 404, 403].includes(error.status) || retry === 0) {
+        throw errorMapper(error);
+      }
+    }
 
-  public getWorkflow(executionId: string, includeTasks: boolean) {
-    // missing retry logic
-    const workflowStatus = this._client.workflowResource.getExecutionStatus(
-      executionId,
-      includeTasks
+    await new Promise((res) =>
+      setTimeout(() => res(true), RETRY_TIME_IN_MILLISECONDS)
     );
-    return workflowStatus;
+
+    return this.getWorkflow(executionId, includeTasks, retry - 1);
   }
 
   public getWorkflowStatus(
@@ -87,59 +74,63 @@ export class WorkflowExecutor {
     includeOutput: boolean,
     includeVariables: boolean
   ) {
-    return this._client.workflowResource.getWorkflowStatusSummary(
+    return tryCatchReThrow(() => this._client.workflowResource.getWorkflowStatusSummary(
       executionId,
       includeOutput,
       includeVariables
-    );
+    ));
   }
 
   public pause(executionId: string) {
-    return this._client.workflowResource.pauseWorkflow1(executionId);
+    return tryCatchReThrow(()=>this._client.workflowResource.pauseWorkflow(executionId));
   }
 
   public reRun(
     executionId: string,
     rerunWorkflowRequest: Partial<RerunWorkflowRequest> = {}
   ) {
-    return this._client.workflowResource.rerun(
+    return tryCatchReThrow(()=>this._client.workflowResource.rerun(
       executionId,
       rerunWorkflowRequest
-    );
+    ));
   }
 
   public restart(executionId: string, useLatestDefinitions: boolean) {
-    return this._client.workflowResource.restart(
+    return tryCatchReThrow(()=>this._client.workflowResource.restart1(
       executionId,
       useLatestDefinitions
-    );
+    ));
   }
 
   public resume(executionId: string) {
-    return this._client.workflowResource.resumeWorkflow(executionId);
+    return tryCatchReThrow(()=>this._client.workflowResource.resumeWorkflow(executionId));
   }
 
   public retry(executionId: string, resumeSubworkflowTasks: boolean) {
-    return this._client.workflowResource.retry1(
+    return tryCatchReThrow(()=>this._client.workflowResource.retry1(
       executionId,
       resumeSubworkflowTasks
-    );
+    ));
   }
 
-  // TODO this can be typed to.
-  public search(start: number, size: number, query: string, freeText: string) {
-    const sort = undefined;
-    const skipCache = undefined;
-    // Missing query Id and sort?
-    return this._client.workflowResource.search(
-      undefined,
+  public search(
+    start: number,
+    size: number,
+    query: string,
+    freeText: string,
+    sort: string = "",
+    skipCache: boolean = false
+  ) {
+    const queryId = undefined;
+    return tryCatchReThrow(()=>this._client.workflowResource.search1(
+      queryId,
       start,
       size,
       sort,
       freeText,
       query,
       skipCache
-    );
+    ));
   }
 
   public skipTasksFromWorkflow(
@@ -147,15 +138,15 @@ export class WorkflowExecutor {
     taskReferenceName: string,
     skipTaskRequest: Partial<SkipTaskRequest>
   ) {
-    return this._client.workflowResource.skipTaskFromWorkflow(
+    return tryCatchReThrow(()=>this._client.workflowResource.skipTaskFromWorkflow(
       executionId,
       taskReferenceName,
       skipTaskRequest
-    );
+    ));
   }
 
   public terminate(executionId: string, reason: string) {
-    return this._client.workflowResource.terminate(executionId, reason);
+    return tryCatchReThrow(()=>this._client.workflowResource.terminate1(executionId, reason));
   }
 
   public updateTask(
@@ -169,24 +160,23 @@ export class WorkflowExecutor {
       taskId,
       workflowInstanceId,
     };
-    return this._client.taskResource.updateTask({
+    return tryCatchReThrow(()=>this._client.taskResource.updateTask1({
       ...taskOutput,
       ...taskUpdates,
-    });
+    }));
   }
 
   public updateTaskByRefName(
     taskReferenceName: string,
     workflowInstanceId: string,
     status: TaskResult,
-
-    taskOutput: Record<string, any> // TODO this can be typed.
+    taskOutput: Record<string, any>
   ) {
-    return this._client.taskResource.updateTask1(
+    return tryCatchReThrow(()=>this._client.taskResource.updateTask(
       workflowInstanceId,
       taskReferenceName,
       status,
       taskOutput
-    );
+    ));
   }
 }
