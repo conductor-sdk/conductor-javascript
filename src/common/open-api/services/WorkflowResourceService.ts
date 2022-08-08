@@ -19,43 +19,91 @@ export class WorkflowResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Get the uri and path of the external storage where the workflow payload is to be stored
-   * @param path
-   * @param operation
-   * @param payloadType
-   * @returns ExternalStorageLocation OK
+   * Retrieve all the running workflows
+   * @param name
+   * @param version
+   * @param startTime
+   * @param endTime
+   * @returns string OK
    * @throws ApiError
    */
-  public getExternalStorageLocation(
-    path: string,
-    operation: string,
-    payloadType: string,
-  ): CancelablePromise<ExternalStorageLocation> {
+  public getRunningWorkflow(
+    name: string,
+    version: number = 1,
+    startTime?: number,
+    endTime?: number,
+  ): CancelablePromise<Array<string>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/externalstoragelocation',
+      url: '/api/workflow/running/{name}',
+      path: {
+        'name': name,
+      },
       query: {
-        'path': path,
-        'operation': operation,
-        'payloadType': payloadType,
+        'version': version,
+        'startTime': startTime,
+        'endTime': endTime,
       },
     });
   }
 
   /**
-   * Resets callback times of all non-terminal SIMPLE tasks to 0
-   * @param workflowId
-   * @returns void
+   * Start a new workflow with StartWorkflowRequest, which allows task to be executed in a domain
+   * @param requestBody
+   * @returns string OK
    * @throws ApiError
    */
-  public resetWorkflow(
-    workflowId: string,
-  ): CancelablePromise<void> {
+  public startWorkflow(
+    requestBody: StartWorkflowRequest,
+  ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/resetcallbacks',
+      url: '/api/workflow',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Starts the decision task for a workflow
+   * @param workflowId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public decide(
+    workflowId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PUT',
+      url: '/api/workflow/decide/{workflowId}',
       path: {
         'workflowId': workflowId,
+      },
+    });
+  }
+
+  /**
+   * Gets the workflow by workflow id
+   * @param workflowId
+   * @param includeOutput
+   * @param includeVariables
+   * @returns WorkflowStatus OK
+   * @throws ApiError
+   */
+  public getWorkflowStatusSummary(
+    workflowId: string,
+    includeOutput: boolean = false,
+    includeVariables: boolean = false,
+  ): CancelablePromise<WorkflowStatus> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/workflow/{workflowId}/status',
+      path: {
+        'workflowId': workflowId,
+      },
+      query: {
+        'includeOutput': includeOutput,
+        'includeVariables': includeVariables,
       },
     });
   }
@@ -83,211 +131,6 @@ export class WorkflowResourceService {
   }
 
   /**
-   * Starts the decision task for a workflow
-   * @param workflowId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public decide(
-    workflowId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'PUT',
-      url: '/api/workflow/decide/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-    });
-  }
-
-  /**
-   * Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking
-   * @param name
-   * @param requestBody
-   * @param version
-   * @param correlationId
-   * @param priority
-   * @returns string OK
-   * @throws ApiError
-   */
-  public startWorkflow(
-    name: string,
-    requestBody: Record<string, any>,
-    version?: number,
-    correlationId?: string,
-    priority?: number,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/workflow/{name}',
-      path: {
-        'name': name,
-      },
-      query: {
-        'version': version,
-        'correlationId': correlationId,
-        'priority': priority,
-      },
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Gets the workflow by workflow id
-   * @param workflowId
-   * @param includeTasks
-   * @returns Workflow OK
-   * @throws ApiError
-   */
-  public getExecutionStatus(
-    workflowId: string,
-    includeTasks: boolean = true,
-  ): CancelablePromise<Workflow> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/workflow/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-      query: {
-        'includeTasks': includeTasks,
-      },
-    });
-  }
-
-  /**
-   * Terminate workflow execution
-   * @param workflowId
-   * @param reason
-   * @returns any OK
-   * @throws ApiError
-   */
-  public terminate(
-    workflowId: string,
-    reason?: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/workflow/{workflowId}',
-      path: {
-        'workflowId': workflowId,
-      },
-      query: {
-        'reason': reason,
-      },
-    });
-  }
-
-  /**
-   * Start a new workflow with StartWorkflowRequest, which allows task to be executed in a domain
-   * @param requestBody
-   * @returns string OK
-   * @throws ApiError
-   */
-  public startWorkflow1(
-    requestBody: StartWorkflowRequest,
-  ): CancelablePromise<string> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/workflow',
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Search for workflows based on task parameters
-   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
-   * @param start
-   * @param size
-   * @param sort
-   * @param freeText
-   * @param query
-   * @returns SearchResultWorkflow OK
-   * @throws ApiError
-   */
-  public searchWorkflowsByTasksV2(
-    start?: number,
-    size: number = 100,
-    sort?: string,
-    freeText: string = '*',
-    query?: string,
-  ): CancelablePromise<SearchResultWorkflow> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/workflow/search-by-tasks-v2',
-      query: {
-        'start': start,
-        'size': size,
-        'sort': sort,
-        'freeText': freeText,
-        'query': query,
-      },
-    });
-  }
-
-  /**
-   * Retries the last failed task
-   * @param workflowId
-   * @param resumeSubworkflowTasks
-   * @returns void
-   * @throws ApiError
-   */
-  public retry1(
-    workflowId: string,
-    resumeSubworkflowTasks: boolean = false,
-  ): CancelablePromise<void> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/workflow/{workflowId}/retry',
-      path: {
-        'workflowId': workflowId,
-      },
-      query: {
-        'resumeSubworkflowTasks': resumeSubworkflowTasks,
-      },
-    });
-  }
-
-  /**
-   * Search for workflows based on payload and other parameters
-   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
-   * @param queryId
-   * @param start
-   * @param size
-   * @param sort
-   * @param freeText
-   * @param query
-   * @param skipCache
-   * @returns ScrollableSearchResultWorkflowSummary OK
-   * @throws ApiError
-   */
-  public search(
-    queryId?: string,
-    start?: number,
-    size: number = 100,
-    sort?: string,
-    freeText: string = '*',
-    query?: string,
-    skipCache: boolean = false,
-  ): CancelablePromise<ScrollableSearchResultWorkflowSummary> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/workflow/search',
-      query: {
-        'queryId': queryId,
-        'start': start,
-        'size': size,
-        'sort': sort,
-        'freeText': freeText,
-        'query': query,
-        'skipCache': skipCache,
-      },
-    });
-  }
-
-  /**
    * Search for workflows based on payload and other parameters
    * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
    * @param start
@@ -298,7 +141,7 @@ export class WorkflowResourceService {
    * @returns SearchResultWorkflow OK
    * @throws ApiError
    */
-  public searchV21(
+  public searchV2(
     start?: number,
     size: number = 100,
     sort?: string,
@@ -314,47 +157,6 @@ export class WorkflowResourceService {
         'sort': sort,
         'freeText': freeText,
         'query': query,
-      },
-    });
-  }
-
-  /**
-   * Resumes the workflow
-   * @param workflowId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public resumeWorkflow(
-    workflowId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'PUT',
-      url: '/api/workflow/{workflowId}/resume',
-      path: {
-        'workflowId': workflowId,
-      },
-    });
-  }
-
-  /**
-   * Removes the workflow from the system
-   * @param workflowId
-   * @param archiveWorkflow
-   * @returns any OK
-   * @throws ApiError
-   */
-  public delete(
-    workflowId: string,
-    archiveWorkflow: boolean = true,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/workflow/{workflowId}/remove',
-      path: {
-        'workflowId': workflowId,
-      },
-      query: {
-        'archiveWorkflow': archiveWorkflow,
       },
     });
   }
@@ -419,50 +221,203 @@ export class WorkflowResourceService {
   }
 
   /**
-   * Gets the workflow by workflow id
-   * @param workflowId
-   * @param includeOutput
-   * @param includeVariables
-   * @returns WorkflowStatus OK
+   * Get the uri and path of the external storage where the workflow payload is to be stored
+   * @param path
+   * @param operation
+   * @param payloadType
+   * @returns ExternalStorageLocation OK
    * @throws ApiError
    */
-  public getWorkflowStatusSummary(
-    workflowId: string,
-    includeOutput: boolean = false,
-    includeVariables: boolean = false,
-  ): CancelablePromise<WorkflowStatus> {
+  public getExternalStorageLocation(
+    path: string,
+    operation: string,
+    payloadType: string,
+  ): CancelablePromise<ExternalStorageLocation> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/{workflowId}/status',
-      path: {
-        'workflowId': workflowId,
-      },
+      url: '/api/workflow/externalstoragelocation',
       query: {
-        'includeOutput': includeOutput,
-        'includeVariables': includeVariables,
+        'path': path,
+        'operation': operation,
+        'payloadType': payloadType,
       },
     });
   }
 
   /**
-   * Restarts a completed workflow
+   * Retries the last failed task
    * @param workflowId
-   * @param useLatestDefinitions
+   * @param resumeSubworkflowTasks
    * @returns void
    * @throws ApiError
    */
-  public restart(
+  public retry1(
     workflowId: string,
-    useLatestDefinitions: boolean = false,
+    resumeSubworkflowTasks: boolean = false,
   ): CancelablePromise<void> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/restart',
+      url: '/api/workflow/{workflowId}/retry',
       path: {
         'workflowId': workflowId,
       },
       query: {
-        'useLatestDefinitions': useLatestDefinitions,
+        'resumeSubworkflowTasks': resumeSubworkflowTasks,
+      },
+    });
+  }
+
+  /**
+   * Search for workflows based on task parameters
+   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC
+   * @param start
+   * @param size
+   * @param sort
+   * @param freeText
+   * @param query
+   * @returns SearchResultWorkflow OK
+   * @throws ApiError
+   */
+  public searchWorkflowsByTasksV2(
+    start?: number,
+    size: number = 100,
+    sort?: string,
+    freeText: string = '*',
+    query?: string,
+  ): CancelablePromise<SearchResultWorkflow> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/workflow/search-by-tasks-v2',
+      query: {
+        'start': start,
+        'size': size,
+        'sort': sort,
+        'freeText': freeText,
+        'query': query,
+      },
+    });
+  }
+
+  /**
+   * Search for workflows based on payload and other parameters
+   * use sort options as sort=<field>:ASC|DESC e.g. sort=name&sort=workflowId:DESC. If order is not specified, defaults to ASC.
+   * @param queryId
+   * @param start
+   * @param size
+   * @param sort
+   * @param freeText
+   * @param query
+   * @param skipCache
+   * @returns ScrollableSearchResultWorkflowSummary OK
+   * @throws ApiError
+   */
+  public search(
+    queryId?: string,
+    start?: number,
+    size: number = 100,
+    sort?: string,
+    freeText: string = '*',
+    query?: string,
+    skipCache: boolean = false,
+  ): CancelablePromise<ScrollableSearchResultWorkflowSummary> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/workflow/search',
+      query: {
+        'queryId': queryId,
+        'start': start,
+        'size': size,
+        'sort': sort,
+        'freeText': freeText,
+        'query': query,
+        'skipCache': skipCache,
+      },
+    });
+  }
+
+  /**
+   * Gets the workflow by workflow id
+   * @param workflowId
+   * @param includeTasks
+   * @returns Workflow OK
+   * @throws ApiError
+   */
+  public getExecutionStatus(
+    workflowId: string,
+    includeTasks: boolean = true,
+  ): CancelablePromise<Workflow> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/workflow/{workflowId}',
+      path: {
+        'workflowId': workflowId,
+      },
+      query: {
+        'includeTasks': includeTasks,
+      },
+    });
+  }
+
+  /**
+   * Terminate workflow execution
+   * @param workflowId
+   * @param reason
+   * @returns any OK
+   * @throws ApiError
+   */
+  public terminate1(
+    workflowId: string,
+    reason?: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/workflow/{workflowId}',
+      path: {
+        'workflowId': workflowId,
+      },
+      query: {
+        'reason': reason,
+      },
+    });
+  }
+
+  /**
+   * Removes the workflow from the system
+   * @param workflowId
+   * @param archiveWorkflow
+   * @returns any OK
+   * @throws ApiError
+   */
+  public delete(
+    workflowId: string,
+    archiveWorkflow: boolean = true,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/workflow/{workflowId}/remove',
+      path: {
+        'workflowId': workflowId,
+      },
+      query: {
+        'archiveWorkflow': archiveWorkflow,
+      },
+    });
+  }
+
+  /**
+   * Pauses the workflow
+   * @param workflowId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public pauseWorkflow(
+    workflowId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PUT',
+      url: '/api/workflow/{workflowId}/pause',
+      path: {
+        'workflowId': workflowId,
       },
     });
   }
@@ -493,20 +448,35 @@ export class WorkflowResourceService {
   }
 
   /**
-   * Pauses the workflow
-   * @param workflowId
-   * @returns any OK
+   * Start a new workflow. Returns the ID of the workflow instance that can be later used for tracking
+   * @param name
+   * @param requestBody
+   * @param version
+   * @param correlationId
+   * @param priority
+   * @returns string OK
    * @throws ApiError
    */
-  public pauseWorkflow1(
-    workflowId: string,
-  ): CancelablePromise<any> {
+  public startWorkflow1(
+    name: string,
+    requestBody: Record<string, any>,
+    version?: number,
+    correlationId?: string,
+    priority?: number,
+  ): CancelablePromise<string> {
     return this.httpRequest.request({
-      method: 'PUT',
-      url: '/api/workflow/{workflowId}/pause',
+      method: 'POST',
+      url: '/api/workflow/{name}',
       path: {
-        'workflowId': workflowId,
+        'name': name,
       },
+      query: {
+        'version': version,
+        'correlationId': correlationId,
+        'priority': priority,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -542,30 +512,60 @@ export class WorkflowResourceService {
   }
 
   /**
-   * Retrieve all the running workflows
-   * @param name
-   * @param version
-   * @param startTime
-   * @param endTime
-   * @returns string OK
+   * Restarts a completed workflow
+   * @param workflowId
+   * @param useLatestDefinitions
+   * @returns void
    * @throws ApiError
    */
-  public getRunningWorkflow(
-    name: string,
-    version: number = 1,
-    startTime?: number,
-    endTime?: number,
-  ): CancelablePromise<Array<string>> {
+  public restart1(
+    workflowId: string,
+    useLatestDefinitions: boolean = false,
+  ): CancelablePromise<void> {
     return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/workflow/running/{name}',
+      method: 'POST',
+      url: '/api/workflow/{workflowId}/restart',
       path: {
-        'name': name,
+        'workflowId': workflowId,
       },
       query: {
-        'version': version,
-        'startTime': startTime,
-        'endTime': endTime,
+        'useLatestDefinitions': useLatestDefinitions,
+      },
+    });
+  }
+
+  /**
+   * Resumes the workflow
+   * @param workflowId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public resumeWorkflow1(
+    workflowId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'PUT',
+      url: '/api/workflow/{workflowId}/resume',
+      path: {
+        'workflowId': workflowId,
+      },
+    });
+  }
+
+  /**
+   * Resets callback times of all non-terminal SIMPLE tasks to 0
+   * @param workflowId
+   * @returns void
+   * @throws ApiError
+   */
+  public resetWorkflow(
+    workflowId: string,
+  ): CancelablePromise<void> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/workflow/{workflowId}/resetcallbacks',
+      path: {
+        'workflowId': workflowId,
       },
     });
   }

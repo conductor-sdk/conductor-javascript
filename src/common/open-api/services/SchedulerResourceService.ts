@@ -13,41 +13,6 @@ export class SchedulerResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Get all existing workflow schedules and optionally filter by workflow name
-   * @param workflowName
-   * @returns WorkflowSchedule OK
-   * @throws ApiError
-   */
-  public getAllSchedules(
-    workflowName?: string,
-  ): CancelablePromise<Array<WorkflowSchedule>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/schedules',
-      query: {
-        'workflowName': workflowName,
-      },
-    });
-  }
-
-  /**
-   * Create or update a schedule for a specified workflow with a corresponding start workflow request
-   * @param requestBody
-   * @returns any OK
-   * @throws ApiError
-   */
-  public saveSchedule(
-    requestBody: SaveScheduleRequest,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/scheduler/schedules',
-      body: requestBody,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
    * Get an existing workflow schedule by name
    * @param name
    * @returns any OK
@@ -84,14 +49,47 @@ export class SchedulerResourceService {
   }
 
   /**
-   * Resume all scheduling
+   * Get list of the next x (default 3, max 5) execution times for a scheduler
+   * @param cronExpression
+   * @param scheduleStartTime
+   * @param scheduleEndTime
+   * @param limit
+   * @returns number OK
+   * @throws ApiError
+   */
+  public getNextFewSchedules(
+    cronExpression: string,
+    scheduleStartTime?: number,
+    scheduleEndTime?: number,
+    limit: number = 3,
+  ): CancelablePromise<Array<number>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/nextFewSchedules',
+      query: {
+        'cronExpression': cronExpression,
+        'scheduleStartTime': scheduleStartTime,
+        'scheduleEndTime': scheduleEndTime,
+        'limit': limit,
+      },
+    });
+  }
+
+  /**
+   * Pauses an existing schedule by name
+   * @param name
    * @returns any OK
    * @throws ApiError
    */
-  public resumeAllSchedules(): CancelablePromise<Record<string, any>> {
+  public pauseSchedule(
+    name: string,
+  ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/admin/resume',
+      url: '/api/scheduler/schedules/{name}/pause',
+      path: {
+        'name': name,
+      },
     });
   }
 
@@ -126,24 +124,6 @@ export class SchedulerResourceService {
   }
 
   /**
-   * Pauses an existing schedule by name
-   * @param name
-   * @returns any OK
-   * @throws ApiError
-   */
-  public pauseSchedule(
-    name: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/scheduler/schedules/{name}/pause',
-      path: {
-        'name': name,
-      },
-    });
-  }
-
-  /**
    * Requeue all execution records
    * @returns any OK
    * @throws ApiError
@@ -156,29 +136,49 @@ export class SchedulerResourceService {
   }
 
   /**
-   * Get list of the next x (default 3, max 5) execution times for a scheduler
-   * @param cronExpression
-   * @param scheduleStartTime
-   * @param scheduleEndTime
-   * @param limit
-   * @returns number OK
+   * Resume all scheduling
+   * @returns any OK
    * @throws ApiError
    */
-  public getNextFewSchedules(
-    cronExpression: string,
-    scheduleStartTime?: number,
-    scheduleEndTime?: number,
-    limit: number = 3,
-  ): CancelablePromise<Array<number>> {
+  public resumeAllSchedules(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/nextFewSchedules',
+      url: '/api/scheduler/admin/resume',
+    });
+  }
+
+  /**
+   * Get all existing workflow schedules and optionally filter by workflow name
+   * @param workflowName
+   * @returns WorkflowSchedule OK
+   * @throws ApiError
+   */
+  public getAllSchedules(
+    workflowName?: string,
+  ): CancelablePromise<Array<WorkflowSchedule>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/scheduler/schedules',
       query: {
-        'cronExpression': cronExpression,
-        'scheduleStartTime': scheduleStartTime,
-        'scheduleEndTime': scheduleEndTime,
-        'limit': limit,
+        'workflowName': workflowName,
       },
+    });
+  }
+
+  /**
+   * Create or update a schedule for a specified workflow with a corresponding start workflow request
+   * @param requestBody
+   * @returns any OK
+   * @throws ApiError
+   */
+  public saveSchedule(
+    requestBody: SaveScheduleRequest,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/scheduler/schedules',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -205,7 +205,7 @@ export class SchedulerResourceService {
    * @returns SearchResultWorkflowScheduleExecutionModel OK
    * @throws ApiError
    */
-  public searchV22(
+  public searchV21(
     start?: number,
     size: number = 100,
     sort?: string,

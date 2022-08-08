@@ -12,18 +12,6 @@ export class TokenResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * Get the user info from the token
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getUserInfo(): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/token/userInfo',
-    });
-  }
-
-  /**
    * Generate JWT with the given access key
    * @param requestBody
    * @returns Response OK
@@ -37,6 +25,18 @@ export class TokenResourceService {
       url: '/api/token',
       body: requestBody,
       mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Get the user info from the token
+   * @returns any OK
+   * @throws ApiError
+   */
+  public getUserInfo(): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/token/userInfo',
     });
   }
 

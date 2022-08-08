@@ -12,46 +12,6 @@ export class ApplicationResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * @param applicationId
-   * @param role
-   * @returns any OK
-   * @throws ApiError
-   */
-  public addRoleToApplicationUser(
-    applicationId: string,
-    role: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/applications/{applicationId}/roles/{role}',
-      path: {
-        'applicationId': applicationId,
-        'role': role,
-      },
-    });
-  }
-
-  /**
-   * @param applicationId
-   * @param role
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeRoleFromApplicationUser(
-    applicationId: string,
-    role: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/applications/{applicationId}/roles/{role}',
-      path: {
-        'applicationId': applicationId,
-        'role': role,
-      },
-    });
-  }
-
-  /**
    * Get an application by id
    * @param id
    * @returns any OK
@@ -141,6 +101,46 @@ export class ApplicationResourceService {
       url: '/api/applications/{id}/accessKeys',
       path: {
         'id': id,
+      },
+    });
+  }
+
+  /**
+   * @param applicationId
+   * @param role
+   * @returns any OK
+   * @throws ApiError
+   */
+  public addRoleToApplicationUser(
+    applicationId: string,
+    role: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/applications/{applicationId}/roles/{role}',
+      path: {
+        'applicationId': applicationId,
+        'role': role,
+      },
+    });
+  }
+
+  /**
+   * @param applicationId
+   * @param role
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeRoleFromApplicationUser(
+    applicationId: string,
+    role: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/applications/{applicationId}/roles/{role}',
+      path: {
+        'applicationId': applicationId,
+        'role': role,
       },
     });
   }

@@ -34,7 +34,7 @@ export class WorkflowBulkResourceService {
    * @returns BulkResponse OK
    * @throws ApiError
    */
-  public restart1(
+  public restart(
     requestBody: Array<string>,
     useLatestDefinitions: boolean = false,
   ): CancelablePromise<BulkResponse> {
@@ -56,7 +56,7 @@ export class WorkflowBulkResourceService {
    * @returns BulkResponse OK
    * @throws ApiError
    */
-  public terminate1(
+  public terminate(
     requestBody: Array<string>,
     reason?: string,
   ): CancelablePromise<BulkResponse> {
@@ -72,34 +72,34 @@ export class WorkflowBulkResourceService {
   }
 
   /**
-   * Pause the list of workflows
+   * Resume the list of workflows
    * @param requestBody
    * @returns BulkResponse OK
    * @throws ApiError
    */
-  public pauseWorkflow(
+  public resumeWorkflow(
     requestBody: Array<string>,
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/bulk/pause',
+      url: '/api/workflow/bulk/resume',
       body: requestBody,
       mediaType: 'application/json',
     });
   }
 
   /**
-   * Resume the list of workflows
+   * Pause the list of workflows
    * @param requestBody
    * @returns BulkResponse OK
    * @throws ApiError
    */
-  public resumeWorkflow1(
+  public pauseWorkflow1(
     requestBody: Array<string>,
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/bulk/resume',
+      url: '/api/workflow/bulk/pause',
       body: requestBody,
       mediaType: 'application/json',
     });

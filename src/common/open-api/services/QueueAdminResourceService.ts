@@ -9,6 +9,18 @@ export class QueueAdminResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Get Queue Names
+   * @returns string OK
+   * @throws ApiError
+   */
+  public names(): CancelablePromise<Record<string, string>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/queue/',
+    });
+  }
+
+  /**
    * Get the queue length
    * @returns number OK
    * @throws ApiError
@@ -45,18 +57,6 @@ export class QueueAdminResourceService {
       },
       body: requestBody,
       mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Get Queue Names
-   * @returns string OK
-   * @throws ApiError
-   */
-  public names(): CancelablePromise<Record<string, string>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/queue/',
     });
   }
 

@@ -32,7 +32,7 @@ export type Workflow = {
   variables?: Record<string, any>;
   lastRetriedTime?: number;
   startTime?: number;
-  workflowName?: string;
   workflowVersion?: number;
+  workflowName?: string;
 };
 

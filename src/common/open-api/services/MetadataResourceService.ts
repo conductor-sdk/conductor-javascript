@@ -12,6 +12,47 @@ export class MetadataResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Gets the task definition
+   * @param tasktype
+   * @param metadata
+   * @returns TaskDef OK
+   * @throws ApiError
+   */
+  public getTaskDef(
+    tasktype: string,
+    metadata: boolean = false,
+  ): CancelablePromise<TaskDef> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/metadata/taskdefs/{tasktype}',
+      path: {
+        'tasktype': tasktype,
+      },
+      query: {
+        'metadata': metadata,
+      },
+    });
+  }
+
+  /**
+   * Remove a task definition
+   * @param tasktype
+   * @returns any OK
+   * @throws ApiError
+   */
+  public unregisterTaskDef(
+    tasktype: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/metadata/taskdefs/{tasktype}',
+      path: {
+        'tasktype': tasktype,
+      },
+    });
+  }
+
+  /**
    * Retrieves all workflow definition along with blueprint
    * @param access
    * @param metadata
@@ -144,42 +185,22 @@ export class MetadataResourceService {
   }
 
   /**
-   * Gets the task definition
-   * @param tasktype
-   * @param metadata
-   * @returns TaskDef OK
-   * @throws ApiError
-   */
-  public getTaskDef(
-    tasktype: string,
-    metadata: boolean = false,
-  ): CancelablePromise<TaskDef> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/metadata/taskdefs/{tasktype}',
-      path: {
-        'tasktype': tasktype,
-      },
-      query: {
-        'metadata': metadata,
-      },
-    });
-  }
-
-  /**
-   * Remove a task definition
-   * @param tasktype
+   * Removes workflow definition. It does not remove workflows associated with the definition.
+   * @param name
+   * @param version
    * @returns any OK
    * @throws ApiError
    */
-  public unregisterTaskDef(
-    tasktype: string,
+  public unregisterWorkflowDef(
+    name: string,
+    version: number,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/metadata/taskdefs/{tasktype}',
+      url: '/api/metadata/workflow/{name}/{version}',
       path: {
-        'tasktype': tasktype,
+        'name': name,
+        'version': version,
       },
     });
   }
@@ -206,27 +227,6 @@ export class MetadataResourceService {
       query: {
         'version': version,
         'metadata': metadata,
-      },
-    });
-  }
-
-  /**
-   * Removes workflow definition. It does not remove workflows associated with the definition.
-   * @param name
-   * @param version
-   * @returns any OK
-   * @throws ApiError
-   */
-  public unregisterWorkflowDef(
-    name: string,
-    version: number,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/metadata/workflow/{name}/{version}',
-      path: {
-        'name': name,
-        'version': version,
       },
     });
   }

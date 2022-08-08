@@ -13,6 +13,48 @@ export class GroupResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Add user to group
+   * @param groupId
+   * @param userId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public addUserToGroup(
+    groupId: string,
+    userId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/groups/{groupId}/users/{userId}',
+      path: {
+        'groupId': groupId,
+        'userId': userId,
+      },
+    });
+  }
+
+  /**
+   * Remove user from group
+   * @param groupId
+   * @param userId
+   * @returns any OK
+   * @throws ApiError
+   */
+  public removeUserFromGroup(
+    groupId: string,
+    userId: string,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/api/groups/{groupId}/users/{userId}',
+      path: {
+        'groupId': groupId,
+        'userId': userId,
+      },
+    });
+  }
+
+  /**
    * Get a group by id
    * @param id
    * @returns any OK
@@ -71,24 +113,6 @@ export class GroupResourceService {
   }
 
   /**
-   * Get all users in group
-   * @param id
-   * @returns any OK
-   * @throws ApiError
-   */
-  public getUsersInGroup(
-    id: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/groups/{id}/users',
-      path: {
-        'id': id,
-      },
-    });
-  }
-
-  /**
    * Get the permissions this group has over workflows and tasks
    * @param groupId
    * @returns any OK
@@ -107,43 +131,19 @@ export class GroupResourceService {
   }
 
   /**
-   * Add user to group
-   * @param groupId
-   * @param userId
+   * Get all users in group
+   * @param id
    * @returns any OK
    * @throws ApiError
    */
-  public addUserToGroup(
-    groupId: string,
-    userId: string,
+  public getUsersInGroup(
+    id: string,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'POST',
-      url: '/api/groups/{groupId}/users/{userId}',
+      method: 'GET',
+      url: '/api/groups/{id}/users',
       path: {
-        'groupId': groupId,
-        'userId': userId,
-      },
-    });
-  }
-
-  /**
-   * Remove user from group
-   * @param groupId
-   * @param userId
-   * @returns any OK
-   * @throws ApiError
-   */
-  public removeUserFromGroup(
-    groupId: string,
-    userId: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/api/groups/{groupId}/users/{userId}',
-      path: {
-        'groupId': groupId,
-        'userId': userId,
+        'id': id,
       },
     });
   }

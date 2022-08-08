@@ -9,6 +9,27 @@ export class MigrationResourceService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
+   * Migrate workflows from Redis to Postgres
+   * @param batchSize
+   * @param startFromTimestamp
+   * @returns any OK
+   * @throws ApiError
+   */
+  public migrateWorkflows(
+    batchSize: number,
+    startFromTimestamp: number,
+  ): CancelablePromise<Record<string, any>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/api/admin/migrate_workflow',
+      query: {
+        'batchSize': batchSize,
+        'startFromTimestamp': startFromTimestamp,
+      },
+    });
+  }
+
+  /**
    * Migrate Workflow Index t o the sharded table
    * @returns number OK
    * @throws ApiError
@@ -29,27 +50,6 @@ export class MigrationResourceService {
     return this.httpRequest.request({
       method: 'GET',
       url: '/api/admin/migrate_metadata',
-    });
-  }
-
-  /**
-   * Migrate workflows from Redis to Postgres
-   * @param batchSize
-   * @param startFromTimestamp
-   * @returns any OK
-   * @throws ApiError
-   */
-  public migrateWorkflows(
-    batchSize: number,
-    startFromTimestamp: number,
-  ): CancelablePromise<Record<string, any>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/api/admin/migrate_workflow',
-      query: {
-        'batchSize': batchSize,
-        'startFromTimestamp': startFromTimestamp,
-      },
     });
   }
 
