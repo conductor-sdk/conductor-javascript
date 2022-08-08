@@ -1,7 +1,7 @@
 import { expect, describe, it } from "@jest/globals";
 import { generate, taskGenMapper } from "../generator";
 import { generateSimpleTask } from "../SimpleTask";
-import { TaskType, ForkJoinTaskDef, InlineEvaluatorType } from "../../types";
+import { TaskType, ForkJoinTaskDef } from "../../types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
 import { generateDoWhileTask } from "../DoWhileTask";
 import { generateSubWorkflowTask } from "../SubWorkflowTask";
@@ -52,13 +52,13 @@ describe("Generate", () => {
         const generatedInputParameters = generateEvaluationCode();
         expect(generatedInputParameters).toEqual({
           value: "${workflow.input.value}",
-          evaluatorType: "value-param",
+          evaluatorType: "javascript",
           expression: "true",
         });
       });
       it("Should generate a javascript with defaults inputParameters", () => {
         const generatedInputParameters = generateEvaluationCode({
-          evaluatorType: InlineEvaluatorType.JAVASCRIPT,
+          evaluatorType: "javascript",
         });
         expect(generatedInputParameters).toEqual({
           value: "${workflow.input.value}",
@@ -69,7 +69,7 @@ describe("Generate", () => {
       it("Should generate the expression if passed javascript code", () => {
         const generatedInputParameters = generateEvaluationCode({
           value: "${workflow.input.someNumber}",
-          evaluatorType: InlineEvaluatorType.JAVASCRIPT,
+          evaluatorType: "javascript",
           expression: function ($: any) {
             return function () {
               if ($.value === 1) {
@@ -105,7 +105,7 @@ describe("Generate", () => {
         type: TaskType.INLINE,
         inputParameters: {
           value: "${workflow.param.value}",
-          evaluatorType: InlineEvaluatorType.JAVASCRIPT,
+          evaluatorType: "javascript",
           expression: function () {
             return function () {
               return true;

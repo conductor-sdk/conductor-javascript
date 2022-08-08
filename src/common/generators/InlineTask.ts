@@ -1,30 +1,18 @@
-import {
-  InlineTaskDef,
-  TaskType,
-  InlineEvaluatorType,
-  InlineInputParametersValueParam,
-  InlineInputParametersJavascript,
-  InlineTaskInputParameters
-} from "../types";
+import { InlineTaskDef, TaskType, InlineTaskInputParameters } from "../types";
 import { InlineTaskDefGen } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
-const defaultInputParams: InlineInputParametersValueParam = {
+const defaultInputParams: InlineTaskInputParameters = {
   value: "${workflow.input.value}",
-  evaluatorType: InlineEvaluatorType.VALUE_PARAM,
+  evaluatorType: "javascript",
   expression: "true",
 };
 
 export const generateEvaluationCode = (
-  inputParametersPartial:
-    | Partial<InlineInputParametersJavascript>
-    | Partial<InlineInputParametersValueParam> = {}
+  inputParametersPartial: Partial<InlineTaskInputParameters> = {}
 ): InlineTaskInputParameters => {
-  if (
-    inputParametersPartial?.evaluatorType === InlineEvaluatorType.JAVASCRIPT
-  ) {
-    const inlinePartialDefJavascript =
-      inputParametersPartial as InlineInputParametersJavascript;
+  if (inputParametersPartial?.evaluatorType === "javascript") {
+    const inlinePartialDefJavascript = inputParametersPartial;
     const inlineExpression = inlinePartialDefJavascript?.expression;
     if (
       inlineExpression !== undefined &&
@@ -33,9 +21,9 @@ export const generateEvaluationCode = (
       const resultingFunction = inlineExpression();
       const resultingFunctionAsString = resultingFunction.toString();
 
-      const toReturn = {
-        evaluatorType: InlineEvaluatorType.JAVASCRIPT,
-        ...(inputParametersPartial as Partial<InlineInputParametersJavascript>),
+      const toReturn: InlineTaskInputParameters = {
+        evaluatorType: "javascript",
+        ...(inputParametersPartial || { value: "true" }),
         expression: `(${resultingFunctionAsString})();`,
       };
       return toReturn;
@@ -44,14 +32,14 @@ export const generateEvaluationCode = (
         value: "${workflow.input.value}",
         expression: "true",
         ...inputParametersPartial,
-        evaluatorType: InlineEvaluatorType.JAVASCRIPT,
-      } as InlineTaskInputParameters;
+        evaluatorType: "javascript",
+      };
     }
   }
 
   return {
     ...defaultInputParams,
-    ...(inputParametersPartial as InlineInputParametersValueParam),
+    ...inputParametersPartial,
   };
 };
 

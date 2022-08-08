@@ -108,28 +108,10 @@ export interface HttpTaskDef extends CommonTaskDef {
   type: TaskType.HTTP;
 }
 
-export enum InlineEvaluatorType {
-  JAVASCRIPT = "javascript",
-  VALUE_PARAM = "value-param",
-}
-
-export interface InlineInputParametersJavascript {
-  expression: string | Function;
-  evaluatorType: InlineEvaluatorType.JAVASCRIPT;
-  [x: string]: unknown;
-}
-
-export interface InlineInputParametersValueParam {
-  [x: string]: string;
-  evaluatorType: InlineEvaluatorType.VALUE_PARAM;
-  expression: string;
-}
-
 export interface InlineTaskInputParameters {
-  evaluatorType:
-    | InlineEvaluatorType.VALUE_PARAM
-    | InlineEvaluatorType.JAVASCRIPT;
-  expression: string;
+  evaluatorType: "javascript" 
+  expression: string | Function;
+  [x: string]: unknown;
 }
 
 export interface InlineTaskDef extends CommonTaskDef {
