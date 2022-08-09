@@ -28,9 +28,9 @@ export class WorkflowExecutor {
     this._client = client;
   }
   /**
-   * Will persist a workflow in consuctor
+   * Will persist a workflow in conductor
    * @param override If true will override the existing workflow with the definition
-   * @param workflow Complete workflow defintion
+   * @param workflow Complete workflow definition
    * @returns null
    */
 
@@ -40,7 +40,7 @@ export class WorkflowExecutor {
     );
   }
   /**
-   * Takes a StartWorkflowRequest. returns a Promise<string> with the executionId of the running workflow
+   * Takes a StartWorkflowRequest. returns a Promise<string> with the workflowInstanceId of the running workflow
    * @param workflowRequest
    * @returns
    */
@@ -56,24 +56,24 @@ export class WorkflowExecutor {
     return tryCatchReThrow(() => workflowsRequest.map(this.startWorkflow));
   }
   /**
-   * Takes an executionId and an includeTasks and an optional retry parameter returns the whole execution status.
+   * Takes an workflowInstanceId and an includeTasks and an optional retry parameter returns the whole execution status.
    * If includeTasks flag is provided. Details of tasks execution will be returned as well,
    * retry specifies the amount of retrys before throwing an error.
    *
-   * @param executionId
+   * @param workflowInstanceId
    * @param includeTasks
    * @param retry
    * @returns
    */
   public async getWorkflow(
-    executionId: string,
+    workflowInstanceId: string,
     includeTasks: boolean,
     retry: number = 0
   ): Promise<Workflow> {
     try {
       const workflowStatus =
         await this._client.workflowResource.getExecutionStatus(
-          executionId,
+          workflowInstanceId,
           includeTasks
         );
       return workflowStatus;
@@ -87,25 +87,25 @@ export class WorkflowExecutor {
       setTimeout(() => res(true), RETRY_TIME_IN_MILLISECONDS)
     );
 
-    return this.getWorkflow(executionId, includeTasks, retry - 1);
+    return this.getWorkflow(workflowInstanceId, includeTasks, retry - 1);
   }
 
   /**
    *  Returns a summary of the current workflow status.
    *
-   * @param executionId current running workflow
+   * @param workflowInstanceId current running workflow
    * @param includeOutput flag to include output
    * @param includeVariables flag to include variable
    * @returns Promise<WorkflowStatus>
    */
   public getWorkflowStatus(
-    executionId: string,
+    workflowInstanceId: string,
     includeOutput: boolean,
     includeVariables: boolean
   ) {
     return tryCatchReThrow(() =>
       this._client.workflowResource.getWorkflowStatusSummary(
-        executionId,
+        workflowInstanceId,
         includeOutput,
         includeVariables
       )
@@ -114,51 +114,51 @@ export class WorkflowExecutor {
 
   /**
    * Pauses a running workflow
-   * @param executionId current workflow execution
+   * @param workflowInstanceId current workflow execution
    * @returns
    */
-  public pause(executionId: string) {
+  public pause(workflowInstanceId: string) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.pauseWorkflow(executionId)
+      this._client.workflowResource.pauseWorkflow(workflowInstanceId)
     );
   }
   /**
-   * Reruns executionId workflow. with new parameters
+   * Reruns workflowInstanceId workflow. with new parameters
    *
-   * @param executionId current workflow execution
+   * @param workflowInstanceId current workflow execution
    * @param rerunWorkflowRequest Rerun Workflow Execution Request
    * @returns
    */
   public reRun(
-    executionId: string,
+    workflowInstanceId: string,
     rerunWorkflowRequest: Partial<RerunWorkflowRequest> = {}
   ) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.rerun(executionId, rerunWorkflowRequest)
+      this._client.workflowResource.rerun(workflowInstanceId, rerunWorkflowRequest)
     );
   }
 
   /**
-   * Restarts workflow with executionId, if useLatestDefinition uses last defintion
-   * @param executionId
+   * Restarts workflow with workflowInstanceId, if useLatestDefinition uses last defintion
+   * @param workflowInstanceId
    * @param useLatestDefinitions
    * @returns
    */
-  public restart(executionId: string, useLatestDefinitions: boolean) {
+  public restart(workflowInstanceId: string, useLatestDefinitions: boolean) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.restart1(executionId, useLatestDefinitions)
+      this._client.workflowResource.restart1(workflowInstanceId, useLatestDefinitions)
     );
   }
 
   /**
    * Resumes a previously paused execution
    *
-   * @param executionId Running workflow executionId
+   * @param workflowInstanceId Running workflow workflowInstanceId
    * @returns
    */
-  public resume(executionId: string) {
+  public resume(workflowInstanceId: string) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.resumeWorkflow(executionId)
+      this._client.workflowResource.resumeWorkflow(workflowInstanceId)
     );
   }
 
@@ -166,13 +166,13 @@ export class WorkflowExecutor {
    * Retrys workflow from last failing task
    * if resumeSubworkflowTasks is true will resume tasks in spawned subworkflows
    *
-   * @param executionId
+   * @param workflowInstanceId
    * @param resumeSubworkflowTasks
    * @returns
    */
-  public retry(executionId: string, resumeSubworkflowTasks: boolean) {
+  public retry(workflowInstanceId: string, resumeSubworkflowTasks: boolean) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.retry1(executionId, resumeSubworkflowTasks)
+      this._client.workflowResource.retry1(workflowInstanceId, resumeSubworkflowTasks)
     );
   }
   /**
@@ -210,33 +210,33 @@ export class WorkflowExecutor {
   /**
    * Skips a task of a running workflow.
    * by providing a skipTaskRequest you can set the input and the output of the skipped tasks
-   * @param executionId
+   * @param workflowInstanceId
    * @param taskReferenceName
    * @param skipTaskRequest
    * @returns
    */
   public skipTasksFromWorkflow(
-    executionId: string,
+    workflowInstanceId: string,
     taskReferenceName: string,
     skipTaskRequest: Partial<SkipTaskRequest>
   ) {
     return tryCatchReThrow(() =>
       this._client.workflowResource.skipTaskFromWorkflow(
-        executionId,
+        workflowInstanceId,
         taskReferenceName,
         skipTaskRequest
       )
     );
   }
 /**
- * Takes an executionId, and terminates a running workflow
- * @param executionId 
+ * Takes an workflowInstanceId, and terminates a running workflow
+ * @param workflowInstanceId 
  * @param reason 
  * @returns 
  */
-  public terminate(executionId: string, reason: string) {
+  public terminate(workflowInstanceId: string, reason: string) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.terminate1(executionId, reason)
+      this._client.workflowResource.terminate1(workflowInstanceId, reason)
     );
   }
 
