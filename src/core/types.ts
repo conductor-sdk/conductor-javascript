@@ -6,15 +6,14 @@ export interface StartWorkflowRequest<I = Record<string, any>> {
   correlationId?: string;
   input?: I;
   taskToDomain?: Record<string, string>;
-  workflowDef?: WorkflowDef; // TODO ask someone
+  workflowDef?: WorkflowDef;
   externalInputPayloadStoragePath?: string;
   priority?: number;
 }
 
 export interface RerunWorkflowRequest<I = Record<string, any>> {
-  rerunFromWorkflowId: string;
   workflowInput: I;
-  rerunFromTaskId?: Record<string, any>;
+  rerunFromTaskId?: string;
   taskInput: Record<string, any>;
   correlationId: string;
 }
