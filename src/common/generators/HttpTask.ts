@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 export const generateHTTPTask = (
   overrides: Partial<HttpTaskDef> = {}
 ): HttpTaskDef => ({
-  ...nameTaskNameGenerator("terminate", overrides),
+  ...nameTaskNameGenerator("httpTask", overrides),
   inputParameters: {
     http_request: {
       uri: "https://jsonplaceholder.typicode.com/posts/${workflow.input.queryid}",
