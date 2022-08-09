@@ -143,7 +143,7 @@ const someWorkflow = generate({
 
 ## Workflow Management
 
-Thw WorkflowExecutor class wrapps common functions related with the registration. update, and status report of a workflow.
+Thw WorkflowExecutor class wraps common functions related with the registration. update, and status report of a workflow.
 The WorkflowExecutor constructor takes an instance of a ConductorClient.
 
 ```typescript
@@ -158,8 +158,8 @@ const wExecutor = new WorkflowExecutor(client);
 
 ### Registering a Workflow
 
-Takes a boolean flagging wether to override the workflow or not. and a complete workflow definition
-Returns a promise on done.
+Takes a boolean flagging whether to override the workflow or not.
+And a Complete workflow definition
 
 ```typescript
 import {
@@ -222,7 +222,7 @@ const executionId = await wExecutor.startWorkflow({
 
 Takes an executionId and an includeTasks parameter returns the whole execution status.
 If includeTasks flag is provided. Details of tasks execution will be returned as well
-retry specifies the amount of retrys before throwing an error.
+retry specifies the amount of retries before throwing an error.
 
 ```typescript
 import {
@@ -268,7 +268,7 @@ if(workflowStatus?.status === "COMPLETED"){
 
 ### Pause a Running Workflow
 
-Pauses a runing workflow
+Pauses a running workflow
 
 ```typescript
 import {
@@ -326,8 +326,8 @@ wExecutor.restart(executionId, true);
 
 ### Retry a workflow
 
-Retrys workflow from last failing task
-if resumeSubworkflowTasks is true will resume tasks in spawned subworkflows
+Retries workflow from last failing task
+if resumeSubworkflowTasks is true will resume tasks in spawned Subworkflows
 
 ```typescript
 import {
