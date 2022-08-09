@@ -110,7 +110,7 @@ export interface HttpTaskDef extends CommonTaskDef {
 
 export interface InlineTaskInputParameters {
   evaluatorType: "javascript" 
-  expression: string | Function;
+  expression: string;
   [x: string]: unknown;
 }
 

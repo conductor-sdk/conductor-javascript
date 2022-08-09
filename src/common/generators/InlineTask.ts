@@ -1,5 +1,5 @@
 import { InlineTaskDef, TaskType, InlineTaskInputParameters } from "../types";
-import { InlineTaskDefGen } from "./types";
+import { InlineTaskDefGen, InlineTaskInputParametersGen } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
 const defaultInputParams: InlineTaskInputParameters = {
@@ -9,38 +9,30 @@ const defaultInputParams: InlineTaskInputParameters = {
 };
 
 export const generateEvaluationCode = (
-  inputParametersPartial: Partial<InlineTaskInputParameters> = {}
+  inputParametersPartial: Partial<InlineTaskInputParametersGen> = {}
 ): InlineTaskInputParameters => {
-  if (inputParametersPartial?.evaluatorType === "javascript") {
-    const inlinePartialDefJavascript = inputParametersPartial;
-    const inlineExpression = inlinePartialDefJavascript?.expression;
-    if (
-      inlineExpression !== undefined &&
-      typeof inlineExpression === "function"
-    ) {
-      const resultingFunction = inlineExpression();
-      const resultingFunctionAsString = resultingFunction.toString();
+  const inlinePartialDefJavascript = inputParametersPartial;
+  const inlineExpression = inlinePartialDefJavascript?.expression;
+  if (
+    inlineExpression !== undefined &&
+    typeof inlineExpression === "function"
+  ) {
+    const resultingFunction = inlineExpression();
+    const resultingFunctionAsString = resultingFunction.toString();
 
-      const toReturn: InlineTaskInputParameters = {
-        evaluatorType: "javascript",
-        ...(inputParametersPartial || { value: "true" }),
-        expression: `(${resultingFunctionAsString})();`,
-      };
-      return toReturn;
-    } else {
-      return {
-        value: "${workflow.input.value}",
-        expression: "true",
-        ...inputParametersPartial,
-        evaluatorType: "javascript",
-      };
-    }
+    const toReturn: InlineTaskInputParameters = {
+      evaluatorType: "javascript",
+      ...(inputParametersPartial || { value: "true" }),
+      expression: `(${resultingFunctionAsString})();`,
+    };
+    return toReturn;
   }
-
   return {
-    ...defaultInputParams,
+    value: "${workflow.input.value}",
+    expression: "true",
     ...inputParametersPartial,
-  };
+    evaluatorType: "javascript",
+  } as InlineTaskInputParameters;
 };
 
 export const generateInlineTask = (

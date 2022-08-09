@@ -15,8 +15,8 @@ import {
   TerminateTaskDef,
   JoinTaskDef,
   WaitTaskDef,
-  InlineEvaluatorType,
   TaskDefTypes,
+  InlineTaskInputParameters,
 } from "../types";
 
 export type TaskDefTypesGen =
@@ -52,30 +52,20 @@ export type SwitchTaskDefGen = Omit<
   defaultCase: Partial<TaskDefTypesGen>[];
 };
 
-export type DoWhileTaskDefGen = Omit<
-  DoWhileTaskDef,
-  "loopOver" 
-> & {
+export type DoWhileTaskDefGen = Omit<DoWhileTaskDef, "loopOver"> & {
   loopOver: Partial<TaskDefTypesGen>[];
 };
 
-
-export interface InlineInputParametersJavascript {
+export interface InlineTaskInputParametersGen
+  extends Omit<InlineTaskInputParameters, "expression"> {
   expression: string | Function;
-  evaluatorType: InlineEvaluatorType.JAVASCRIPT;
-  [x: string]: unknown;
 }
 
-export interface InlineInputParametersValueParam {
-  [x: string]: string;
-  evaluatorType: InlineEvaluatorType.VALUE_PARAM;
-  expression: string;
+export interface InlineTaskDefGen
+  extends Omit<InlineTaskDef, "inputParameters"> {
+  inputParameters: InlineTaskInputParametersGen;
 }
 
-export interface InlineTaskDefGen extends Omit<InlineTaskDef,"inputParameters"> {
-  inputParameters:
-    | InlineInputParametersJavascript
-    | InlineInputParametersValueParam;
-}
-
-export type NestedTaskMapper = { (tasks: Partial<TaskDefTypesGen>[]): TaskDefTypes[] }
+export type NestedTaskMapper = {
+  (tasks: Partial<TaskDefTypesGen>[]): TaskDefTypes[];
+};
