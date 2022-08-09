@@ -18,7 +18,7 @@ const client = new ConductorClient({
 });
 
 ```
-Using TLS
+#### Using TLS
 
 The client uses `node-fetch` which supports node.js's [`httpsAgent` options](https://nodejs.org/api/https.html#new-agentoptions). For example:
 
@@ -42,7 +42,7 @@ const taskManager = new TaskManager(client, [ /* workers */ ])
 taskManager.startPolling()
 ```
 
-Connect to conductor using Orkes
+#### Connect to conductor using Orkes
 
 ```typescript
 
