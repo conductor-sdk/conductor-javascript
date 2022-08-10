@@ -7,6 +7,7 @@
 1. [Setup conductor-typescript](#Setup-conductor)
 2. [Create and run Task Workers](docs/worker/README.md)
 3. [Create workflows using Code](docs/workflow/README.md)
+4. [Api Docs](docs/api/README.md)
 
 ### Setup conductor
 
