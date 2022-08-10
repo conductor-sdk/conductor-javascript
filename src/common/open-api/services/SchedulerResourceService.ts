@@ -23,7 +23,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/schedules/{name}',
+      url: '/scheduler/schedules/{name}',
       path: {
         'name': name,
       },
@@ -41,7 +41,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/scheduler/schedules/{name}',
+      url: '/scheduler/schedules/{name}',
       path: {
         'name': name,
       },
@@ -65,7 +65,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<Array<number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/nextFewSchedules',
+      url: '/scheduler/nextFewSchedules',
       query: {
         'cronExpression': cronExpression,
         'scheduleStartTime': scheduleStartTime,
@@ -86,7 +86,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/schedules/{name}/pause',
+      url: '/scheduler/schedules/{name}/pause',
       path: {
         'name': name,
       },
@@ -101,7 +101,7 @@ export class SchedulerResourceService {
   public pauseAllSchedules(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/admin/pause',
+      url: '/scheduler/admin/pause',
     });
   }
 
@@ -116,7 +116,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/schedules/{name}/resume',
+      url: '/scheduler/schedules/{name}/resume',
       path: {
         'name': name,
       },
@@ -131,7 +131,7 @@ export class SchedulerResourceService {
   public requeueAllExecutionRecords(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/admin/requeue',
+      url: '/scheduler/admin/requeue',
     });
   }
 
@@ -143,7 +143,7 @@ export class SchedulerResourceService {
   public resumeAllSchedules(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/admin/resume',
+      url: '/scheduler/admin/resume',
     });
   }
 
@@ -158,7 +158,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<Array<WorkflowSchedule>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/schedules',
+      url: '/scheduler/schedules',
       query: {
         'workflowName': workflowName,
       },
@@ -176,7 +176,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/scheduler/schedules',
+      url: '/scheduler/schedules',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -190,7 +190,7 @@ export class SchedulerResourceService {
   public testTimeout(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/test/timeout',
+      url: '/scheduler/test/timeout',
     });
   }
 
@@ -214,7 +214,7 @@ export class SchedulerResourceService {
   ): CancelablePromise<SearchResultWorkflowScheduleExecutionModel> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/scheduler/search/executions',
+      url: '/scheduler/search/executions',
       query: {
         'start': start,
         'size': size,

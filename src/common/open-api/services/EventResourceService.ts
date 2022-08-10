@@ -23,7 +23,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/event/queue/config/{queueType}/{queueName}',
+      url: '/event/queue/config/{queueType}/{queueName}',
       path: {
         'queueType': queueType,
         'queueName': queueName,
@@ -46,7 +46,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/event/queue/config/{queueType}/{queueName}',
+      url: '/event/queue/config/{queueType}/{queueName}',
       path: {
         'queueType': queueType,
         'queueName': queueName,
@@ -69,7 +69,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/event/queue/config/{queueType}/{queueName}',
+      url: '/event/queue/config/{queueType}/{queueName}',
       path: {
         'queueType': queueType,
         'queueName': queueName,
@@ -85,7 +85,7 @@ export class EventResourceService {
   public getEventHandlers(): CancelablePromise<Array<EventHandler>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/event',
+      url: '/event',
     });
   }
 
@@ -100,7 +100,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/event',
+      url: '/event',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -117,7 +117,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/event',
+      url: '/event',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -131,7 +131,7 @@ export class EventResourceService {
   public getQueueNames(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/event/queue/config',
+      url: '/event/queue/config',
     });
   }
 
@@ -146,7 +146,7 @@ export class EventResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/event/{name}',
+      url: '/event/{name}',
       path: {
         'name': name,
       },
@@ -166,7 +166,7 @@ export class EventResourceService {
   ): CancelablePromise<Array<EventHandler>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/event/{event}',
+      url: '/event/{event}',
       path: {
         'event': event,
       },

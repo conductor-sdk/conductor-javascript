@@ -21,7 +21,7 @@ export class MigrationResourceService {
   ): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/migrate_workflow',
+      url: '/admin/migrate_workflow',
       query: {
         'batchSize': batchSize,
         'startFromTimestamp': startFromTimestamp,
@@ -37,7 +37,7 @@ export class MigrationResourceService {
   public migrateIndex(): CancelablePromise<number> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/migrate_index',
+      url: '/admin/migrate_index',
     });
   }
 
@@ -49,7 +49,7 @@ export class MigrationResourceService {
   public migrateMetadata(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/migrate_metadata',
+      url: '/admin/migrate_metadata',
     });
   }
 

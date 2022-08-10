@@ -35,7 +35,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<Array<string>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/running/{name}',
+      url: '/workflow/running/{name}',
       path: {
         'name': name,
       },
@@ -58,7 +58,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow',
+      url: '/workflow',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -75,7 +75,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/decide/{workflowId}',
+      url: '/workflow/decide/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -95,7 +95,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/rerun',
+      url: '/workflow/{workflowId}/rerun',
       path: {
         'workflowId': workflowId,
       },
@@ -124,7 +124,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<SearchResultWorkflow> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/search-v2',
+      url: '/workflow/search-v2',
       query: {
         'start': start,
         'size': size,
@@ -146,7 +146,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/{workflowId}/pause',
+      url: '/workflow/{workflowId}/pause',
       path: {
         'workflowId': workflowId,
       },
@@ -168,7 +168,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/{workflowId}/skiptask/{taskReferenceName}',
+      url: '/workflow/{workflowId}/skiptask/{taskReferenceName}',
       path: {
         'workflowId': workflowId,
         'taskReferenceName': taskReferenceName,
@@ -195,7 +195,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<Record<string, Array<Workflow>>> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{name}/correlated',
+      url: '/workflow/{name}/correlated',
       path: {
         'name': name,
       },
@@ -223,7 +223,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<WorkflowStatus> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/{workflowId}/status',
+      url: '/workflow/{workflowId}/status',
       path: {
         'workflowId': workflowId,
       },
@@ -251,7 +251,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<Array<Workflow>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/{name}/correlated/{correlationId}',
+      url: '/workflow/{name}/correlated/{correlationId}',
       path: {
         'name': name,
         'correlationId': correlationId,
@@ -276,7 +276,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<void> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/retry',
+      url: '/workflow/{workflowId}/retry',
       path: {
         'workflowId': workflowId,
       },
@@ -299,7 +299,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<Workflow> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/{workflowId}',
+      url: '/workflow/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -322,7 +322,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/workflow/{workflowId}',
+      url: '/workflow/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -343,7 +343,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/{workflowId}/resume',
+      url: '/workflow/{workflowId}/resume',
       path: {
         'workflowId': workflowId,
       },
@@ -363,7 +363,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/workflow/{workflowId}/remove',
+      url: '/workflow/{workflowId}/remove',
       path: {
         'workflowId': workflowId,
       },
@@ -393,7 +393,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<SearchResultWorkflowSummary> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/search-by-tasks',
+      url: '/workflow/search-by-tasks',
       query: {
         'start': start,
         'size': size,
@@ -419,7 +419,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<ExternalStorageLocation> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/externalstoragelocation',
+      url: '/workflow/externalstoragelocation',
       query: {
         'path': path,
         'operation': operation,
@@ -447,7 +447,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{name}',
+      url: '/workflow/{name}',
       path: {
         'name': name,
       },
@@ -474,7 +474,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<void> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/restart',
+      url: '/workflow/{workflowId}/restart',
       path: {
         'workflowId': workflowId,
       },
@@ -508,7 +508,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<ScrollableSearchResultWorkflowSummary> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/search',
+      url: '/workflow/search',
       query: {
         'queryId': queryId,
         'start': start,
@@ -541,7 +541,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<SearchResultWorkflow> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/workflow/search-by-tasks-v2',
+      url: '/workflow/search-by-tasks-v2',
       query: {
         'start': start,
         'size': size,
@@ -563,7 +563,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<void> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/{workflowId}/resetcallbacks',
+      url: '/workflow/{workflowId}/resetcallbacks',
       path: {
         'workflowId': workflowId,
       },

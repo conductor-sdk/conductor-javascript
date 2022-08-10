@@ -24,7 +24,7 @@ export class MetadataResourceService {
   ): CancelablePromise<TaskDef> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/taskdefs/{tasktype}',
+      url: '/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -45,7 +45,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/metadata/taskdefs/{tasktype}',
+      url: '/metadata/taskdefs/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -69,7 +69,7 @@ export class MetadataResourceService {
   ): CancelablePromise<Array<WorkflowDef>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/workflow',
+      url: '/metadata/workflow',
       query: {
         'access': access,
         'metadata': metadata,
@@ -92,7 +92,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/metadata/workflow',
+      url: '/metadata/workflow',
       query: {
         'overwrite': overwrite,
       },
@@ -114,7 +114,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/metadata/workflow',
+      url: '/metadata/workflow',
       query: {
         'overwrite': overwrite,
       },
@@ -140,7 +140,7 @@ export class MetadataResourceService {
   ): CancelablePromise<Array<TaskDef>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/taskdefs',
+      url: '/metadata/taskdefs',
       query: {
         'access': access,
         'metadata': metadata,
@@ -161,7 +161,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/metadata/taskdefs',
+      url: '/metadata/taskdefs',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -178,7 +178,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/metadata/taskdefs',
+      url: '/metadata/taskdefs',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -197,7 +197,7 @@ export class MetadataResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/metadata/workflow/{name}/{version}',
+      url: '/metadata/workflow/{name}/{version}',
       path: {
         'name': name,
         'version': version,
@@ -220,7 +220,7 @@ export class MetadataResourceService {
   ): CancelablePromise<WorkflowDef> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/workflow/{name}',
+      url: '/metadata/workflow/{name}',
       path: {
         'name': name,
       },

@@ -16,7 +16,7 @@ export class VersionResourceService {
   public getVersion(): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/version',
+      url: '/version',
     });
   }
 

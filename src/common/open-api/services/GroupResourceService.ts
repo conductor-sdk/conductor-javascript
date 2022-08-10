@@ -25,7 +25,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/groups/{groupId}/users/{userId}',
+      url: '/groups/{groupId}/users/{userId}',
       path: {
         'groupId': groupId,
         'userId': userId,
@@ -46,7 +46,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/groups/{groupId}/users/{userId}',
+      url: '/groups/{groupId}/users/{userId}',
       path: {
         'groupId': groupId,
         'userId': userId,
@@ -65,7 +65,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/groups/{id}',
+      url: '/groups/{id}',
       path: {
         'id': id,
       },
@@ -85,7 +85,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/groups/{id}',
+      url: '/groups/{id}',
       path: {
         'id': id,
       },
@@ -105,7 +105,7 @@ export class GroupResourceService {
   ): CancelablePromise<Response> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/groups/{id}',
+      url: '/groups/{id}',
       path: {
         'id': id,
       },
@@ -123,7 +123,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/groups/{groupId}/permissions',
+      url: '/groups/{groupId}/permissions',
       path: {
         'groupId': groupId,
       },
@@ -141,7 +141,7 @@ export class GroupResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/groups/{id}/users',
+      url: '/groups/{id}/users',
       path: {
         'id': id,
       },
@@ -156,7 +156,7 @@ export class GroupResourceService {
   public listGroups(): CancelablePromise<Array<Group>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/groups',
+      url: '/groups',
     });
   }
 

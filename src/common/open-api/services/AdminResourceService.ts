@@ -21,7 +21,7 @@ export class AdminResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/admin/consistency/verifyAndRepair/{workflowId}',
+      url: '/admin/consistency/verifyAndRepair/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -36,7 +36,7 @@ export class AdminResourceService {
   public getRedisUsage(): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/redisUsage',
+      url: '/admin/redisUsage',
     });
   }
 
@@ -55,7 +55,7 @@ export class AdminResourceService {
   ): CancelablePromise<Array<Task>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/task/{tasktype}',
+      url: '/admin/task/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -77,7 +77,7 @@ export class AdminResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/admin/sweep/requeue/{workflowId}',
+      url: '/admin/sweep/requeue/{workflowId}',
       path: {
         'workflowId': workflowId,
       },
@@ -95,7 +95,7 @@ export class AdminResourceService {
   ): CancelablePromise<Record<string, any>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/admin/queues',
+      url: '/admin/queues',
       query: {
         'verbose': verbose,
       },

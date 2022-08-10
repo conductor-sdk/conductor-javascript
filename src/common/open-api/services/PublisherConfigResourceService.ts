@@ -16,7 +16,7 @@ export class PublisherConfigResourceService {
   public listAllConfigs(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/publishers',
+      url: '/publishers',
     });
   }
 
@@ -31,7 +31,7 @@ export class PublisherConfigResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/publishers/{id}',
+      url: '/publishers/{id}',
       path: {
         'id': id,
       },
@@ -51,7 +51,7 @@ export class PublisherConfigResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/publishers/{id}',
+      url: '/publishers/{id}',
       path: {
         'id': id,
       },
@@ -71,7 +71,7 @@ export class PublisherConfigResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/publishers/{id}',
+      url: '/publishers/{id}',
       path: {
         'id': id,
       },

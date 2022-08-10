@@ -19,7 +19,7 @@ export class SecretResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/secrets/{key}',
+      url: '/secrets/{key}',
       path: {
         'key': key,
       },
@@ -39,7 +39,7 @@ export class SecretResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/secrets/{key}',
+      url: '/secrets/{key}',
       path: {
         'key': key,
       },
@@ -59,7 +59,7 @@ export class SecretResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/secrets/{key}',
+      url: '/secrets/{key}',
       path: {
         'key': key,
       },
@@ -74,7 +74,7 @@ export class SecretResourceService {
   public listSecretsThatUserCanGrantAccessTo(): CancelablePromise<Array<string>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/secrets',
+      url: '/secrets',
     });
   }
 
@@ -86,7 +86,7 @@ export class SecretResourceService {
   public listAllSecretNames(): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/secrets',
+      url: '/secrets',
     });
   }
 
@@ -101,7 +101,7 @@ export class SecretResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/secrets/{key}/exists',
+      url: '/secrets/{key}/exists',
       path: {
         'key': key,
       },

@@ -21,7 +21,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/bulk/retry',
+      url: '/workflow/bulk/retry',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -40,7 +40,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/bulk/restart',
+      url: '/workflow/bulk/restart',
       query: {
         'useLatestDefinitions': useLatestDefinitions,
       },
@@ -62,7 +62,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/bulk/terminate',
+      url: '/workflow/bulk/terminate',
       query: {
         'reason': reason,
       },
@@ -82,7 +82,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/bulk/resume',
+      url: '/workflow/bulk/resume',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -99,7 +99,7 @@ export class WorkflowBulkResourceService {
   ): CancelablePromise<BulkResponse> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/workflow/bulk/pause',
+      url: '/workflow/bulk/pause',
       body: requestBody,
       mediaType: 'application/json',
     });

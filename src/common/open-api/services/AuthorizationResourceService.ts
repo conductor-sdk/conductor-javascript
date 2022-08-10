@@ -22,7 +22,7 @@ export class AuthorizationResourceService {
   ): CancelablePromise<Response> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/auth/authorization',
+      url: '/auth/authorization',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -39,7 +39,7 @@ export class AuthorizationResourceService {
   ): CancelablePromise<Response> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/auth/authorization',
+      url: '/auth/authorization',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -58,7 +58,7 @@ export class AuthorizationResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/auth/authorization/{type}/{id}',
+      url: '/auth/authorization/{type}/{id}',
       path: {
         'type': type,
         'id': id,

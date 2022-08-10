@@ -31,7 +31,7 @@ export class TaskResourceService {
   ): CancelablePromise<Task> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/poll/{tasktype}',
+      url: '/tasks/poll/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -50,7 +50,7 @@ export class TaskResourceService {
   public allVerbose(): CancelablePromise<Record<string, Record<string, Record<string, number>>>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/all/verbose',
+      url: '/tasks/queue/all/verbose',
     });
   }
 
@@ -71,7 +71,7 @@ export class TaskResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/tasks/{workflowId}/{taskRefName}/{status}',
+      url: '/tasks/{workflowId}/{taskRefName}/{status}',
       path: {
         'workflowId': workflowId,
         'taskRefName': taskRefName,
@@ -93,7 +93,7 @@ export class TaskResourceService {
   ): CancelablePromise<Task> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/{taskId}',
+      url: '/tasks/{taskId}',
       path: {
         'taskId': taskId,
       },
@@ -108,7 +108,7 @@ export class TaskResourceService {
   public all(): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/all',
+      url: '/tasks/queue/all',
     });
   }
 
@@ -123,7 +123,7 @@ export class TaskResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/tasks/queue/requeue/{taskType}',
+      url: '/tasks/queue/requeue/{taskType}',
       path: {
         'taskType': taskType,
       },
@@ -150,7 +150,7 @@ export class TaskResourceService {
   ): CancelablePromise<SearchResultTaskSummary> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/search',
+      url: '/tasks/search',
       query: {
         'start': start,
         'size': size,
@@ -181,7 +181,7 @@ export class TaskResourceService {
   ): CancelablePromise<SearchResultTask> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/search-v2',
+      url: '/tasks/search-v2',
       query: {
         'start': start,
         'size': size,
@@ -203,7 +203,7 @@ export class TaskResourceService {
   ): CancelablePromise<Array<PollData>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/polldata',
+      url: '/tasks/queue/polldata',
       query: {
         'taskType': taskType,
       },
@@ -221,7 +221,7 @@ export class TaskResourceService {
   ): CancelablePromise<Array<TaskExecLog>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/{taskId}/log',
+      url: '/tasks/{taskId}/log',
       path: {
         'taskId': taskId,
       },
@@ -241,7 +241,7 @@ export class TaskResourceService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/tasks/{taskId}/log',
+      url: '/tasks/{taskId}/log',
       path: {
         'taskId': taskId,
       },
@@ -258,7 +258,7 @@ export class TaskResourceService {
   public getAllPollData(): CancelablePromise<Array<PollData>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/polldata/all',
+      url: '/tasks/queue/polldata/all',
     });
   }
 
@@ -281,7 +281,7 @@ export class TaskResourceService {
   ): CancelablePromise<Array<Task>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/poll/batch/{tasktype}',
+      url: '/tasks/poll/batch/{tasktype}',
       path: {
         'tasktype': tasktype,
       },
@@ -305,7 +305,7 @@ export class TaskResourceService {
   ): CancelablePromise<string> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/tasks',
+      url: '/tasks',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -322,7 +322,7 @@ export class TaskResourceService {
   ): CancelablePromise<Record<string, number>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/queue/sizes',
+      url: '/tasks/queue/sizes',
       query: {
         'taskType': taskType,
       },
@@ -344,7 +344,7 @@ export class TaskResourceService {
   ): CancelablePromise<ExternalStorageLocation> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/tasks/externalstoragelocation',
+      url: '/tasks/externalstoragelocation',
       query: {
         'path': path,
         'operation': operation,

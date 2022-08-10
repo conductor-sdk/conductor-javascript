@@ -22,7 +22,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<Array<TagObject>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/workflow/{name}/tags',
+      url: '/metadata/workflow/{name}/tags',
       path: {
         'name': name,
       },
@@ -42,7 +42,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/metadata/workflow/{name}/tags',
+      url: '/metadata/workflow/{name}/tags',
       path: {
         'name': name,
       },
@@ -64,7 +64,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/metadata/workflow/{name}/tags',
+      url: '/metadata/workflow/{name}/tags',
       path: {
         'name': name,
       },
@@ -86,7 +86,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/metadata/workflow/{name}/tags',
+      url: '/metadata/workflow/{name}/tags',
       path: {
         'name': name,
       },
@@ -106,7 +106,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<Array<TagObject>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/metadata/task/{taskName}/tags',
+      url: '/metadata/task/{taskName}/tags',
       path: {
         'taskName': taskName,
       },
@@ -126,7 +126,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'PUT',
-      url: '/api/metadata/task/{taskName}/tags',
+      url: '/metadata/task/{taskName}/tags',
       path: {
         'taskName': taskName,
       },
@@ -148,7 +148,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/metadata/task/{taskName}/tags',
+      url: '/metadata/task/{taskName}/tags',
       path: {
         'taskName': taskName,
       },
@@ -170,7 +170,7 @@ export class TagsExperimentalService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/metadata/task/{taskName}/tags',
+      url: '/metadata/task/{taskName}/tags',
       path: {
         'taskName': taskName,
       },
