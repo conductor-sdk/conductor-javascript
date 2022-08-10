@@ -14,7 +14,7 @@ Simple connection to conductor
 
 ```typescript
 const client = new ConductorClient({
-  BASE: "https://your.server.name",
+  serverUrl: "https://play.orkes.io/api",
 });
 
 ```
@@ -29,12 +29,12 @@ const agentOptions = {
   key: "<buffer>",
   cert: "<buffer>",
   ca: "<buffer>",
-  servername: 'your.server.name',
+  servername: 'play.orkes.io',
   // ...
 }
 
 const client = new ConductorClient({
-  BASE: 'https://your.server.name',
+  BASE: 'https://play.orkes.io',
   AGENT: new Agent(agentOptions)
 })
 
