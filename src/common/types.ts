@@ -41,7 +41,7 @@ export type TaskDefTypes =
   | JsonJQTransformTaskDef
   | KafkaPublishTaskDef
   | SetVariableTaskDef
-  | SubWokflowTaskDef
+  | SubWorkflowTaskDef
   | SwitchTaskDef
   | TerminateTaskDef
   | JoinTaskDef
@@ -137,7 +137,7 @@ export interface KafkaPublishTaskDef extends CommonTaskDef {
       bootStrapServers: string;
       headers: Record<string, string>;
       key: string;
-      keySerializser: string;
+      keySerializer: string;
     };
   };
   type: TaskType.KAFKA_PUBLISH;
@@ -153,7 +153,7 @@ export interface SimpleTaskDef extends CommonTaskDef {
   inputParameters?: Record<string, unknown>;
 }
 
-export interface SubWokflowTaskDef extends CommonTaskDef {
+export interface SubWorkflowTaskDef extends CommonTaskDef {
   type: TaskType.SUB_WORKFLOW;
   inputParameters?: Record<string, unknown>;
   subWorkflowParam: {
@@ -169,12 +169,12 @@ export interface SwitchTaskDef extends CommonTaskDef {
   decisionCases: Record<string, TaskDefTypes[]>;
   defaultCase: TaskDefTypes[];
   evaluatorType: "value-param" | "javascript";
-  expression: string; // TODO this is not string "switchCaseValue"
+  expression: string; 
 }
 
 export interface TerminateTaskDef extends CommonTaskDef {
   inputParameters: {
-    terminationStatus: string; // TODO it aint string.
+    terminationStatus: "COMPLETED" | "FAILED"
     workflowOutput: Record<string, string>;
   };
   type: TaskType.TERMINATE;

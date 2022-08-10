@@ -14,21 +14,7 @@ import { generateSetVariableTask } from "./SetVariableTask";
 import { generateTerminateTask } from "./TerminateTask";
 import { generateWaitTask } from "./WaitTask";
 import { generateSwitchTask } from "./SwitchTask";
-import {
-  SimpleTaskDef,
-  EventTaskDef,
-  JoinTaskDef,
-  ForkJoinDynamicDef,
-  HttpTaskDef,
-  JsonJQTransformTaskDef,
-  KafkaPublishTaskDef,
-  SubWokflowTaskDef,
-  SetVariableTaskDef,
-  TerminateTaskDef,
-  WaitTaskDef,
-  TaskDefTypes,
-  TaskType,
-} from "../types";
+import { SimpleTaskDef, TaskDefTypes, TaskType } from "../types";
 
 const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
   const taskType = task.type;
@@ -36,33 +22,33 @@ const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
     case TaskType.SWITCH:
       return generateSwitchTask(task, taskGenMapper);
     case TaskType.SIMPLE:
-      return generateSimpleTask(task as SimpleTaskDef);
+      return generateSimpleTask(task);
     case TaskType.DO_WHILE:
       return generateDoWhileTask(task, taskGenMapper);
     case TaskType.EVENT:
-      return generateEventTask(task as EventTaskDef);
+      return generateEventTask(task);
     case TaskType.FORK_JOIN:
       return generateForkJoinTask(task, taskGenMapper);
     case TaskType.FORK_JOIN_DYNAMIC:
-      return generateForkJoinDynamic(task as ForkJoinDynamicDef);
+      return generateForkJoinDynamic(task);
     case TaskType.HTTP:
-      return generateHTTPTask(task as HttpTaskDef);
+      return generateHTTPTask(task);
     case TaskType.INLINE:
       return generateInlineTask(task);
     case TaskType.JOIN:
-      return generateJoinTask(task as JoinTaskDef);
+      return generateJoinTask(task);
     case TaskType.JSON_JQ_TRANSFORM:
-      return generateJQTransformTask(task as JsonJQTransformTaskDef);
+      return generateJQTransformTask(task);
     case TaskType.KAFKA_PUBLISH:
-      return generateKafkaPublishTask(task as KafkaPublishTaskDef);
+      return generateKafkaPublishTask(task);
     case TaskType.SUB_WORKFLOW:
-      return generateSubWorkflowTask(task as SubWokflowTaskDef);
+      return generateSubWorkflowTask(task);
     case TaskType.SET_VARIABLE:
-      return generateSetVariableTask(task as SetVariableTaskDef);
+      return generateSetVariableTask(task);
     case TaskType.TERMINATE:
-      return generateTerminateTask(task as TerminateTaskDef);
+      return generateTerminateTask(task);
     case TaskType.WAIT:
-      return generateWaitTask(task as WaitTaskDef);
+      return generateWaitTask(task);
     default:
       return generateSimpleTask(task as SimpleTaskDef);
   }
@@ -71,11 +57,19 @@ const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
 export const taskGenMapper = (
   tasks: Partial<TaskDefTypesGen>[]
 ): TaskDefTypes[] =>
-  tasks.reduce((acc: TaskDefTypes[], task, idx): TaskDefTypes[] => {
-    const filledTask = filledTaskDef(task);
-    const maybeNextTask = tasks.length >= idx + 1 ? tasks[idx + 1] : undefined;
-    return acc.concat(maybeAddJoinTask(filledTask, maybeNextTask));
-  }, []);
+  tasks.reduce(
+    (
+      acc: TaskDefTypes[],
+      task,
+      idx: number
+    ): TaskDefTypes[] => {
+      const filledTask = filledTaskDef(task);
+      const maybeNextTask =
+        tasks.length >= idx + 1 ? tasks[idx + 1] : undefined;
+      return acc.concat(maybeAddJoinTask(filledTask, maybeNextTask));
+    },
+    []
+  );
 
 const maybeAddJoinTask = (
   currentTask: TaskDefTypes,
@@ -92,6 +86,13 @@ const maybeAddJoinTask = (
   return currentTask;
 };
 
+/**
+ * Takes an optional partial WorkflowDefGen
+ * generates a workflow replacing default/fake values with provided overrides
+ *
+ * @param overrides overrides for defaults
+ * @returns a fully defined task
+ */
 export const generate = (overrides: Partial<WorkflowDefGen>) => {
   const maybeTasks: Partial<TaskDefTypesGen>[] = overrides.tasks || [];
   const generatedTasks: TaskDefTypes[] = taskGenMapper(maybeTasks);

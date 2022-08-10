@@ -2,7 +2,6 @@ import { TaskType, DoWhileTaskDef } from "../types";
 import { DoWhileTaskDefGen, NestedTaskMapper } from "./types";
 import { nameTaskNameGenerator } from "./common";
 
-
 export const generateDoWhileTask = (
   overrides: Partial<DoWhileTaskDefGen> = {},
   nestedTasksMapper: NestedTaskMapper

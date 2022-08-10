@@ -11,7 +11,7 @@ import {
   JsonJQTransformTaskDef,
   KafkaPublishTaskDef,
   SetVariableTaskDef,
-  SubWokflowTaskDef,
+  SubWorkflowTaskDef,
   TerminateTaskDef,
   JoinTaskDef,
   WaitTaskDef,
@@ -30,7 +30,7 @@ export type TaskDefTypesGen =
   | JsonJQTransformTaskDef
   | KafkaPublishTaskDef
   | SetVariableTaskDef
-  | SubWokflowTaskDef
+  | SubWorkflowTaskDef
   | SwitchTaskDefGen
   | TerminateTaskDef
   | JoinTaskDef
