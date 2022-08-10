@@ -32,7 +32,7 @@
     "generateClient:models": "npx openapi-typescript-codegen --input  http://localhost:8080/api-docs --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes --exportCore false",
     "generateClient:core": "npx openapi-typescript-codegen --input http://localhost:8080/api-docs  --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes && find ./src/common/open-api/services/*Service.ts -type f -exec sed -i '' -e 's/api\\///g' {} \\;",
     "ci": "npm run lint && npm run test",
-    "generate-docs": "typedoc"
+    "generate-docs": "typedoc --plugin typedoc-plugin-markdown"
   },
   "author": "Conductor community",
   "license": "Apache-2.0",
@@ -62,11 +62,13 @@
     "ts-jest": "^28.0.1",
     "ts-node": "^10.7.0",
     "tsup": "^5.12.6",
-    "typescript": "^4.6.4",
-    "typedoc": "^0.23.10"
+    "typedoc": "^0.23.10",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
-    "node-fetch": "^2.6.7"
+    "node-fetch": "^2.6.7",
+    "save-dev": "^0.0.1-security",
+    "typedoc-plugin-markdown": "^3.13.4"
   },
   "tsup": {
     "target": "node16",
