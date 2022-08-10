@@ -9,6 +9,7 @@
 1. [Setup conductor-typescript](#Setup-conductor)
 2. [Create and run Task Workers](docs/worker/README.md)
 3. [Create workflows using Code](docs/workflow/README.md)
+4. [Api Docs](docs/api/README.md)
 
 ### Setup conductor
 
@@ -26,6 +27,7 @@ The client uses `node-fetch` which supports node.js's [`httpsAgent` options](htt
 
 ```typescript
 import {Agent} from "https"
+import {ConductorClient} from "@io-orkes/conductor-typescript";
 
 const agentOptions = {
   key: "<buffer>",
@@ -36,7 +38,7 @@ const agentOptions = {
 }
 
 const client = new ConductorClient({
-  BASE: 'https://play.orkes.io',
+  serverUrl: 'https://play.orkes.io/api',
   AGENT: new Agent(agentOptions)
 })
 
@@ -58,7 +60,7 @@ import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-typesc
 const config: Partial<OrkesApiConfig> = {
   keyId: "aa17000e-a478-48cd-ae5c-d54c0fd850de",
   keySecret: "HUh57n1Q4DT5psfU0A42PDpwxID4ln5OgwNcSSWXXXzRqsJA",
-  BASE: "https://play.orkes.io",
+  serverUrl: "https://play.orkes.io/api",
 };
 
 orkesConductorClient(config).then(client => ..... );

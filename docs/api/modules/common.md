@@ -592,12 +592,14 @@ ___
 
 ▸ **orkesConductorClient**(`config?`, `requestHandler?`): `Promise`<[`ConductorClient`](../classes/common.ConductorClient.md)\>
 
+Takes a config with keyId and keySecret returns a promise with an instance of ConductorClient
+
 #### Parameters
 
-| Name | Type | Default value |
-| :------ | :------ | :------ |
-| `config?` | `Partial`<[`OrkesApiConfig`](common.md#orkesapiconfig)\> | `undefined` |
-| `requestHandler` | [`ConductorHttpRequest`](common.md#conductorhttprequest) | `defaultRequestHandler` |
+| Name | Type | Default value | Description |
+| :------ | :------ | :------ | :------ |
+| `config?` | `Partial`<[`OrkesApiConfig`](common.md#orkesapiconfig)\> | `undefined` | ConductorClientConfig with keyId and keySecret |
+| `requestHandler` | [`ConductorHttpRequest`](common.md#conductorhttprequest) | `defaultRequestHandler` | (optional) ConductorHttpRequest handler |
 
 #### Returns
 
@@ -605,7 +607,7 @@ ___
 
 #### Defined in
 
-src/common/orkes/OrkesConductorClient.ts:17
+src/common/orkes/OrkesConductorClient.ts:23
 
 ___
 
