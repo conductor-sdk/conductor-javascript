@@ -1,10 +1,12 @@
-import type { OpenAPIConfig } from "../open-api/core/OpenAPI";
 import { ConductorHttpRequest } from "../RequestCustomizer";
-import { ConductorClient } from "../open-api/ConductorClient";
+import {
+  ConductorClient,
+  ConductorClientAPIConfig,
+} from "../open-api/ConductorClient";
 import { GenerateTokenRequest } from "../open-api";
 import fetch from "node-fetch";
 
-export type OrkesApiConfig= OpenAPIConfig & GenerateTokenRequest; 
+export type OrkesApiConfig = ConductorClientAPIConfig & GenerateTokenRequest;
 
 const defaultRequestHandler: ConductorHttpRequest = (
   request,
@@ -17,8 +19,8 @@ export const orkesConductorClient = async (
   requestHandler: ConductorHttpRequest = defaultRequestHandler
 ): Promise<ConductorClient> => {
   if (config?.keySecret != null && config?.keyId != null) {
-    const { BASE, keyId, keySecret } = config;
-    const tokenUrl = `${BASE}/api/token`;
+    const { serverUrl, keyId, keySecret } = config;
+    const tokenUrl = `${serverUrl}/token`;
     const res = await fetch(tokenUrl, {
       headers: {
         "Content-Type": "application/json",

@@ -1,38 +1,44 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { BaseHttpRequest } from './core/BaseHttpRequest';
-import type { OpenAPIConfig } from './core/OpenAPI';
-import { NodeHttpRequest } from './core/NodeHttpRequest';
+import type { BaseHttpRequest } from "./core/BaseHttpRequest";
+import type { OpenAPIConfig } from "./core/OpenAPI";
 
-import { AdminResourceService } from './services/AdminResourceService';
-import { ApplicationResourceService } from './services/ApplicationResourceService';
-import { AuthorizationResourceService } from './services/AuthorizationResourceService';
-import { EventResourceService } from './services/EventResourceService';
-import { GroupResourceService } from './services/GroupResourceService';
-import { HealthCheckResourceService } from './services/HealthCheckResourceService';
-import { MetadataResourceService } from './services/MetadataResourceService';
-import { MigrationResourceService } from './services/MigrationResourceService';
-import { PublisherConfigResourceService } from './services/PublisherConfigResourceService';
-import { QueueAdminResourceService } from './services/QueueAdminResourceService';
-import { SchedulerResourceService } from './services/SchedulerResourceService';
-import { SecretResourceService } from './services/SecretResourceService';
-import { TagsExperimentalService } from './services/TagsExperimentalService';
-import { TaskResourceService } from './services/TaskResourceService';
-import { TokenResourceService } from './services/TokenResourceService';
-import { UserResourceService } from './services/UserResourceService';
-import { VersionResourceService } from './services/VersionResourceService';
-import { WorkflowBulkResourceService } from './services/WorkflowBulkResourceService';
-import { WorkflowResourceService } from './services/WorkflowResourceService';
-import {request as baseRequest} from "./core/request"
-import {ConductorHttpRequest} from "../RequestCustomizer"
+import { AdminResourceService } from "./services/AdminResourceService";
+import { ApplicationResourceService } from "./services/ApplicationResourceService";
+import { AuthorizationResourceService } from "./services/AuthorizationResourceService";
+import { EventResourceService } from "./services/EventResourceService";
+import { GroupResourceService } from "./services/GroupResourceService";
+import { HealthCheckResourceService } from "./services/HealthCheckResourceService";
+import { MetadataResourceService } from "./services/MetadataResourceService";
+import { MigrationResourceService } from "./services/MigrationResourceService";
+import { PublisherConfigResourceService } from "./services/PublisherConfigResourceService";
+import { QueueAdminResourceService } from "./services/QueueAdminResourceService";
+import { SchedulerResourceService } from "./services/SchedulerResourceService";
+import { SecretResourceService } from "./services/SecretResourceService";
+import { TagsExperimentalService } from "./services/TagsExperimentalService";
+import { TaskResourceService } from "./services/TaskResourceService";
+import { TokenResourceService } from "./services/TokenResourceService";
+import { UserResourceService } from "./services/UserResourceService";
+import { VersionResourceService } from "./services/VersionResourceService";
+import { WorkflowBulkResourceService } from "./services/WorkflowBulkResourceService";
+import { WorkflowResourceService } from "./services/WorkflowResourceService";
+import { request as baseRequest } from "./core/request";
+import { ConductorHttpRequest } from "../RequestCustomizer";
 
 type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
 
-export const defaultRequestHandler: ConductorHttpRequest = (request, config, options) => request(config, options)
+export const defaultRequestHandler: ConductorHttpRequest = (
+  request,
+  config,
+  options
+) => request(config, options);
+
+export interface ConductorClientAPIConfig extends Omit<OpenAPIConfig, "BASE"> {
+  serverUrl: string;
+}
 
 export class ConductorClient {
-
   public readonly adminResource: AdminResourceService;
   public readonly applicationResource: ApplicationResourceService;
   public readonly authorizationResource: AuthorizationResourceService;
@@ -55,19 +61,22 @@ export class ConductorClient {
 
   public readonly request: BaseHttpRequest;
 
-  constructor(config?: Partial<OpenAPIConfig>, requestHandler: ConductorHttpRequest = defaultRequestHandler) {
-    const resolvedConfig  = ({
-      BASE: config?.BASE ?? 'http://localhost:8080',
-      VERSION: config?.VERSION ?? '0',
+  constructor(
+    config?: Partial<ConductorClientAPIConfig>,
+    requestHandler: ConductorHttpRequest = defaultRequestHandler
+  ) {
+    const resolvedConfig = {
+      BASE: config?.serverUrl ?? "http://localhost:8080",
+      VERSION: config?.VERSION ?? "0",
       WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
-      CREDENTIALS: config?.CREDENTIALS ?? 'include',
+      CREDENTIALS: config?.CREDENTIALS ?? "include",
       TOKEN: config?.TOKEN,
       USERNAME: config?.USERNAME,
       PASSWORD: config?.PASSWORD,
       HEADERS: config?.HEADERS,
       ENCODE_PATH: config?.ENCODE_PATH,
-    });
-    
+    };
+
     // START conductor-client-modification
     /* The generated models are all based on the concept of an instantiated base http
     class. To avoid making edits there, we just create an object that satisfies the same
@@ -76,9 +85,9 @@ export class ConductorClient {
     this.request = {
       config: resolvedConfig,
       request: (apiConfig) => {
-        return requestHandler(baseRequest, resolvedConfig, apiConfig)
-      }
-    }
+        return requestHandler(baseRequest, resolvedConfig, apiConfig);
+      },
+    };
     // END conductor-client-modification
 
     this.adminResource = new AdminResourceService(this.request);
@@ -89,7 +98,9 @@ export class ConductorClient {
     this.healthCheckResource = new HealthCheckResourceService(this.request);
     this.metadataResource = new MetadataResourceService(this.request);
     this.migrationResource = new MigrationResourceService(this.request);
-    this.publisherConfigResource = new PublisherConfigResourceService(this.request);
+    this.publisherConfigResource = new PublisherConfigResourceService(
+      this.request
+    );
     this.queueAdminResource = new QueueAdminResourceService(this.request);
     this.schedulerResource = new SchedulerResourceService(this.request);
     this.secretResource = new SecretResourceService(this.request);
@@ -102,4 +113,3 @@ export class ConductorClient {
     this.workflowResource = new WorkflowResourceService(this.request);
   }
 }
-

@@ -11,7 +11,7 @@ import { WorkflowExecutor } from "../executor";
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: "aa17000e-a478-48cd-ae5c-d54c0fd850de",
   keySecret: "HUh57n1Q4DT5psfU0A42PDpwxID4ln5OgwNcSSWXXXzRqsJA",
-  BASE: "https://pg-staging.orkesconductor.com",
+  serverUrl: "https://pg-staging.orkesconductor.com/api",
 };
 
 describe("Executor", () => {
