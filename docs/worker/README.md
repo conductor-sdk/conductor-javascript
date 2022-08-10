@@ -4,12 +4,12 @@ This is a node.js client for [Netflix](https://github.com/Netflix/conductor) and
 
 ## Quickstart
 
-```javascript
-const { TaskClient, TaskManager } = require("@conductor-sdk/conductor-client");
+```typescript
 
-const client = new TaskClient({
-  // or wherever Conductor is running locally
-  baseURL: "http://localhost:8080",
+import {ConductorClient,  TaskClient, TaskManager } from "@io-orkes/conductor-typescript";
+
+const client = new ConductorClient({
+  serverUrl: "http://localhost:8080/api",
 });
 
 const worker = {
