@@ -194,3 +194,4 @@ module.exports = {
   // Whether to use watchman for file crawling
   // watchman: true,
 };
+require('dotenv').config();
