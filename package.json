@@ -66,6 +66,7 @@
     "typescript": "^4.6.4"
   },
   "dependencies": {
+    "@types/dotenv": "^8.2.0",
     "node-fetch": "^2.6.7",
     "save-dev": "^0.0.1-security",
     "typedoc-plugin-markdown": "^3.13.4"
