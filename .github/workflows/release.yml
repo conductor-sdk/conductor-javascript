@@ -1,6 +1,8 @@
 name: Continuous Delivery
 
-on: release
+on:
+  release:
+    types: [published]
 
 jobs:
   build-package-and-publish-release:
@@ -12,12 +14,13 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "16"
-          registry-url: 'https://registry.npmjs.org'
+          registry-url: "https://registry.npmjs.org"
       - name: Install dependencies required to build package
         run: yarn install
       - name: Build package
-        run: yarn build 
-      - name: Publish package 
-        run: npm publish --access public 
+        run: yarn build
+      - name: Publish package
+        run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_VERSION: ${{ github.ref_name }}
