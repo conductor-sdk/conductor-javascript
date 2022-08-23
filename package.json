@@ -1,7 +1,7 @@
 {
   "name": "conductor-javascript",
   "description": "Typescript Client for Netflix Conductor",
-  "version": "$RELEASE_VERSION",
+  "version": "0.0.3",
   "exports": {
     ".": {
       "require": "./dist/index.js",
