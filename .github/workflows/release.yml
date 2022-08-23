@@ -23,4 +23,3 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
-          RELEASE_VERSION: ${{ github.ref_name }}
