@@ -1,10 +1,10 @@
-# Netflix Conductor SDK
+# Conductor Javascript SDK
 
-`conductor-typescript` repository provides the client SDKs to build Task workers with Typescript
+This project provides client SDKs to interact with [Netflix](https://conductor.netflix.com/) and [Orkes](https://orkes.io/) conductor servers.
 
 ## Quick Start
 
-1. [Setup conductor-typescript](#Setup-conductor)
+1. [Setup](#Setup-conductor)
 2. [Create and run Task Workers](docs/worker/README.md)
 3. [Create workflows using Code](docs/workflow/README.md)
 4. [Api Docs](docs/api/README.md)
