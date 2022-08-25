@@ -1,0 +1,35 @@
+name: Continuous Integration
+
+on: pull_request
+
+jobs:
+  linter:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Install package
+        run: yarn install
+      - name: Run the linter
+        run: yarn lint
+  unit-tests:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v3
+      - name: Set up Node
+        uses: actions/setup-node@v3
+        with:
+          node-version: "16"
+      - name: Instal package 
+        run: yarn install
+      - name: Run Unit test
+        run: yarn test
+        env:
+          KEY_ID: ${{ secrets.KEY_ID }}
+          KEY_SECRET: ${{ secrets.KEY_SECRET }}
+        
