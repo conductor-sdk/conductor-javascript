@@ -1,26 +1,87 @@
 {
-  "name": "@blackdiamond/conductor-client",
-  "version": "1.0.0",
-  "description": "Package used to interface with Netflix Conductor",
-  "main": "index.js",
-  "scripts": {
-    "lint": "eslint .",
-    "lint-fix": "eslint --fix ."
+  "name": "conductor-javascript",
+  "description": "Typescript Client for Netflix Conductor",
+  "version": "0.0.4",
+  "exports": {
+    ".": {
+      "require": "./dist/index.js",
+      "import": "./dist/index.mjs",
+      "types": "./dist/index.d.ts"
+    }
   },
-  "author": "Black Diamond",
-  "license": "UNLICENSED",
-  
+  "private": false,
+  "homepage": "https://orkes.io",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/conductor-sdk/conductor-typescript"
+  },
+  "keywords": [
+    "conductor",
+    "workflow",
+    "orchestration",
+    "microservice"
+  ],
+  "types": "dist/index.d.ts",
+  "main": "dist/index.js",
+  "scripts": {
+    "lint": "npx eslint . --ext .js,.ts",
+    "build": "tsup index.ts",
+    "prepublishOnly": "npm run build",
+    "lint-fix": "npx eslint . --fix --ext .js,.ts",
+    "test": "jest",
+    "generateClient:models": "npx openapi-typescript-codegen --input  http://localhost:8080/api-docs --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes --exportCore false",
+    "generateClient:core": "npx openapi-typescript-codegen --input http://localhost:8080/api-docs  --output src/common/open-api --client node --indent 2 --name ConductorClient --useUnionTypes && find ./src/common/open-api/services/*Service.ts -type f -exec sed -i '' -e 's/api\\///g' {} \\;",
+    "ci": "npm run lint && npm run test",
+    "generate-docs": "typedoc --plugin typedoc-plugin-markdown"
+  },
+  "author": "Conductor community",
+  "license": "Apache-2.0",
   "files": [
-    "index.js",
-    "watcher.js",
-    "client.js",
-    "connector.js"
+    "dist",
+    "README.md"
+  ],
+  "contributors": [
+    {
+      "name": "Black Diamond"
+    },
+    {
+      "name": "Nick Tomlin"
+    },
+    {
+      "name": "James Stuart Milne"
+    }
   ],
   "devDependencies": {
-    "eslint": "^6.1.0"
+    "@tsconfig/node16": "^1.0.2",
+    "@types/node": "^17.0.30",
+    "@types/node-fetch": "^2.6.1",
+    "@typescript-eslint/eslint-plugin": "^5.23.0",
+    "@typescript-eslint/parser": "^5.23.0",
+    "eslint": "^6.1.0",
+    "jest": "^28.1.0",
+    "ts-jest": "^28.0.1",
+    "ts-node": "^10.7.0",
+    "tsup": "^5.12.6",
+    "typedoc": "^0.23.10",
+    "typescript": "^4.6.4"
   },
   "dependencies": {
-    "config": "^3.3.6",
-    "superagent": "^6.1.0"
+    "@types/dotenv": "^8.2.0",
+    "node-fetch": "^2.6.7",
+    "save-dev": "^0.0.1-security",
+    "typedoc-plugin-markdown": "^3.13.4"
+  },
+  "tsup": {
+    "target": "node16",
+    "sourcemap": true,
+    "format": [
+      "esm",
+      "cjs"
+    ],
+    "dts": true,
+    "clean": true
+  },
+  "engines": {
+    "node": ">=16"
   }
 }

@@ -1,3 +1,5 @@
+@io-orkes/conductor-typescript / [Modules](modules.md)
+
 # Netflix Conductor SDK
 
 `conductor-typescript` repository provides the client SDKs to build Task workers with Typescript
@@ -56,8 +58,8 @@ taskManager.startPolling()
 import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-typescript";
 
 const config: Partial<OrkesApiConfig> = {
-  keyId: "XXX",
-  keySecret: "XXXX",
+  keyId: "aa17000e-a478-48cd-ae5c-d54c0fd850de",
+  keySecret: "HUh57n1Q4DT5psfU0A42PDpwxID4ln5OgwNcSSWXXXzRqsJA",
   serverUrl: "https://play.orkes.io/api",
 };
 
