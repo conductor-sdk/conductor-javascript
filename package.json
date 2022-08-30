@@ -63,13 +63,12 @@
     "ts-node": "^10.7.0",
     "tsup": "^5.12.6",
     "typedoc": "^0.23.10",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "dotenv": "^16.0.1",
+    "typedoc-plugin-markdown": "^3.13.4"
   },
   "dependencies": {
-    "@types/dotenv": "^8.2.0",
-    "node-fetch": "^2.6.7",
-    "save-dev": "^0.0.1-security",
-    "typedoc-plugin-markdown": "^3.13.4"
+    "node-fetch": "^2.6.7"
   },
   "tsup": {
     "target": "node16",
