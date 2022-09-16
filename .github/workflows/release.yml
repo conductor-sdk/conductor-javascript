@@ -15,6 +15,8 @@ jobs:
         with:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
+      - name: Bump version to release
+        run:  sed -i '' "s/CURRENT_VERSION/${RELEASE_VERSION}/" package.json
       - name: Install dependencies required to build package
         run: yarn install
       - name: Build package
@@ -23,3 +25,4 @@ jobs:
         run: npm publish --access public
         env:
           NODE_AUTH_TOKEN: ${{ secrets.NPM_TOKEN }}
+          RELEASE_VERSION: ${{ github.ref_name }}
