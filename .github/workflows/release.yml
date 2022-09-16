@@ -16,7 +16,7 @@ jobs:
           node-version: "16"
           registry-url: "https://registry.npmjs.org"
       - name: Bump version to release
-        run: sed -i "s/CURRENT_VERSION/$RELEASE_VERSION/" ./package.json
+        run: sed -i "s/v0.0.0/$RELEASE_VERSION/" ./package.json
         env:
           RELEASE_VERSION: ${{ github.ref_name }}
       - name: Install dependencies required to build package
