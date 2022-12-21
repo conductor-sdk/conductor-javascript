@@ -10,8 +10,10 @@ export const switchTask = (
   taskReferenceName,
   decisionCases,
   evaluatorType: "value-param",
-  inputParameters: {},
-  expression,
+  inputParameters: {
+    switchCaseValue: expression,
+  },
+  expression: "switchCaseValue",
   defaultCase,
   type: TaskType.SWITCH,
 });
