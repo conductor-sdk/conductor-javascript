@@ -187,6 +187,10 @@ export interface TerminateTaskDef extends CommonTaskDef {
 
 export interface WaitTaskDef extends CommonTaskDef {
   type: TaskType.WAIT;
+  inputParameters: {
+    duration?: string;
+    until?: string;
+  };
 }
 
 type U2O<U extends string> = {
