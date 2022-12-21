@@ -2,7 +2,7 @@ import { TaskType, TerminateTaskDef } from "../types";
 export const terminateTask = (
   taskReferenceName: string,
   status: "COMPLETED" | "FAILED",
-  terminationReason:string,
+  terminationReason?: string
 ): TerminateTaskDef => ({
   name: taskReferenceName,
   taskReferenceName,

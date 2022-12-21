@@ -16,5 +16,5 @@ export const forkTaskJoin = (
   forkTasks: TaskDefTypes[]
 ): [ForkJoinTaskDef, JoinTaskDef] => [
   forkTask(taskReferenceName, forkTasks),
-  generateJoinTask({}),
+  generateJoinTask({name:`${taskReferenceName}_join`}),
 ];

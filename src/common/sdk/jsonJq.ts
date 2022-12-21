@@ -1,6 +1,6 @@
 import { TaskType, JsonJQTransformTaskDef } from "../types";
 
-export const jsonJq = (
+export const jsonJqTask = (
   taskReferenceName: string,
   script: string
 ): JsonJQTransformTaskDef => ({
