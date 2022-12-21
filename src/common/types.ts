@@ -48,12 +48,11 @@ export type TaskDefTypes =
   | WaitTaskDef;
 
 export interface DoWhileTaskDef extends CommonTaskDef {
-  inputParameters: Record<string, string>;
+  inputParameters: Record<string, unknown>;
   type: TaskType.DO_WHILE;
-  decisionCases: Record<string, TaskDefTypes[]>;
-  startDelay: number;
-  optional: boolean;
-  asyncComplete: boolean;
+  startDelay?: number;
+  optional?: boolean;
+  asyncComplete?: boolean;
   loopCondition: string;
   loopOver: TaskDefTypes[];
 }
@@ -61,55 +60,56 @@ export interface DoWhileTaskDef extends CommonTaskDef {
 export interface EventTaskDef extends CommonTaskDef {
   type: TaskType.EVENT;
   sink: string;
-  asyncComplete: boolean;
+  asyncComplete?: boolean;
 }
 
 export interface ForkJoinTaskDef extends CommonTaskDef {
   type: TaskType.FORK_JOIN;
-  inputParameters: Record<string, string>;
+  inputParameters?: Record<string, string>;
   forkTasks: Array<Array<TaskDefTypes>>;
 }
 
 export interface JoinTaskDef extends CommonTaskDef {
   type: TaskType.JOIN;
-  inputParameters: Record<string, string>;
+  inputParameters?: Record<string, string>;
   joinOn: string[];
-  optional: boolean;
-  asyncComplete: boolean;
+  optional?: boolean;
+  asyncComplete?: boolean;
 }
 
 export interface ForkJoinDynamicDef extends CommonTaskDef {
   inputParameters: {
-    dynamicTasks: string;
-    dynamicTasksInput: string;
+    dynamicTasks: any;
+    dynamicTasksInput: any;
   };
   type: TaskType.FORK_JOIN_DYNAMIC;
   dynamicForkTasksParam: string; // not string "dynamicTasks",
   dynamicForkTasksInputParamName: string; // not string "dynamicTasksInput",
-  startDelay: number;
-  optional: boolean;
-  asyncComplete: boolean;
+  startDelay?: number;
+  optional?: boolean;
+  asyncComplete?: boolean;
+}
+export interface HttpInputParameters {
+  uri: string;
+  method: "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS" | "HEAD";
+  accept?: string;
+  contentType?: string;
+  headers?: Record<string, string>;
+  body?: unknown;
+  connectionTimeOut?: number;
+  readTimeOut?: string;
 }
 
 export interface HttpTaskDef extends CommonTaskDef {
   inputParameters: {
     [x: string]: unknown;
-    http_request: {
-      uri: string;
-      method: "GET" | "PUT" | "POST" | "DELETE" | "OPTIONS" | "HEAD";
-      accept?: string;
-      contentType?: string;
-      headers?: Record<string, string>;
-      body?: unknown;
-      connectionTimeOut?: number;
-      readTimeOut?: string;
-    };
+    http_request: HttpInputParameters;
   };
   type: TaskType.HTTP;
 }
 
 export interface InlineTaskInputParameters {
-  evaluatorType: "javascript" 
+  evaluatorType: "javascript" | "graaljs";
   expression: string;
   [x: string]: unknown;
 }
@@ -129,23 +129,25 @@ export interface JsonJQTransformTaskDef extends CommonTaskDef {
   inputParameters: ContainingQueryExpression;
 }
 
+export interface KafkaPublishInputParameters {
+  topic: string;
+  value: string;
+  bootStrapServers: string;
+  headers: Record<string, string>;
+  key: string;
+  keySerializer: string;
+}
+
 export interface KafkaPublishTaskDef extends CommonTaskDef {
   inputParameters: {
-    kafka_request: {
-      topic: string;
-      value: string;
-      bootStrapServers: string;
-      headers: Record<string, string>;
-      key: string;
-      keySerializer: string;
-    };
+    kafka_request: KafkaPublishInputParameters;
   };
   type: TaskType.KAFKA_PUBLISH;
 }
 
 export interface SetVariableTaskDef extends CommonTaskDef {
   type: TaskType.SET_VARIABLE;
-  inputParameters: Record<string, string>;
+  inputParameters: Record<string, unknown>;
 }
 
 export interface SimpleTaskDef extends CommonTaskDef {
@@ -169,21 +171,26 @@ export interface SwitchTaskDef extends CommonTaskDef {
   decisionCases: Record<string, TaskDefTypes[]>;
   defaultCase: TaskDefTypes[];
   evaluatorType: "value-param" | "javascript";
-  expression: string; 
+  expression: string;
 }
 
 export interface TerminateTaskDef extends CommonTaskDef {
   inputParameters: {
-    terminationStatus: "COMPLETED" | "FAILED"
-    workflowOutput: Record<string, string>;
+    terminationStatus: "COMPLETED" | "FAILED";
+    workflowOutput?: Record<string, string>;
+    terminationReason?: string;
   };
   type: TaskType.TERMINATE;
-  startDelay: number;
-  optional: boolean;
+  startDelay?: number;
+  optional?: boolean;
 }
 
 export interface WaitTaskDef extends CommonTaskDef {
   type: TaskType.WAIT;
+  inputParameters: {
+    duration?: string;
+    until?: string;
+  };
 }
 
 type U2O<U extends string> = {

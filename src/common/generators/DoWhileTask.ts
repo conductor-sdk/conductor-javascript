@@ -8,7 +8,6 @@ export const generateDoWhileTask = (
 ): DoWhileTaskDef => ({
   ...nameTaskNameGenerator("doWhile", overrides),
   inputParameters: {},
-  decisionCases: {},
   startDelay: 0,
   optional: false,
   asyncComplete: false,
