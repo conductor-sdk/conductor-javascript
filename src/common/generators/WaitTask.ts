@@ -13,5 +13,6 @@ export const generateWaitTask = (
 ): WaitTaskDef => ({
   ...nameTaskNameGenerator("wait", overrides),
   ...overrides,
+  inputParameters:{},
   type: TaskType.WAIT,
 });

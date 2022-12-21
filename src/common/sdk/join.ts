@@ -1,4 +1,4 @@
-import { TaskType, JoinTaskDef, TaskDefTypes } from "../types";
+import { TaskType, JoinTaskDef } from "../types";
 
 export const joinTask = (
   taskReferenceName: string,

@@ -1,4 +1,4 @@
-import { TaskType, SetVariableTaskDef, TaskDefTypes } from "../types";
+import { TaskType, SetVariableTaskDef } from "../types";
 
 export const setVariableTask = (
   taskReferenceName: string,

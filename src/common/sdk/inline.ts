@@ -1,4 +1,4 @@
-import { TaskType, InlineTaskDef, TaskDefTypes } from "../types";
+import { TaskType, InlineTaskDef } from "../types";
 
 export const inlineTask = (
   taskReferenceName: string,
