@@ -45,6 +45,7 @@ export class TaskManager {
     const providedOptions = config.options ?? {}
     this.taskManageOptions = {
       ...defaultManagerOptions,
+      ...providedOptions,
       workerID: workerId(providedOptions),
     }
   }
