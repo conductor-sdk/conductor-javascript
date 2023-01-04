@@ -1,4 +1,3 @@
-import { setTimeout } from "timers/promises";
 import { ConductorLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService } from "../common/open-api";
@@ -80,7 +79,7 @@ export class TaskRunner {
         this.handleUnknownError(unknownError);
       }
 
-      await setTimeout(this.options.pollInterval);
+      await new Promise((r) => setTimeout(() => r(true), this.options.pollInterval));
     }
   };
 
