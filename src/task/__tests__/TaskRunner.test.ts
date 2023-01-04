@@ -1,5 +1,4 @@
 import {jest, test, expect} from "@jest/globals"
-import {setTimeout} from "timers/promises"
 import type {Mocked} from "jest-mock"
 
 import {RunnerArgs, TaskRunner} from "../TaskRunner"
@@ -50,7 +49,7 @@ test('polls tasks', async () => {
 
   const runner = new TaskRunner(args)
   runner.startPolling()
-  await setTimeout(10)
+  await new Promise((r) => setTimeout(() => r(true), 10));
   runner.stopPolling()
   const expected = {
     taskId,
