@@ -224,9 +224,6 @@ export const sendRequest = async (
 
   onCancel(() => controller.abort());
 
-  /* let fetch = */
-  /*   //@ts-ignore */
-  /*   typeof window !== "undefined" ? window?.fetch : require("node-fetch"); */
   return await fetch(url, request);
 };
 
