@@ -52,9 +52,8 @@
     }
   ],
   "devDependencies": {
-    "@tsconfig/node16": "^1.0.2",
-    "@types/node": "^17.0.30",
-    "@types/node-fetch": "^2.6.1",
+    "@tsconfig/node18": "^1.0.1",
+    "@types/node": "^18.11.18",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
     "eslint": "^6.1.0",
@@ -67,11 +66,8 @@
     "dotenv": "^16.0.1",
     "typedoc-plugin-markdown": "^3.13.4"
   },
-  "dependencies": {
-    "node-fetch": "^2.6.7"
-  },
   "tsup": {
-    "target": "node16",
+    "target": "node18",
     "sourcemap": true,
     "format": [
       "esm",
@@ -81,6 +77,6 @@
     "clean": true
   },
   "engines": {
-    "node": ">=16"
+    "node": ">=18"
   }
 }

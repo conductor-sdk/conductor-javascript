@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 import type { BaseHttpRequest } from "./core/BaseHttpRequest";
-import type { OpenAPIConfig } from "./core/OpenAPI";
+import type { OpenAPIConfig, Resolver } from "./core/OpenAPI";
 
 import { AdminResourceService } from "./services/AdminResourceService";
 import { ApplicationResourceService } from "./services/ApplicationResourceService";
@@ -61,6 +61,8 @@ export class ConductorClient {
 
   public readonly request: BaseHttpRequest;
 
+  public readonly token?: string | Resolver<string>;
+
   constructor(
     config?: Partial<ConductorClientAPIConfig>,
     requestHandler: ConductorHttpRequest = defaultRequestHandler
@@ -89,6 +91,7 @@ export class ConductorClient {
       },
     };
     // END conductor-client-modification
+    this.token = config?.TOKEN;
 
     this.adminResource = new AdminResourceService(this.request);
     this.applicationResource = new ApplicationResourceService(this.request);

@@ -4,7 +4,6 @@ import {
   ConductorClientAPIConfig,
 } from "../open-api/ConductorClient";
 import { GenerateTokenRequest } from "../open-api";
-import fetch from "node-fetch";
 
 export type OrkesApiConfig = ConductorClientAPIConfig & GenerateTokenRequest;
 
@@ -15,10 +14,10 @@ const defaultRequestHandler: ConductorHttpRequest = (
 ) => request(config, options);
 /**
  * Takes a config with keyId and keySecret returns a promise with an instance of ConductorClient
- *  
- * @param config ConductorClientConfig with keyId and keySecret 
+ *
+ * @param config ConductorClientConfig with keyId and keySecret
  * @param requestHandler (optional) ConductorHttpRequest handler
- * @returns 
+ * @returns
  */
 export const orkesConductorClient = async (
   config?: Partial<OrkesApiConfig>,
