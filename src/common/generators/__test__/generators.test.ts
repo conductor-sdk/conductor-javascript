@@ -198,6 +198,70 @@ describe("Generate", () => {
         ({ name, taskReferenceName }) => name !== "" && taskReferenceName !== ""
       )
     ).toBe(true);
+    // Has generated join task
+    const joinTasks = wf.tasks.filter(({ type }) => type === TaskType.JOIN);
+    expect(joinTasks.length).toBe(1);
+    const [firstForkTask] = wf.tasks;
+    expect(
+      (firstForkTask as ForkJoinTaskDef).forkTasks
+        .flat()
+        .every(
+          ({ name, taskReferenceName }) =>
+            name !== "" && taskReferenceName !== ""
+        )
+    ).toBe(true);
+  });
+
+  it("Should generate a workflow with a fork join and an additional join. result should only contain one join task", () => {
+    const wf = generate({
+      name: "tripReservation",
+      inputParameters: ["some"],
+      tasks: [
+        {
+          type: TaskType.FORK_JOIN,
+          forkTasks: [
+            [
+              {
+                type: TaskType.HTTP,
+                inputParameters: {
+                  http_request: { uri: "http://airline1.com", method: "GET" },
+                },
+                name: "airline1",
+              },
+            ],
+            [
+              {
+                type: TaskType.HTTP,
+                inputParameters: {
+                  http_request: { uri: "http://airline2.com", method: "GET" },
+                },
+                name: "airline2",
+              },
+            ],
+            [
+              {
+                type: TaskType.HTTP,
+                inputParameters: {
+                  http_request: { uri: "http://airline3.com", method: "GET" },
+                },
+                name: "airline3",
+              },
+            ],
+          ],
+        },
+        { type: TaskType.JOIN, name: "myJoin" },
+        { type: TaskType.SIMPLE, name: "compute_lowest_price" },
+        { type: TaskType.SIMPLE, name: "make_reservation" },
+        generateSimpleTask({ name: "send_email" }),
+      ],
+    });
+
+    const joinTasks = wf.tasks.filter(({ type }) => type === TaskType.JOIN);
+
+    expect(joinTasks.length).toBe(1);
+
+    expect(joinTasks[0].name).toBe("myJoin");
+
     const [firstForkTask] = wf.tasks;
     expect(
       (firstForkTask as ForkJoinTaskDef).forkTasks
