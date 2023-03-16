@@ -57,29 +57,22 @@ const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
 export const taskGenMapper = (
   tasks: Partial<TaskDefTypesGen>[]
 ): TaskDefTypes[] =>
-  tasks.reduce(
-    (
-      acc: TaskDefTypes[],
-      task,
-      idx: number
-    ): TaskDefTypes[] => {
-      const filledTask = filledTaskDef(task);
-      const maybeNextTask =
-        tasks.length >= idx + 1 ? tasks[idx + 1] : undefined;
-      return acc.concat(maybeAddJoinTask(filledTask, maybeNextTask));
-    },
-    []
-  );
+  tasks.reduce((acc: TaskDefTypes[], task, idx: number): TaskDefTypes[] => {
+    const filledTask = filledTaskDef(task);
+    const maybeNextTask = tasks.length >= idx + 1 ? tasks[idx + 1] : undefined;
+
+    return acc.concat(maybeAddJoinTask(filledTask, maybeNextTask));
+  }, []);
 
 const maybeAddJoinTask = (
   currentTask: TaskDefTypes,
   maybeNextTask?: Partial<TaskDefTypesGen>
 ) => {
   if (
-    currentTask.type === TaskType.FORK_JOIN ||
-    (currentTask.type === TaskType.FORK_JOIN_DYNAMIC &&
-      maybeNextTask != null &&
-      maybeNextTask.type !== TaskType.JOIN)
+    (currentTask.type === TaskType.FORK_JOIN ||
+      currentTask.type === TaskType.FORK_JOIN_DYNAMIC) &&
+    maybeNextTask != null &&
+    maybeNextTask.type !== TaskType.JOIN
   ) {
     return [currentTask, generateJoinTask({})];
   }
