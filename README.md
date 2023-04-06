@@ -19,19 +19,41 @@ const client = new ConductorClient({
 });
 
 ```
-#### Using TLS
 
-The client uses `node-fetch` which supports node.js's [`httpsAgent` options](https://nodejs.org/api/https.html#new-agentoptions). For example:
+### Running Custom Workers
 
 ```typescript
 import {ConductorClient} from "@io-orkes/conductor-typescript";
 
-const client = new ConductorClient({
+const clientPromise = new ConductorClient({
   serverUrl: 'https://play.orkes.io/api',
 })
 
-const taskManager = new TaskManager(client, [ /* workers */ ])
-taskManager.startPolling()
+const client = await clientPromise;
+
+const taskManager = new TaskRunner({
+    taskResource: client.taskResource,
+    worker: {
+      taskDefName: "MyCustomWorker",
+      execute: async ({ inputData, taskId }) => {
+        return {
+          outputData: {
+            greeting: "Hello World",
+          },
+          status: "COMPLETED",
+        };
+      },
+    },
+    options: {
+      pollInterval: 10,
+      domain: undefined,
+      concurrency: 1,
+      workerID: "",
+    },
+  });
+
+taskManager.startPolling();
+
 ```
 
 #### Connect to conductor using Orkes
