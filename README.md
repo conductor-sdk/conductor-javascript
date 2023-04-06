@@ -24,20 +24,10 @@ const client = new ConductorClient({
 The client uses `node-fetch` which supports node.js's [`httpsAgent` options](https://nodejs.org/api/https.html#new-agentoptions). For example:
 
 ```typescript
-import {Agent} from "https"
 import {ConductorClient} from "@io-orkes/conductor-typescript";
-
-const agentOptions = {
-  key: "<buffer>",
-  cert: "<buffer>",
-  ca: "<buffer>",
-  servername: 'play.orkes.io',
-  // ...
-}
 
 const client = new ConductorClient({
   serverUrl: 'https://play.orkes.io/api',
-  AGENT: new Agent(agentOptions)
 })
 
 const taskManager = new TaskManager(client, [ /* workers */ ])
