@@ -23,9 +23,10 @@ const client = new ConductorClient({
 ### Running Custom Workers
 
 ```typescript
-import {ConductorClient} from "@io-orkes/conductor-typescript";
 
-const clientPromise = new ConductorClient({
+import { OrkesApiConfig, orkesConductorClient, TaskRunner } from "@io-orkes/conductor-javascript";
+
+const clientPromise = orkesConductorClient({
   serverUrl: 'https://play.orkes.io/api',
 })
 
@@ -65,7 +66,7 @@ taskManager.startPolling();
  * then edit and create Access Keys
  *
  */
-import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-typescript";
+import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-javascript";
 
 const config: Partial<OrkesApiConfig> = {
   keyId: "XXX",
