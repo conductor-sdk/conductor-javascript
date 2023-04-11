@@ -19,29 +19,42 @@ const client = new ConductorClient({
 });
 
 ```
-#### Using TLS
 
-The client uses `node-fetch` which supports node.js's [`httpsAgent` options](https://nodejs.org/api/https.html#new-agentoptions). For example:
+### Running Custom Workers
 
 ```typescript
-import {Agent} from "https"
-import {ConductorClient} from "@io-orkes/conductor-typescript";
 
-const agentOptions = {
-  key: "<buffer>",
-  cert: "<buffer>",
-  ca: "<buffer>",
-  servername: 'play.orkes.io',
-  // ...
-}
+import { OrkesApiConfig, orkesConductorClient, TaskRunner } from "@io-orkes/conductor-javascript";
 
-const client = new ConductorClient({
+const clientPromise = orkesConductorClient({
   serverUrl: 'https://play.orkes.io/api',
-  AGENT: new Agent(agentOptions)
 })
 
-const taskManager = new TaskManager(client, [ /* workers */ ])
-taskManager.startPolling()
+const client = await clientPromise;
+
+const taskManager = new TaskRunner({
+    taskResource: client.taskResource,
+    worker: {
+      taskDefName: "MyCustomWorker",
+      execute: async ({ inputData, taskId }) => {
+        return {
+          outputData: {
+            greeting: "Hello World",
+          },
+          status: "COMPLETED",
+        };
+      },
+    },
+    options: {
+      pollInterval: 10,
+      domain: undefined,
+      concurrency: 1,
+      workerID: "",
+    },
+  });
+
+taskManager.startPolling();
+
 ```
 
 #### Connect to conductor using Orkes
@@ -53,7 +66,7 @@ taskManager.startPolling()
  * then edit and create Access Keys
  *
  */
-import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-typescript";
+import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-javascript";
 
 const config: Partial<OrkesApiConfig> = {
   keyId: "XXX",
