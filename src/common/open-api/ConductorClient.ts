@@ -71,7 +71,6 @@ export class ConductorClient {
     // END conductor-client-modification
     this.token = config?.TOKEN;
 
-
     this.eventResource = new EventResourceService(this.request);
     this.healthCheckResource = new HealthCheckResourceService(this.request);
     this.metadataResource = new MetadataResourceService(this.request);
