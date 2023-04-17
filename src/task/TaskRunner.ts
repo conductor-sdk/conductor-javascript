@@ -104,11 +104,11 @@ export class TaskRunner {
         await this.taskResource.updateTask1(taskResult);
         return;
       } catch (error: unknown) {
+        this.errorHandler(error as Error, task);
         this.logger.error(
           `Error updating task ${taskResult.taskId} on retry ${retryCount}`,
           error
         );
-        this.errorHandler(error as Error, task);
         retryCount++;
         await new Promise((r) => setTimeout(() => r(true), retryCount * 10));
       }
