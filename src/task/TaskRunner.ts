@@ -86,7 +86,7 @@ export class TaskRunner {
         }
       } catch (unknownError: unknown) {
         this.handleUnknownError(unknownError);
-        this.errorHandler(unknownError as Error, {} as Task);
+        this.errorHandler(unknownError as Error);
       }
 
       await new Promise((r) =>
