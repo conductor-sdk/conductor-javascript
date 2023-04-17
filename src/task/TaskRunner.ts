@@ -4,13 +4,19 @@ import { Task, TaskResourceService } from "../common/open-api";
 import { TaskManagerOptions } from "./TaskManager";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
+export type TaskErrorHandler = (error: Error, task?: Task) => void;
 
 export interface RunnerArgs {
   worker: ConductorWorker;
   taskResource: TaskResourceService;
   options: Required<TaskManagerOptions>;
   logger?: ConductorLogger;
+  onError?: TaskErrorHandler;
 }
+
+//eslint-disable-next-line
+export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
+
 const noopLogger: ConductorLogger = {
   //eslint-disable-next-line
   debug: (...args: any) => {},
@@ -35,17 +41,20 @@ export class TaskRunner {
   worker: ConductorWorker;
   logger: ConductorLogger;
   options: Required<TaskManagerOptions>;
+  errorHandler: TaskErrorHandler;
 
   constructor({
     worker,
     taskResource,
     options,
     logger = noopLogger,
+    onError: errorHandler = noopErrorHandler,
   }: RunnerArgs) {
     this.taskResource = taskResource;
     this.logger = logger;
     this.worker = worker;
     this.options = options;
+    this.errorHandler = errorHandler;
   }
 
   startPolling = () => {
@@ -77,9 +86,12 @@ export class TaskRunner {
         }
       } catch (unknownError: unknown) {
         this.handleUnknownError(unknownError);
+        this.errorHandler(unknownError as Error, {} as Task);
       }
 
-      await new Promise((r) => setTimeout(() => r(true), this.options.pollInterval));
+      await new Promise((r) =>
+        setTimeout(() => r(true), this.options.pollInterval)
+      );
     }
   };
 
@@ -93,7 +105,6 @@ export class TaskRunner {
       });
       this.logger.debug(`Finished polling for task ${task.taskId}`);
     } catch (error: unknown) {
-      this.logger.error(`Error executing ${task.taskId}`, error);
       await this.taskResource.updateTask1({
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
@@ -102,6 +113,8 @@ export class TaskRunner {
         status: "FAILED",
         outputData: {},
       });
+      this.errorHandler(error as Error, task);
+      this.logger.error(`Error executing ${task.taskId}`, error);
     }
   };
 
