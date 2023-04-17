@@ -1,9 +1,11 @@
 import { ConductorLogger } from "../common";
 import { ConductorWorker } from "./Worker";
-import { Task, TaskResourceService } from "../common/open-api";
+import { Task, TaskResourceService, TaskResult } from "../common/open-api";
 import { TaskManagerOptions } from "./TaskManager";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
+const MAX_RETRIES = 3;
+
 export type TaskErrorHandler = (error: Error, task?: Task) => void;
 
 export interface RunnerArgs {
@@ -95,17 +97,38 @@ export class TaskRunner {
     }
   };
 
+  updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
+    let retryCount = 0;
+    while (retryCount < MAX_RETRIES) {
+      try {
+        await this.taskResource.updateTask1(taskResult);
+        return;
+      } catch (error: unknown) {
+        this.logger.error(
+          `Error updating task ${taskResult.taskId} on retry ${retryCount}`,
+          error
+        );
+        this.errorHandler(error as Error, task);
+        retryCount++;
+        await new Promise((r) => setTimeout(() => r(true), retryCount * 10));
+      }
+    }
+    this.logger.error(
+      `Unable to update task ${taskResult.taskId} after ${retryCount} retries`
+    );
+  };
+
   executeTask = async (task: Task) => {
     try {
       const result = await this.worker.execute(task);
-      await this.taskResource.updateTask1({
+      await this.updateTaskWithRetry(task, {
         ...result,
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
       });
       this.logger.debug(`Finished polling for task ${task.taskId}`);
     } catch (error: unknown) {
-      await this.taskResource.updateTask1({
+      await this.updateTaskWithRetry(task, {
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
         reasonForIncompletion:
