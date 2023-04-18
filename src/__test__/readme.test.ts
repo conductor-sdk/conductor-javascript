@@ -4,7 +4,6 @@ import {
   orkesConductorClient,
   WorkflowExecutor,
   TaskRunner,
-  ConductorWorker,
   generate,
   TaskResult,
 } from "../../";
