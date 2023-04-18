@@ -1,5 +1,5 @@
 import { ConductorClient, WorkflowDef } from "../common";
-import { Workflow } from "../common/open-api";
+import { Workflow, Task } from "../common/open-api";
 import {
   StartWorkflowRequest,
   RerunWorkflowRequest,
@@ -134,7 +134,10 @@ export class WorkflowExecutor {
     rerunWorkflowRequest: Partial<RerunWorkflowRequest> = {}
   ) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.rerun(workflowInstanceId, rerunWorkflowRequest)
+      this._client.workflowResource.rerun(
+        workflowInstanceId,
+        rerunWorkflowRequest
+      )
     );
   }
 
@@ -146,7 +149,10 @@ export class WorkflowExecutor {
    */
   public restart(workflowInstanceId: string, useLatestDefinitions: boolean) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.restart1(workflowInstanceId, useLatestDefinitions)
+      this._client.workflowResource.restart1(
+        workflowInstanceId,
+        useLatestDefinitions
+      )
     );
   }
 
@@ -172,7 +178,10 @@ export class WorkflowExecutor {
    */
   public retry(workflowInstanceId: string, resumeSubworkflowTasks: boolean) {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.retry1(workflowInstanceId, resumeSubworkflowTasks)
+      this._client.workflowResource.retry1(
+        workflowInstanceId,
+        resumeSubworkflowTasks
+      )
     );
   }
   /**
@@ -228,12 +237,12 @@ export class WorkflowExecutor {
       )
     );
   }
-/**
- * Takes an workflowInstanceId, and terminates a running workflow
- * @param workflowInstanceId 
- * @param reason 
- * @returns 
- */
+  /**
+   * Takes an workflowInstanceId, and terminates a running workflow
+   * @param workflowInstanceId
+   * @param reason
+   * @returns
+   */
   public terminate(workflowInstanceId: string, reason: string) {
     return tryCatchReThrow(() =>
       this._client.workflowResource.terminate1(workflowInstanceId, reason)
@@ -242,11 +251,11 @@ export class WorkflowExecutor {
 
   /**
    * Takes a taskId and a workflowInstanceId. Will update the task for the corresponding taskId
-   * @param taskId 
-   * @param workflowInstanceId 
-   * @param taskStatus 
-   * @param taskOutput 
-   * @returns 
+   * @param taskId
+   * @param workflowInstanceId
+   * @param taskStatus
+   * @param taskOutput
+   * @returns
    */
   public updateTask(
     taskId: string,
@@ -267,14 +276,14 @@ export class WorkflowExecutor {
     );
   }
 
-/**
- * Updates a task by reference Name
- * @param taskReferenceName 
- * @param workflowInstanceId 
- * @param status 
- * @param taskOutput 
- * @returns 
- */
+  /**
+   * Updates a task by reference Name
+   * @param taskReferenceName
+   * @param workflowInstanceId
+   * @param status
+   * @param taskOutput
+   * @returns
+   */
   public updateTaskByRefName(
     taskReferenceName: string,
     workflowInstanceId: string,
@@ -292,11 +301,11 @@ export class WorkflowExecutor {
   }
 
   /**
-   * 
-   * @param taskId 
-   * @returns 
+   *
+   * @param taskId
+   * @returns
    */
-  public getTask(taskId: string) {
+  public getTask(taskId: string): Promise<Task> {
     return tryCatchReThrow(() => this._client.taskResource.getTask(taskId));
   }
 }
