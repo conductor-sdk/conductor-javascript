@@ -11,7 +11,7 @@ Each worker embodies design pattern and follows certain basic principles:
 
 1. Workers are stateless and do not implement a workflow specific logic.
 2. Each worker executes a very specific task and produces well-defined output given specific inputs.
-3. Workers are meant to be idempotent (or should handle cases where the task that partially executed gets rescheduled due to timeouts etc.)
+3. Workers are meant to be idempotent (or should handle cases where the task that is partially executed gets rescheduled due to timeouts etc.)
 4. Workers do not implement the logic to handle retries etc, that is taken care by the Conductor server.
 
 ### Creating Task Workers
@@ -120,7 +120,10 @@ taskRunner.startPolling();
 ### Get Task Details
 
 ```typescript
-import { WorkflowExecutor } from "@io-orkes/conductor-javascript";
+import {
+  WorkflowExecutor,
+  TaskResultStatus,
+} from "@io-orkes/conductor-javascript";
 
 const clientPromise = orkesConductorClient({
   keyId: "XXX", // optional
@@ -136,22 +139,26 @@ const taskDetails = await executor.getTask(someTaskId);
 
 ### Updating the Task result outside the worker implementation
 
-#### Update task by id
+#### Update task by Reference Name
 
 ```typescript
 executor.updateTaskByRefName(
   taskReferenceName,
   workflowInstanceId,
-  TaskResult.COMPLETED,
+  "COMPLETED",
   { some: { output: "value" } }
 );
 ```
 
-#### Update task by Reference Name
+#### Update task by id
 
-### Worker Metrics
-
-We use [Prometheus](https://prometheus.io/) to collect metrics.
-When enabled the worker starts an HTTP server which is used to publish metrics, which can be hooked up to a prometheus server to scrap and collect metrics.
+```typescript
+await executor.updateTask(
+  taskId,
+  executionId,
+  "COMPLETED",
+  newChange
+);
+```
 
 ### Next: [Create and Execute Workflows](workflow_sdk.md)

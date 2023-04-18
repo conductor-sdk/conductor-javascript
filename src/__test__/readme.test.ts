@@ -5,7 +5,6 @@ import {
   WorkflowExecutor,
   TaskRunner,
   generate,
-  TaskResult,
 } from "../../";
 import { TaskType } from "../../";
 
@@ -86,12 +85,23 @@ describe("TaskManager", () => {
     await executor.updateTaskByRefName(
       firstTask!.referenceTaskName!,
       executionId,
-      TaskResult.COMPLETED,
+      "IN_PROGRESS",
       changedValue
     );
 
     const taskDetails = await executor.getTask(firstTask?.taskId || "");
     expect(taskDetails.outputData).toEqual(changedValue);
+    const newChange = {  greet: "bye" };
+
+    await executor.updateTask(
+      firstTask!.taskId!,
+      executionId,
+      "COMPLETED",
+      newChange
+    );
+
+    const taskAfterUpdate = await executor.getTask(firstTask?.taskId || "");
+    expect(taskAfterUpdate.outputData).toEqual(newChange);
   });
 
   test("Should create and run a workflow that sums two numbers", async () => {
@@ -113,7 +123,6 @@ describe("TaskManager", () => {
               // The returned function will be executed by conductors. INLINE task
               return function () {
                 return $.numberOne + $.numberTwo;
-                
               };
             },
           },
@@ -138,11 +147,10 @@ describe("TaskManager", () => {
     });
 
     const workflowStatus = await executor.getWorkflow(executionId, true);
-    
+
     await new Promise((r) => setTimeout(() => r(true), 900));
-    
+
     expect(workflowStatus.status).toEqual("COMPLETED");
     expect(workflowStatus.output?.result).toEqual(3);
-
   });
 });
