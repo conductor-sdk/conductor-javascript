@@ -1,12 +1,12 @@
 import { ConductorClient, WorkflowDef } from "../common";
-import { Workflow, Task } from "../common/open-api";
 import {
-  StartWorkflowRequest,
+  Workflow,
+  Task,
   RerunWorkflowRequest,
+  StartWorkflowRequest,
   SkipTaskRequest,
-  TaskResult,
-  ConductorError,
-} from "./types";
+} from "../common/open-api";
+import { ConductorError, TaskResultStatus } from "./types";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
 
@@ -260,8 +260,8 @@ export class WorkflowExecutor {
   public updateTask(
     taskId: string,
     workflowInstanceId: string,
-    taskStatus: TaskResult,
-    taskOutput: Record<string, any> // TODO this can be typed.
+    taskStatus: TaskResultStatus,
+    outputData: Record<string, any> // TODO this can be typed.
   ) {
     const taskUpdates = {
       status: taskStatus,
@@ -270,7 +270,7 @@ export class WorkflowExecutor {
     };
     return tryCatchReThrow(() =>
       this._client.taskResource.updateTask1({
-        ...taskOutput,
+        outputData,
         ...taskUpdates,
       })
     );
@@ -287,7 +287,7 @@ export class WorkflowExecutor {
   public updateTaskByRefName(
     taskReferenceName: string,
     workflowInstanceId: string,
-    status: TaskResult,
+    status: TaskResultStatus,
     taskOutput: Record<string, any>
   ) {
     return tryCatchReThrow(() =>
