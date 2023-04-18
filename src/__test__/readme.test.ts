@@ -5,6 +5,7 @@ import {
   WorkflowExecutor,
   TaskRunner,
   generate,
+  simpleTask,
 } from "../../";
 import { TaskType } from "../../";
 
@@ -44,8 +45,18 @@ describe("TaskManager", () => {
     });
     taskRunner.startPolling();
 
+    await executor.registerWorkflow(true, {
+      name: "my_first_js_wf",
+      version: 1,
+      ownerEmail: "developers@orkes.io",
+      tasks: [simpleTask("taskmanager-test", "taskmanager-test", {})],
+      inputParameters: [],
+      outputParameters: {},
+      timeoutSeconds: 0,
+    });
+
     const executionId = await executor.startWorkflow({
-      name: "TaskManagerTest",
+      name: "my_first_js_wf",
       input: {},
       version: 1,
     });
@@ -91,7 +102,7 @@ describe("TaskManager", () => {
 
     const taskDetails = await executor.getTask(firstTask?.taskId || "");
     expect(taskDetails.outputData).toEqual(changedValue);
-    const newChange = {  greet: "bye" };
+    const newChange = { greet: "bye" };
 
     await executor.updateTask(
       firstTask!.taskId!,
