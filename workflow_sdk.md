@@ -87,10 +87,8 @@ const sumTwoNumbers =generate({
           expression: function ($: { numberOne: number; numberTwo: number }) { 
             // The returned function will be executed by conductors. INLINE task
             return function () {
-              return {
-                result: $.numberOne + $.numberTwo,
-              };
-            },
+                return  $.numberOne + $.numberTwo;
+            };
           }
         },
         type:TaskType.INLINE
@@ -107,7 +105,7 @@ executor.registerWorkflow(
   sumTwoNumbers
 );
 
-const executionId = await workflowExecutor.startWorkflow({
+const executionId = await executor.startWorkflow({
       name: sumTwoNumbers.name,
       version: 1,
       input: {
@@ -116,7 +114,7 @@ const executionId = await workflowExecutor.startWorkflow({
       },
   });
 
-const workflowStatus = await workflowExecutor.getWorkflow(
+const workflowStatus = await executor.getWorkflow(
       executionId,
       true
     );

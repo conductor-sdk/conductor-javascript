@@ -91,7 +91,7 @@ const clientPromise = orkesConductorClient({
 
 const client = await clientPromise;
 
-const taskManager = new TaskRunner({
+const taskRunner = new TaskRunner({
   taskResource: client.taskResource,
   worker: {
     taskDefName: "MyCustomWorker",
@@ -112,7 +112,7 @@ const taskManager = new TaskRunner({
   },
 });
 
-taskManager.startPolling();
+taskRunner.startPolling();
 ```
 
 ## Task Management APIs
