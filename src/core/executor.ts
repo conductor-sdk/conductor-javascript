@@ -266,6 +266,7 @@ export class WorkflowExecutor {
       })
     );
   }
+
 /**
  * Updates a task by reference Name
  * @param taskReferenceName 
@@ -288,5 +289,14 @@ export class WorkflowExecutor {
         taskOutput
       )
     );
+  }
+
+  /**
+   * 
+   * @param taskId 
+   * @returns 
+   */
+  public getTask(taskId: string) {
+    return tryCatchReThrow(() => this._client.taskResource.getTask(taskId));
   }
 }
