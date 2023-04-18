@@ -29,15 +29,15 @@ export const generateEvaluationCode = (
   }
   return {
     ...defaultInputParams,
-    ...inputParametersPartial,
     evaluatorType: "graaljs",
+    ...inputParametersPartial,
   } as InlineTaskInputParameters;
 };
 
 /**
  * Takes an optional partial InlineTaskDefGen
  * generates a task replacing default/fake values with provided overrides
- * 
+ *
  * <b>note</b> that the inputParameters.expression can be either a string containing javascript
  * or a function thar returns an ES5 function
  *
