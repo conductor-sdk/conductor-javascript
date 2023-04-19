@@ -30,7 +30,9 @@ describe("TaskManager", () => {
       },
     };
 
-    const manager = new TaskManager(client, [worker]);
+    const manager = new TaskManager(client, [worker], {
+      options: { pollInterval: 1500 },
+    });
     manager.startPolling();
 
     const executionId = await executor.startWorkflow({
@@ -38,13 +40,13 @@ describe("TaskManager", () => {
       input: {},
       version: 1,
     });
-    await new Promise((r) => setTimeout(() => r(true), 2500));
+    await new Promise((r) => setTimeout(() => r(true), 3500));
     const workflowStatus = await client.workflowResource.getExecutionStatus(
       executionId,
       true
     );
-    expect(workflowStatus.status).toEqual("COMPLETED");
     manager.stopPolling();
+    expect(workflowStatus.status).toEqual("COMPLETED");
   });
 
   test("On error it should call the errorHandler provided", async () => {
@@ -52,7 +54,7 @@ describe("TaskManager", () => {
     const executor = new WorkflowExecutor(client);
 
     const worker: ConductorWorker = {
-      taskDefName: "taskmanager-test",
+      taskDefName: "taskmanager-error-test",
       execute: async () => {
         throw Error("This is a forced error");
       },
@@ -62,32 +64,35 @@ describe("TaskManager", () => {
 
     const manager = new TaskManager(client, [worker], {
       onError: errorHandler,
+      options: { pollInterval: 1500 },
     });
 
     manager.startPolling();
 
     await executor.startWorkflow({
-      name: "TaskManagerTest",
+      name: "TaskManagerTestE",
       input: {},
       version: 1,
     });
-    await new Promise((r) => setTimeout(() => r(true), 3500));
+    await new Promise((r) => setTimeout(() => r(true), 4500));
     expect(errorHandler).toBeCalledTimes(1);
     manager.stopPolling();
   });
-  
+
   test("If no error handler provided. it should just update the task", async () => {
     const client = await clientPromise;
     const executor = new WorkflowExecutor(client);
 
     const worker: ConductorWorker = {
-      taskDefName: "taskmanager-test",
+      taskDefName: "taskmanager-error-test",
       execute: async () => {
         throw Error("This is a forced error");
       },
     };
 
-    const manager = new TaskManager(client, [worker]);
+    const manager = new TaskManager(client, [worker],{
+      options: { pollInterval: 1500 },
+    });
 
     manager.startPolling();
 
@@ -96,9 +101,6 @@ describe("TaskManager", () => {
       input: {},
       version: 1,
     });
-    await new Promise((r) => setTimeout(() => r(true), 3500));
     manager.stopPolling();
   });
 });
-
-
