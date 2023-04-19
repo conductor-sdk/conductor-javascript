@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ConductorClient
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ConductorClient
 
 # Class: ConductorClient
 
@@ -12,24 +12,14 @@
 
 ### Properties
 
-- [adminResource](common.ConductorClient.md#adminresource)
-- [applicationResource](common.ConductorClient.md#applicationresource)
-- [authorizationResource](common.ConductorClient.md#authorizationresource)
 - [eventResource](common.ConductorClient.md#eventresource)
-- [groupResource](common.ConductorClient.md#groupresource)
 - [healthCheckResource](common.ConductorClient.md#healthcheckresource)
 - [metadataResource](common.ConductorClient.md#metadataresource)
-- [migrationResource](common.ConductorClient.md#migrationresource)
-- [publisherConfigResource](common.ConductorClient.md#publisherconfigresource)
-- [queueAdminResource](common.ConductorClient.md#queueadminresource)
 - [request](common.ConductorClient.md#request)
 - [schedulerResource](common.ConductorClient.md#schedulerresource)
-- [secretResource](common.ConductorClient.md#secretresource)
-- [tagsExperimental](common.ConductorClient.md#tagsexperimental)
 - [taskResource](common.ConductorClient.md#taskresource)
+- [token](common.ConductorClient.md#token)
 - [tokenResource](common.ConductorClient.md#tokenresource)
-- [userResource](common.ConductorClient.md#userresource)
-- [versionResource](common.ConductorClient.md#versionresource)
 - [workflowBulkResource](common.ConductorClient.md#workflowbulkresource)
 - [workflowResource](common.ConductorClient.md#workflowresource)
 
@@ -48,204 +38,104 @@
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:64
+[src/common/open-api/ConductorClient.ts:44](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L44)
 
 ## Properties
 
-### adminResource
-
-• `Readonly` **adminResource**: `AdminResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:42
-
-___
-
-### applicationResource
-
-• `Readonly` **applicationResource**: `ApplicationResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:43
-
-___
-
-### authorizationResource
-
-• `Readonly` **authorizationResource**: `AuthorizationResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:44
-
-___
-
 ### eventResource
 
-• `Readonly` **eventResource**: `EventResourceService`
+• `Readonly` **eventResource**: [`EventResourceService`](common.EventResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:45
-
-___
-
-### groupResource
-
-• `Readonly` **groupResource**: `GroupResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:46
+[src/common/open-api/ConductorClient.ts:31](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L31)
 
 ___
 
 ### healthCheckResource
 
-• `Readonly` **healthCheckResource**: `HealthCheckResourceService`
+• `Readonly` **healthCheckResource**: [`HealthCheckResourceService`](common.HealthCheckResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:47
+[src/common/open-api/ConductorClient.ts:32](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L32)
 
 ___
 
 ### metadataResource
 
-• `Readonly` **metadataResource**: `MetadataResourceService`
+• `Readonly` **metadataResource**: [`MetadataResourceService`](common.MetadataResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:48
-
-___
-
-### migrationResource
-
-• `Readonly` **migrationResource**: `MigrationResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:49
-
-___
-
-### publisherConfigResource
-
-• `Readonly` **publisherConfigResource**: `PublisherConfigResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:50
-
-___
-
-### queueAdminResource
-
-• `Readonly` **queueAdminResource**: `QueueAdminResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:51
+[src/common/open-api/ConductorClient.ts:33](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L33)
 
 ___
 
 ### request
 
-• `Readonly` **request**: `BaseHttpRequest`
+• `Readonly` **request**: [`BaseHttpRequest`](common.BaseHttpRequest.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:62
+[src/common/open-api/ConductorClient.ts:40](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L40)
 
 ___
 
 ### schedulerResource
 
-• `Readonly` **schedulerResource**: `SchedulerResourceService`
+• `Readonly` **schedulerResource**: [`SchedulerResourceService`](common.SchedulerResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:52
-
-___
-
-### secretResource
-
-• `Readonly` **secretResource**: `SecretResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:53
-
-___
-
-### tagsExperimental
-
-• `Readonly` **tagsExperimental**: `TagsExperimentalService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:54
+[src/common/open-api/ConductorClient.ts:34](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L34)
 
 ___
 
 ### taskResource
 
-• `Readonly` **taskResource**: `TaskResourceService`
+• `Readonly` **taskResource**: [`TaskResourceService`](common.TaskResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:55
+[src/common/open-api/ConductorClient.ts:35](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L35)
+
+___
+
+### token
+
+• `Optional` `Readonly` **token**: `string` \| `Resolver`<`string`\>
+
+#### Defined in
+
+[src/common/open-api/ConductorClient.ts:42](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L42)
 
 ___
 
 ### tokenResource
 
-• `Readonly` **tokenResource**: `TokenResourceService`
+• `Readonly` **tokenResource**: [`TokenResourceService`](common.TokenResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:56
-
-___
-
-### userResource
-
-• `Readonly` **userResource**: `UserResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:57
-
-___
-
-### versionResource
-
-• `Readonly` **versionResource**: `VersionResourceService`
-
-#### Defined in
-
-src/common/open-api/ConductorClient.ts:58
+[src/common/open-api/ConductorClient.ts:36](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L36)
 
 ___
 
 ### workflowBulkResource
 
-• `Readonly` **workflowBulkResource**: `WorkflowBulkResourceService`
+• `Readonly` **workflowBulkResource**: [`WorkflowBulkResourceService`](common.WorkflowBulkResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:59
+[src/common/open-api/ConductorClient.ts:37](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L37)
 
 ___
 
 ### workflowResource
 
-• `Readonly` **workflowResource**: `WorkflowResourceService`
+• `Readonly` **workflowResource**: [`WorkflowResourceService`](common.WorkflowResourceService.md)
 
 #### Defined in
 
-src/common/open-api/ConductorClient.ts:60
+[src/common/open-api/ConductorClient.ts:38](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/ConductorClient.ts#L38)

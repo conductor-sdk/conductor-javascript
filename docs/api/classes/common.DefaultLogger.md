@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DefaultLogger
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DefaultLogger
 
 # Class: DefaultLogger
 
@@ -40,7 +40,7 @@
 
 #### Defined in
 
-src/common/ConductorLogger.ts:28
+[src/common/ConductorLogger.ts:28](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L28)
 
 ## Properties
 
@@ -50,7 +50,7 @@ src/common/ConductorLogger.ts:28
 
 #### Defined in
 
-src/common/ConductorLogger.ts:26
+[src/common/ConductorLogger.ts:26](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L26)
 
 ___
 
@@ -60,7 +60,7 @@ ___
 
 #### Defined in
 
-src/common/ConductorLogger.ts:25
+[src/common/ConductorLogger.ts:25](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L25)
 
 ## Methods
 
@@ -84,7 +84,7 @@ src/common/ConductorLogger.ts:25
 
 #### Defined in
 
-src/common/ConductorLogger.ts:56
+[src/common/ConductorLogger.ts:56](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L56)
 
 ___
 
@@ -108,7 +108,7 @@ ___
 
 #### Defined in
 
-src/common/ConductorLogger.ts:60
+[src/common/ConductorLogger.ts:60](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L60)
 
 ___
 
@@ -132,7 +132,7 @@ ___
 
 #### Defined in
 
-src/common/ConductorLogger.ts:52
+[src/common/ConductorLogger.ts:52](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L52)
 
 ___
 
@@ -153,4 +153,4 @@ ___
 
 #### Defined in
 
-src/common/ConductorLogger.ts:38
+[src/common/ConductorLogger.ts:38](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L38)

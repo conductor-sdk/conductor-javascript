@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / WorkflowDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / WorkflowDef
 
 # Interface: WorkflowDef
 
@@ -47,7 +47,7 @@ Omit.createTime
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:9
+[src/common/open-api/models/WorkflowDef.ts:9](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L9)
 
 ___
 
@@ -61,7 +61,7 @@ Omit.createdBy
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:11
+[src/common/open-api/models/WorkflowDef.ts:11](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L11)
 
 ___
 
@@ -75,7 +75,7 @@ Omit.description
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:14
+[src/common/open-api/models/WorkflowDef.ts:14](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L14)
 
 ___
 
@@ -89,7 +89,7 @@ Omit.failureWorkflow
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:19
+[src/common/open-api/models/WorkflowDef.ts:19](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L19)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:204
+[src/common/types.ts:211](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L211)
 
 ___
 
@@ -113,7 +113,7 @@ Omit.inputTemplate
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:27
+[src/common/open-api/models/WorkflowDef.ts:27](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L27)
 
 ___
 
@@ -127,7 +127,7 @@ Omit.name
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:13
+[src/common/open-api/models/WorkflowDef.ts:13](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L13)
 
 ___
 
@@ -141,7 +141,7 @@ Omit.outputParameters
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:18
+[src/common/open-api/models/WorkflowDef.ts:18](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L18)
 
 ___
 
@@ -155,7 +155,7 @@ Omit.ownerApp
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:8
+[src/common/open-api/models/WorkflowDef.ts:8](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L8)
 
 ___
 
@@ -169,7 +169,7 @@ Omit.ownerEmail
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:23
+[src/common/open-api/models/WorkflowDef.ts:23](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L23)
 
 ___
 
@@ -183,7 +183,7 @@ Omit.restartable
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:21
+[src/common/open-api/models/WorkflowDef.ts:21](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L21)
 
 ___
 
@@ -197,7 +197,7 @@ Omit.schemaVersion
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:20
+[src/common/open-api/models/WorkflowDef.ts:20](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L20)
 
 ___
 
@@ -207,7 +207,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:206
+[src/common/types.ts:213](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L213)
 
 ___
 
@@ -221,7 +221,7 @@ Omit.timeoutPolicy
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:24
+[src/common/open-api/models/WorkflowDef.ts:24](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L24)
 
 ___
 
@@ -235,7 +235,7 @@ Omit.timeoutSeconds
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:25
+[src/common/open-api/models/WorkflowDef.ts:25](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L25)
 
 ___
 
@@ -249,7 +249,7 @@ Omit.updateTime
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:10
+[src/common/open-api/models/WorkflowDef.ts:10](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L10)
 
 ___
 
@@ -263,7 +263,7 @@ Omit.updatedBy
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:12
+[src/common/open-api/models/WorkflowDef.ts:12](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L12)
 
 ___
 
@@ -277,7 +277,7 @@ Omit.variables
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:26
+[src/common/open-api/models/WorkflowDef.ts:26](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L26)
 
 ___
 
@@ -287,7 +287,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:205
+[src/common/types.ts:212](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L212)
 
 ___
 
@@ -301,4 +301,4 @@ Omit.workflowStatusListenerEnabled
 
 #### Defined in
 
-src/common/open-api/models/WorkflowDef.ts:22
+[src/common/open-api/models/WorkflowDef.ts:22](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/models/WorkflowDef.ts#L22)

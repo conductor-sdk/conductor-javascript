@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / EventTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / EventTaskDef
 
 # Interface: EventTaskDef
 
@@ -24,11 +24,11 @@
 
 ### asyncComplete
 
-• **asyncComplete**: `boolean`
+• `Optional` **asyncComplete**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:64
+[src/common/types.ts:63](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L63)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:63
+[src/common/types.ts:62](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L62)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -76,4 +76,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:62
+[src/common/types.ts:61](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L61)

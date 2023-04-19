@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / InlineTaskInputParameters
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / InlineTaskInputParameters
 
 # Interface: InlineTaskInputParameters
 
@@ -19,11 +19,11 @@
 
 ### evaluatorType
 
-• **evaluatorType**: ``"javascript"``
+• **evaluatorType**: ``"javascript"`` \| ``"graaljs"``
 
 #### Defined in
 
-src/common/types.ts:112
+[src/common/types.ts:112](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L112)
 
 ___
 
@@ -33,4 +33,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:113
+[src/common/types.ts:113](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L113)

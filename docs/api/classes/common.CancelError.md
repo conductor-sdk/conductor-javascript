@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / CancelError
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / CancelError
 
 # Class: CancelError
 
@@ -50,7 +50,7 @@ Error.constructor
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:6
+[src/common/open-api/core/CancelablePromise.ts:6](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L6)
 
 ## Properties
 
@@ -64,7 +64,7 @@ Error.message
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1029
+node_modules/typescript/lib/lib.es5.d.ts:1023
 
 ___
 
@@ -78,7 +78,7 @@ Error.name
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1028
+node_modules/typescript/lib/lib.es5.d.ts:1022
 
 ___
 
@@ -92,7 +92,7 @@ Error.stack
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1030
+node_modules/typescript/lib/lib.es5.d.ts:1024
 
 ___
 
@@ -127,7 +127,7 @@ Error.prepareStackTrace
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:11
+node_modules/@types/node/ts4.8/globals.d.ts:11
 
 ___
 
@@ -141,7 +141,7 @@ Error.stackTraceLimit
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:13
+node_modules/@types/node/ts4.8/globals.d.ts:13
 
 ## Accessors
 
@@ -155,7 +155,7 @@ node_modules/@types/node/globals.d.ts:13
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:11
+[src/common/open-api/core/CancelablePromise.ts:11](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L11)
 
 ## Methods
 
@@ -182,4 +182,4 @@ Error.captureStackTrace
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:4
+node_modules/@types/node/ts4.8/globals.d.ts:4

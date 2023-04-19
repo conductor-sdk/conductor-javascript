@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / JoinTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / JoinTaskDef
 
 # Interface: JoinTaskDef
 
@@ -26,21 +26,21 @@
 
 ### asyncComplete
 
-• **asyncComplete**: `boolean`
+• `Optional` **asyncComplete**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:78
+[src/common/types.ts:77](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L77)
 
 ___
 
 ### inputParameters
 
-• **inputParameters**: `Record`<`string`, `string`\>
+• `Optional` **inputParameters**: `Record`<`string`, `string`\>
 
 #### Defined in
 
-src/common/types.ts:75
+[src/common/types.ts:74](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L74)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:76
+[src/common/types.ts:75](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L75)
 
 ___
 
@@ -64,17 +64,17 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
 ### optional
 
-• **optional**: `boolean`
+• `Optional` **optional**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:77
+[src/common/types.ts:76](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L76)
 
 ___
 
@@ -88,7 +88,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -98,4 +98,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:74
+[src/common/types.ts:73](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L73)

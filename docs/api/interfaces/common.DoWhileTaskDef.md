@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DoWhileTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DoWhileTaskDef
 
 # Interface: DoWhileTaskDef
 
@@ -15,7 +15,6 @@
 ### Properties
 
 - [asyncComplete](common.DoWhileTaskDef.md#asynccomplete)
-- [decisionCases](common.DoWhileTaskDef.md#decisioncases)
 - [inputParameters](common.DoWhileTaskDef.md#inputparameters)
 - [loopCondition](common.DoWhileTaskDef.md#loopcondition)
 - [loopOver](common.DoWhileTaskDef.md#loopover)
@@ -29,31 +28,21 @@
 
 ### asyncComplete
 
-• **asyncComplete**: `boolean`
+• `Optional` **asyncComplete**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:56
-
-___
-
-### decisionCases
-
-• **decisionCases**: `Record`<`string`, [`TaskDefTypes`](../modules/common.md#taskdeftypes)[]\>
-
-#### Defined in
-
-src/common/types.ts:53
+[src/common/types.ts:55](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L55)
 
 ___
 
 ### inputParameters
 
-• **inputParameters**: `Record`<`string`, `string`\>
+• **inputParameters**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-src/common/types.ts:51
+[src/common/types.ts:51](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L51)
 
 ___
 
@@ -63,7 +52,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:57
+[src/common/types.ts:56](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L56)
 
 ___
 
@@ -73,7 +62,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:58
+[src/common/types.ts:57](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L57)
 
 ___
 
@@ -87,27 +76,27 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
 ### optional
 
-• **optional**: `boolean`
+• `Optional` **optional**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:55
+[src/common/types.ts:54](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L54)
 
 ___
 
 ### startDelay
 
-• **startDelay**: `number`
+• `Optional` **startDelay**: `number`
 
 #### Defined in
 
-src/common/types.ts:54
+[src/common/types.ts:53](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L53)
 
 ___
 
@@ -121,7 +110,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -131,4 +120,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:52
+[src/common/types.ts:52](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L52)

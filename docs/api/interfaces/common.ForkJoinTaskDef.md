@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ForkJoinTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ForkJoinTaskDef
 
 # Interface: ForkJoinTaskDef
 
@@ -28,17 +28,17 @@
 
 #### Defined in
 
-src/common/types.ts:70
+[src/common/types.ts:69](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L69)
 
 ___
 
 ### inputParameters
 
-• **inputParameters**: `Record`<`string`, `string`\>
+• `Optional` **inputParameters**: `Record`<`string`, `string`\>
 
 #### Defined in
 
-src/common/types.ts:69
+[src/common/types.ts:68](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L68)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -66,7 +66,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -76,4 +76,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:68
+[src/common/types.ts:67](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L67)

@@ -60,7 +60,9 @@ export class TaskManager {
       workerID: workerId(providedOptions),
     };
   }
-
+  /**
+   * Start polling for tasks
+   */
   startPolling = () => {
     this.workers.forEach((worker) => {
       this.tasks[worker.taskDefName] = [];
@@ -87,7 +89,9 @@ export class TaskManager {
       }
     });
   };
-
+  /**
+   * Stops polling for tasks
+   */
   stopPolling = () => {
     for (const taskType in this.tasks) {
       this.tasks[taskType].forEach((runner) => runner.stopPolling());

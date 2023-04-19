@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [core](../modules/core.md) / ConductorError
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [core](../modules/core.md) / ConductorError
 
 # Class: ConductorError
 
@@ -49,7 +49,7 @@ Error.constructor
 
 #### Defined in
 
-src/core/types.ts:30
+[src/core/types.ts:6](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/types.ts#L6)
 
 ## Properties
 
@@ -59,7 +59,7 @@ src/core/types.ts:30
 
 #### Defined in
 
-src/core/types.ts:28
+[src/core/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/types.ts#L4)
 
 ___
 
@@ -69,7 +69,7 @@ ___
 
 #### Defined in
 
-src/core/types.ts:27
+[src/core/types.ts:3](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/types.ts#L3)
 
 ___
 
@@ -83,7 +83,7 @@ Error.message
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1029
+node_modules/typescript/lib/lib.es5.d.ts:1023
 
 ___
 
@@ -97,7 +97,7 @@ Error.name
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1028
+node_modules/typescript/lib/lib.es5.d.ts:1022
 
 ___
 
@@ -111,7 +111,7 @@ Error.stack
 
 #### Defined in
 
-node_modules/typescript/lib/lib.es5.d.ts:1030
+node_modules/typescript/lib/lib.es5.d.ts:1024
 
 ___
 
@@ -146,7 +146,7 @@ Error.prepareStackTrace
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:11
+node_modules/@types/node/ts4.8/globals.d.ts:11
 
 ___
 
@@ -160,7 +160,7 @@ Error.stackTraceLimit
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:13
+node_modules/@types/node/ts4.8/globals.d.ts:13
 
 ## Methods
 
@@ -187,4 +187,4 @@ Error.captureStackTrace
 
 #### Defined in
 
-node_modules/@types/node/globals.d.ts:4
+node_modules/@types/node/ts4.8/globals.d.ts:4

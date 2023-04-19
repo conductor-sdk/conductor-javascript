@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / CancelablePromise
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / CancelablePromise
 
 # Class: CancelablePromise<T\>
 
@@ -62,7 +62,7 @@
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:35
+[src/common/open-api/core/CancelablePromise.ts:35](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L35)
 
 ## Properties
 
@@ -72,11 +72,11 @@ src/common/open-api/core/CancelablePromise.ts:35
 
 #### Implementation of
 
-Promise.\_\_@toStringTag@138
+Promise.\_\_@toStringTag@137
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:25
+[src/common/open-api/core/CancelablePromise.ts:25](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L25)
 
 ___
 
@@ -86,7 +86,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:30
+[src/common/open-api/core/CancelablePromise.ts:30](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L30)
 
 ___
 
@@ -96,7 +96,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:29
+[src/common/open-api/core/CancelablePromise.ts:29](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L29)
 
 ___
 
@@ -106,7 +106,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:28
+[src/common/open-api/core/CancelablePromise.ts:28](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L28)
 
 ___
 
@@ -116,7 +116,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:27
+[src/common/open-api/core/CancelablePromise.ts:27](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L27)
 
 ___
 
@@ -126,7 +126,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:31
+[src/common/open-api/core/CancelablePromise.ts:31](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L31)
 
 ___
 
@@ -150,7 +150,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:33
+[src/common/open-api/core/CancelablePromise.ts:33](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L33)
 
 ___
 
@@ -174,7 +174,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:32
+[src/common/open-api/core/CancelablePromise.ts:32](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L32)
 
 ## Accessors
 
@@ -188,7 +188,7 @@ src/common/open-api/core/CancelablePromise.ts:32
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:125
+[src/common/open-api/core/CancelablePromise.ts:125](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L125)
 
 ## Methods
 
@@ -202,7 +202,7 @@ src/common/open-api/core/CancelablePromise.ts:125
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:106
+[src/common/open-api/core/CancelablePromise.ts:106](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L106)
 
 ___
 
@@ -232,7 +232,7 @@ Promise.catch
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:96
+[src/common/open-api/core/CancelablePromise.ts:96](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L96)
 
 ___
 
@@ -256,7 +256,7 @@ Promise.finally
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:102
+[src/common/open-api/core/CancelablePromise.ts:102](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L102)
 
 ___
 
@@ -288,4 +288,4 @@ Promise.then
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:89
+[src/common/open-api/core/CancelablePromise.ts:89](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L89)

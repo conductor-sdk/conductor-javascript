@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / KafkaPublishTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / KafkaPublishTaskDef
 
 # Interface: KafkaPublishTaskDef
 
@@ -29,17 +29,11 @@
 
 | Name | Type |
 | :------ | :------ |
-| `kafka_request` | { `bootStrapServers`: `string` ; `headers`: `Record`<`string`, `string`\> ; `key`: `string` ; `keySerializer`: `string` ; `topic`: `string` ; `value`: `string`  } |
-| `kafka_request.bootStrapServers` | `string` |
-| `kafka_request.headers` | `Record`<`string`, `string`\> |
-| `kafka_request.key` | `string` |
-| `kafka_request.keySerializer` | `string` |
-| `kafka_request.topic` | `string` |
-| `kafka_request.value` | `string` |
+| `kafka_request` | [`KafkaPublishInputParameters`](common.KafkaPublishInputParameters.md) |
 
 #### Defined in
 
-src/common/types.ts:133
+[src/common/types.ts:142](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L142)
 
 ___
 
@@ -53,7 +47,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -67,7 +61,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -77,4 +71,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:143
+[src/common/types.ts:145](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L145)

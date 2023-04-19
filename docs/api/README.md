@@ -1,68 +1,57 @@
-@io-orkes/conductor-typescript / [Modules](modules.md)
+@io-orkes/conductor-javascript / [Modules](modules.md)
 
-# Netflix Conductor SDK
+# Netflix Conductor Javascript SDK
 
-`conductor-typescript` repository provides the client SDKs to build Task workers with Typescript
+The `conductor-javascript` repository provides the client SDKs to build task workers in javascript/typescript.
 
-## Quick Start
+Building the task workers in javascript mainly consists of the following steps:
 
-1. [Setup conductor-typescript](#Setup-conductor)
-2. [Create and run Task Workers](docs/worker/README.md)
-3. [Create workflows using Code](docs/workflow/README.md)
+1. Setup conductor-javascript package
+2. [Create and run task workers](workers_sdk.md)
+3. [Create workflows using code](workflow_sdk.md)
 4. [Api Docs](docs/api/README.md)
+   
+### Setup Conductor Javascript Package
 
-### Setup conductor
+* Get the package from npm
 
-Simple connection to conductor
-
-```typescript
-const client = new ConductorClient({
-  serverUrl: "https://play.orkes.io/api",
-});
-
+```shell
+npm i @io-orkes/conductor-javascript
 ```
-#### Using TLS
+or
 
-The client uses `node-fetch` which supports node.js's [`httpsAgent` options](https://nodejs.org/api/https.html#new-agentoptions). For example:
-
-```typescript
-import {Agent} from "https"
-import {ConductorClient} from "@io-orkes/conductor-typescript";
-
-const agentOptions = {
-  key: "<buffer>",
-  cert: "<buffer>",
-  ca: "<buffer>",
-  servername: 'play.orkes.io',
-  // ...
-}
-
-const client = new ConductorClient({
-  serverUrl: 'https://play.orkes.io/api',
-  AGENT: new Agent(agentOptions)
-})
-
-const taskManager = new TaskManager(client, [ /* workers */ ])
-taskManager.startPolling()
+```shell
+yarn add @io-orkes/conductor-javascript
 ```
 
-#### Connect to conductor using Orkes
+## Configurations
+
+### Authentication Settings (Optional)
+Configure the authentication settings if your Conductor server requires authentication.
+* keyId: Key for authentication.
+* keySecret: Secret for the key.
+
+### Access Control Setup
+See [Access Control](https://orkes.io/content/docs/getting-started/concepts/access-control) for more details on role-based access control with Conductor and generating API keys for your environment.
+
+### Configure API Client
 
 ```typescript
-
 /**
  * Application keys generated from the Application menu > Create Application
  * then edit and create Access Keys
  *
  */
-import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-typescript";
+import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-javascript";
 
 const config: Partial<OrkesApiConfig> = {
-  keyId: "aa17000e-a478-48cd-ae5c-d54c0fd850de",
-  keySecret: "HUh57n1Q4DT5psfU0A42PDpwxID4ln5OgwNcSSWXXXzRqsJA",
+  keyId: "XXX", // optional
+  keySecret: "XXXX", // optional
   serverUrl: "https://play.orkes.io/api",
 };
 
 orkesConductorClient(config).then(client => ..... );
 
 ```
+
+### Next: [Create and run task workers](workers_sdk.md)

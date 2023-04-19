@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DefaultLoggerConfig
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / DefaultLoggerConfig
 
 # Interface: DefaultLoggerConfig
 
@@ -19,7 +19,7 @@
 
 #### Defined in
 
-src/common/ConductorLogger.ts:9
+[src/common/ConductorLogger.ts:9](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L9)
 
 ___
 
@@ -29,4 +29,4 @@ ___
 
 #### Defined in
 
-src/common/ConductorLogger.ts:10
+[src/common/ConductorLogger.ts:10](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/ConductorLogger.ts#L10)

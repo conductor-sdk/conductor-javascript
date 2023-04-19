@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SimpleTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SimpleTaskDef
 
 # Interface: SimpleTaskDef
 
@@ -27,7 +27,7 @@
 
 #### Defined in
 
-src/common/types.ts:153
+[src/common/types.ts:155](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L155)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -65,4 +65,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:152
+[src/common/types.ts:154](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L154)

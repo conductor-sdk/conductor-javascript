@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / TerminateTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / TerminateTaskDef
 
 # Interface: TerminateTaskDef
 
@@ -31,12 +31,13 @@
 
 | Name | Type |
 | :------ | :------ |
+| `terminationReason?` | `string` |
 | `terminationStatus` | ``"FAILED"`` \| ``"COMPLETED"`` |
-| `workflowOutput` | `Record`<`string`, `string`\> |
+| `workflowOutput?` | `Record`<`string`, `string`\> |
 
 #### Defined in
 
-src/common/types.ts:176
+[src/common/types.ts:178](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L178)
 
 ___
 
@@ -50,27 +51,27 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
 ### optional
 
-• **optional**: `boolean`
+• `Optional` **optional**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:182
+[src/common/types.ts:185](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L185)
 
 ___
 
 ### startDelay
 
-• **startDelay**: `number`
+• `Optional` **startDelay**: `number`
 
 #### Defined in
 
-src/common/types.ts:181
+[src/common/types.ts:184](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L184)
 
 ___
 
@@ -84,7 +85,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -94,4 +95,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:180
+[src/common/types.ts:183](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L183)

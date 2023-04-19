@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SwitchTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SwitchTaskDef
 
 # Interface: SwitchTaskDef
 
@@ -31,7 +31,7 @@
 
 #### Defined in
 
-src/common/types.ts:169
+[src/common/types.ts:171](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L171)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:170
+[src/common/types.ts:172](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L172)
 
 ___
 
@@ -51,7 +51,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:171
+[src/common/types.ts:173](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L173)
 
 ___
 
@@ -61,7 +61,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:172
+[src/common/types.ts:174](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L174)
 
 ___
 
@@ -71,7 +71,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:167
+[src/common/types.ts:169](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L169)
 
 ___
 
@@ -85,7 +85,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -99,7 +99,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -109,4 +109,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:168
+[src/common/types.ts:170](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L170)

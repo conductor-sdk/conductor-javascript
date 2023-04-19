@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SetVariableTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / SetVariableTaskDef
 
 # Interface: SetVariableTaskDef
 
@@ -23,11 +23,11 @@
 
 ### inputParameters
 
-• **inputParameters**: `Record`<`string`, `string`\>
+• **inputParameters**: `Record`<`string`, `unknown`\>
 
 #### Defined in
 
-src/common/types.ts:148
+[src/common/types.ts:150](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L150)
 
 ___
 
@@ -41,7 +41,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -55,7 +55,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -65,4 +65,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:147
+[src/common/types.ts:149](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L149)

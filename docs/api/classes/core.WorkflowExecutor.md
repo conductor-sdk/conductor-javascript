@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [core](../modules/core.md) / WorkflowExecutor
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [core](../modules/core.md) / WorkflowExecutor
 
 # Class: WorkflowExecutor
 
@@ -16,6 +16,7 @@
 
 ### Methods
 
+- [getTask](core.WorkflowExecutor.md#gettask)
 - [getWorkflow](core.WorkflowExecutor.md#getworkflow)
 - [getWorkflowStatus](core.WorkflowExecutor.md#getworkflowstatus)
 - [pause](core.WorkflowExecutor.md#pause)
@@ -46,7 +47,7 @@
 
 #### Defined in
 
-src/core/executor.ts:27
+[src/core/executor.ts:27](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L27)
 
 ## Properties
 
@@ -56,13 +57,33 @@ src/core/executor.ts:27
 
 #### Defined in
 
-src/core/executor.ts:25
+[src/core/executor.ts:25](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L25)
 
 ## Methods
 
+### getTask
+
+▸ **getTask**(`taskId`): `Promise`<[`Task`](../modules/common.md#task)\>
+
+#### Parameters
+
+| Name | Type |
+| :------ | :------ |
+| `taskId` | `string` |
+
+#### Returns
+
+`Promise`<[`Task`](../modules/common.md#task)\>
+
+#### Defined in
+
+[src/core/executor.ts:308](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L308)
+
+___
+
 ### getWorkflow
 
-▸ **getWorkflow**(`workflowInstanceId`, `includeTasks`, `retry?`): `Promise`<`Workflow`\>
+▸ **getWorkflow**(`workflowInstanceId`, `includeTasks`, `retry?`): `Promise`<[`Workflow`](../modules/common.md#workflow)\>
 
 Takes an workflowInstanceId and an includeTasks and an optional retry parameter returns the whole execution status.
 If includeTasks flag is provided. Details of tasks execution will be returned as well,
@@ -78,11 +99,11 @@ retry specifies the amount of retrys before throwing an error.
 
 #### Returns
 
-`Promise`<`Workflow`\>
+`Promise`<[`Workflow`](../modules/common.md#workflow)\>
 
 #### Defined in
 
-src/core/executor.ts:68
+[src/core/executor.ts:68](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L68)
 
 ___
 
@@ -108,7 +129,7 @@ Promise<WorkflowStatus>
 
 #### Defined in
 
-src/core/executor.ts:101
+[src/core/executor.ts:101](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L101)
 
 ___
 
@@ -130,7 +151,7 @@ Pauses a running workflow
 
 #### Defined in
 
-src/core/executor.ts:120
+[src/core/executor.ts:120](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L120)
 
 ___
 
@@ -145,7 +166,7 @@ Reruns workflowInstanceId workflow. with new parameters
 | Name | Type | Description |
 | :------ | :------ | :------ |
 | `workflowInstanceId` | `string` | current workflow execution |
-| `rerunWorkflowRequest` | `Partial`<[`RerunWorkflowRequest`](../interfaces/core.RerunWorkflowRequest.md)<`Record`<`string`, `any`\>\>\> | Rerun Workflow Execution Request |
+| `rerunWorkflowRequest` | `Partial`<[`RerunWorkflowRequest`](../modules/common.md#rerunworkflowrequest)\> | Rerun Workflow Execution Request |
 
 #### Returns
 
@@ -153,7 +174,7 @@ Reruns workflowInstanceId workflow. with new parameters
 
 #### Defined in
 
-src/core/executor.ts:132
+[src/core/executor.ts:132](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L132)
 
 ___
 
@@ -178,7 +199,7 @@ null
 
 #### Defined in
 
-src/core/executor.ts:37
+[src/core/executor.ts:37](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L37)
 
 ___
 
@@ -201,7 +222,7 @@ Restarts workflow with workflowInstanceId, if useLatestDefinition uses last defi
 
 #### Defined in
 
-src/core/executor.ts:147
+[src/core/executor.ts:150](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L150)
 
 ___
 
@@ -223,7 +244,7 @@ Resumes a previously paused execution
 
 #### Defined in
 
-src/core/executor.ts:159
+[src/core/executor.ts:165](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L165)
 
 ___
 
@@ -247,7 +268,7 @@ if resumeSubworkflowTasks is true will resume tasks in spawned subworkflows
 
 #### Defined in
 
-src/core/executor.ts:173
+[src/core/executor.ts:179](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L179)
 
 ___
 
@@ -274,7 +295,7 @@ Searches for existing workflows given the following querys
 
 #### Defined in
 
-src/core/executor.ts:189
+[src/core/executor.ts:198](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L198)
 
 ___
 
@@ -291,7 +312,7 @@ by providing a skipTaskRequest you can set the input and the output of the skipp
 | :------ | :------ |
 | `workflowInstanceId` | `string` |
 | `taskReferenceName` | `string` |
-| `skipTaskRequest` | `Partial`<[`SkipTaskRequest`](../interfaces/core.SkipTaskRequest.md)\> |
+| `skipTaskRequest` | `Partial`<[`SkipTaskRequest`](../modules/common.md#skiptaskrequest)\> |
 
 #### Returns
 
@@ -299,7 +320,7 @@ by providing a skipTaskRequest you can set the input and the output of the skipp
 
 #### Defined in
 
-src/core/executor.ts:218
+[src/core/executor.ts:227](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L227)
 
 ___
 
@@ -313,7 +334,7 @@ Takes a StartWorkflowRequest. returns a Promise<string> with the workflowInstanc
 
 | Name | Type |
 | :------ | :------ |
-| `workflowRequest` | [`StartWorkflowRequest`](../interfaces/core.StartWorkflowRequest.md)<`Record`<`string`, `any`\>\> |
+| `workflowRequest` | [`StartWorkflowRequest`](../modules/common.md#startworkflowrequest) |
 
 #### Returns
 
@@ -321,7 +342,7 @@ Takes a StartWorkflowRequest. returns a Promise<string> with the workflowInstanc
 
 #### Defined in
 
-src/core/executor.ts:47
+[src/core/executor.ts:47](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L47)
 
 ___
 
@@ -333,7 +354,7 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `workflowsRequest` | [`StartWorkflowRequest`](../interfaces/core.StartWorkflowRequest.md)<`Record`<`string`, `any`\>\>[] |
+| `workflowsRequest` | [`StartWorkflowRequest`](../modules/common.md#startworkflowrequest)[] |
 
 #### Returns
 
@@ -341,7 +362,7 @@ ___
 
 #### Defined in
 
-src/core/executor.ts:53
+[src/core/executor.ts:53](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L53)
 
 ___
 
@@ -364,13 +385,13 @@ Takes an workflowInstanceId, and terminates a running workflow
 
 #### Defined in
 
-src/core/executor.ts:237
+[src/core/executor.ts:246](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L246)
 
 ___
 
 ### updateTask
 
-▸ **updateTask**(`taskId`, `workflowInstanceId`, `taskStatus`, `taskOutput`): `any`
+▸ **updateTask**(`taskId`, `workflowInstanceId`, `taskStatus`, `outputData`): `any`
 
 Takes a taskId and a workflowInstanceId. Will update the task for the corresponding taskId
 
@@ -380,8 +401,8 @@ Takes a taskId and a workflowInstanceId. Will update the task for the correspond
 | :------ | :------ |
 | `taskId` | `string` |
 | `workflowInstanceId` | `string` |
-| `taskStatus` | [`TaskResult`](../enums/core.TaskResult.md) |
-| `taskOutput` | `Record`<`string`, `any`\> |
+| `taskStatus` | [`TaskResultStatus`](../modules/core.md#taskresultstatus) |
+| `outputData` | `Record`<`string`, `any`\> |
 
 #### Returns
 
@@ -389,7 +410,7 @@ Takes a taskId and a workflowInstanceId. Will update the task for the correspond
 
 #### Defined in
 
-src/core/executor.ts:251
+[src/core/executor.ts:260](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L260)
 
 ___
 
@@ -405,7 +426,7 @@ Updates a task by reference Name
 | :------ | :------ |
 | `taskReferenceName` | `string` |
 | `workflowInstanceId` | `string` |
-| `status` | [`TaskResult`](../enums/core.TaskResult.md) |
+| `status` | [`TaskResultStatus`](../modules/core.md#taskresultstatus) |
 | `taskOutput` | `Record`<`string`, `any`\> |
 
 #### Returns
@@ -414,4 +435,4 @@ Updates a task by reference Name
 
 #### Defined in
 
-src/core/executor.ts:277
+[src/core/executor.ts:287](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/core/executor.ts#L287)

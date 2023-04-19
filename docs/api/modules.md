@@ -1,6 +1,6 @@
-[@io-orkes/conductor-typescript](README.md) / Modules
+[@io-orkes/conductor-javascript](README.md) / Modules
 
-# @io-orkes/conductor-typescript
+# @io-orkes/conductor-javascript
 
 ## Table of contents
 
@@ -8,3 +8,4 @@
 
 - [common](modules/common.md)
 - [core](modules/core.md)
+- [task](modules/task.md)

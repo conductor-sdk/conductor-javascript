@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ForkJoinDynamicDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / ForkJoinDynamicDef
 
 # Interface: ForkJoinDynamicDef
 
@@ -28,11 +28,11 @@
 
 ### asyncComplete
 
-• **asyncComplete**: `boolean`
+• `Optional` **asyncComplete**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:91
+[src/common/types.ts:90](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L90)
 
 ___
 
@@ -42,7 +42,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:88
+[src/common/types.ts:87](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L87)
 
 ___
 
@@ -52,7 +52,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:87
+[src/common/types.ts:86](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L86)
 
 ___
 
@@ -64,12 +64,12 @@ ___
 
 | Name | Type |
 | :------ | :------ |
-| `dynamicTasks` | `string` |
-| `dynamicTasksInput` | `string` |
+| `dynamicTasks` | `any` |
+| `dynamicTasksInput` | `any` |
 
 #### Defined in
 
-src/common/types.ts:82
+[src/common/types.ts:81](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L81)
 
 ___
 
@@ -83,27 +83,27 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
 ### optional
 
-• **optional**: `boolean`
+• `Optional` **optional**: `boolean`
 
 #### Defined in
 
-src/common/types.ts:90
+[src/common/types.ts:89](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L89)
 
 ___
 
 ### startDelay
 
-• **startDelay**: `number`
+• `Optional` **startDelay**: `number`
 
 #### Defined in
 
-src/common/types.ts:89
+[src/common/types.ts:88](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L88)
 
 ___
 
@@ -117,7 +117,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -127,4 +127,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:86
+[src/common/types.ts:85](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L85)

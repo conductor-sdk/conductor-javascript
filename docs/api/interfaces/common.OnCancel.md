@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / OnCancel
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / OnCancel
 
 # Interface: OnCancel
 
@@ -22,7 +22,7 @@
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:21
+[src/common/open-api/core/CancelablePromise.ts:21](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L21)
 
 ## Table of contents
 
@@ -40,7 +40,7 @@ src/common/open-api/core/CancelablePromise.ts:21
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:19
+[src/common/open-api/core/CancelablePromise.ts:19](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L19)
 
 ___
 
@@ -50,7 +50,7 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:18
+[src/common/open-api/core/CancelablePromise.ts:18](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L18)
 
 ___
 
@@ -60,4 +60,4 @@ ___
 
 #### Defined in
 
-src/common/open-api/core/CancelablePromise.ts:17
+[src/common/open-api/core/CancelablePromise.ts:17](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/open-api/core/CancelablePromise.ts#L17)

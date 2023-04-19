@@ -1,4 +1,4 @@
-[@io-orkes/conductor-typescript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / HttpTaskDef
+[@io-orkes/conductor-javascript](../README.md) / [Modules](../modules.md) / [common](../modules/common.md) / HttpTaskDef
 
 # Interface: HttpTaskDef
 
@@ -33,19 +33,11 @@
 
 | Name | Type |
 | :------ | :------ |
-| `http_request` | { `accept?`: `string` ; `body?`: `unknown` ; `connectionTimeOut?`: `number` ; `contentType?`: `string` ; `headers?`: `Record`<`string`, `string`\> ; `method`: ``"GET"`` \| ``"PUT"`` \| ``"POST"`` \| ``"DELETE"`` \| ``"OPTIONS"`` \| ``"HEAD"`` ; `readTimeOut?`: `string` ; `uri`: `string`  } |
-| `http_request.accept?` | `string` |
-| `http_request.body?` | `unknown` |
-| `http_request.connectionTimeOut?` | `number` |
-| `http_request.contentType?` | `string` |
-| `http_request.headers?` | `Record`<`string`, `string`\> |
-| `http_request.method` | ``"GET"`` \| ``"PUT"`` \| ``"POST"`` \| ``"DELETE"`` \| ``"OPTIONS"`` \| ``"HEAD"`` |
-| `http_request.readTimeOut?` | `string` |
-| `http_request.uri` | `string` |
+| `http_request` | [`HttpInputParameters`](common.HttpInputParameters.md) |
 
 #### Defined in
 
-src/common/types.ts:95
+[src/common/types.ts:104](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L104)
 
 ___
 
@@ -59,7 +51,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:4
+[src/common/types.ts:4](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L4)
 
 ___
 
@@ -73,7 +65,7 @@ ___
 
 #### Defined in
 
-src/common/types.ts:5
+[src/common/types.ts:5](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L5)
 
 ___
 
@@ -83,4 +75,4 @@ ___
 
 #### Defined in
 
-src/common/types.ts:108
+[src/common/types.ts:108](https://github.com/conductor-sdk/conductor-javascript/blob/dbd8275/src/common/types.ts#L108)
