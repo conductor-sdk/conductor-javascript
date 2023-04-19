@@ -8,8 +8,6 @@ import {
   orkesConductorClient,
   TaskRunner,
   simpleTask,
-  generate,
-  TaskType,
 } from "@io-orkes/conductor-javascript";
 
 //API client instance with server address and authentication details
@@ -35,14 +33,6 @@ const factoryWf = {
   timeoutSeconds: 0,
 };
 const workflow = executor.registerWorkflow(true, factoryWf);
-
-// or you can use the generator function.
-const genWorkflow = generate({
-  name: "my_first_workflow",
-  tasks: [{ type: TaskType.SIMPLE, name: "simple_task" }],
-});
-
-const workflow = executor.registerWorkflow(true, genWorkflow);
 ```
 
 ### Execute Workflow
@@ -61,7 +51,6 @@ import {
   orkesConductorClient,
   WorkflowExecutor,
   ConductorClient,
-  generate,
   TaskType,
 } from "@io-orkes/conductor-javascript";
 
@@ -78,41 +67,27 @@ const client = await clientPromise;
 const executor = new WorkflowExecutor(client);
 
 // Create a workflow
-const sumTwoNumbers = generate({
-  name: "sumTwoNumbers",
-  tasks: [
-    {
-      name: "sum_two_numbers",
-      inputParameters: {
-        numberOne: "${workflow.input.numberOne}",
-        numberTwo: "${workflow.input.numberTwo}",
-        expression: function ($: { numberOne: number; numberTwo: number }) {
-          // The returned function will be executed by conductors. INLINE task
-          return function () {
-            return $.numberOne + $.numberTwo;
-          };
-        },
-      },
-      type: TaskType.INLINE,
-    },
-  ],
-  inputParameters: ["numberOne", "numberTwo"],
-  outputParameters: {
-    result: "${sum_two_numbers_ref.output.result}",
-  },
-});
-
-executor.registerWorkflow(true, sumTwoNumbers);
-
-const executionId = await executor.startWorkflow({
-  name: sumTwoNumbers.name,
+const factoryWf = {
+  name: "my_first_workflow",
   version: 1,
-  input: {
-    numberOne: 1,
-    numberTwo: 2,
-  },
+  ownerEmail: "developers@orkes.io",
+  tasks: [simpleTask("simple_task_ref", "simple_task", {})],
+  inputParameters: [],
+  outputParameters: {},
+  timeoutSeconds: 0,
+};
+
+// Register workflow
+const workflow = executor.registerWorkflow(true, factoryWf);
+
+// Start Workflow
+const executionId = await executor.startWorkflow({
+  name: factoryWf.name,
+  version: 1,
+  input: {},
 });
 
+// Query Workflow status
 const workflowStatus = await executor.getWorkflow(executionId, true);
 
 // The workflow status returns the following type
