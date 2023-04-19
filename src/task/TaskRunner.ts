@@ -59,6 +59,9 @@ export class TaskRunner {
     this.errorHandler = errorHandler;
   }
 
+  /**
+   * Starts polling for work
+   */
   startPolling = () => {
     if (this.isPolling) {
       throw new Error("Runner is already started");
@@ -67,7 +70,9 @@ export class TaskRunner {
     this.isPolling = true;
     return this.poll();
   };
-
+  /**
+   * Stops Polling for work
+   */
   stopPolling = () => {
     this.isPolling = false;
   };

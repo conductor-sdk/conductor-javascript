@@ -4,7 +4,7 @@ import { nameTaskNameGenerator } from "./common";
 
 const defaultInputParams: InlineTaskInputParameters = {
   value: "${workflow.input.value}",
-  evaluatorType: "javascript",
+  evaluatorType: "graaljs",
   expression: "true",
 };
 
@@ -21,7 +21,7 @@ export const generateEvaluationCode = (
     const resultingFunctionAsString = resultingFunction.toString();
 
     const toReturn: InlineTaskInputParameters = {
-      evaluatorType: "javascript",
+      evaluatorType: "graaljs",
       ...(inputParametersPartial || { value: "true" }),
       expression: `(${resultingFunctionAsString})();`,
     };
@@ -29,15 +29,15 @@ export const generateEvaluationCode = (
   }
   return {
     ...defaultInputParams,
+    evaluatorType: "graaljs",
     ...inputParametersPartial,
-    evaluatorType: "javascript",
   } as InlineTaskInputParameters;
 };
 
 /**
  * Takes an optional partial InlineTaskDefGen
  * generates a task replacing default/fake values with provided overrides
- * 
+ *
  * <b>note</b> that the inputParameters.expression can be either a string containing javascript
  * or a function thar returns an ES5 function
  *

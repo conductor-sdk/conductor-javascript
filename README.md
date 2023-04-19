@@ -1,66 +1,40 @@
-# Conductor Javascript SDK
+# Netflix Conductor Javascript SDK
 
-This project provides client SDKs to interact with [Netflix](https://conductor.netflix.com/) and [Orkes](https://orkes.io/) conductor servers.
+The `conductor-javascript` repository provides the client SDKs to build task workers in javascript/typescript.
 
-## Quick Start
+Building the task workers in javascript mainly consists of the following steps:
 
-1. [Setup](#Setup-conductor)
-2. [Create and run Task Workers](docs/worker/README.md)
-3. [Create workflows using Code](docs/workflow/README.md)
+1. Setup conductor-javascript package
+2. [Create and run task workers](workers_sdk.md)
+3. [Create workflows using code](workflow_sdk.md)
 4. [Api Docs](docs/api/README.md)
+   
+### Setup Conductor Javascript Package
 
-### Setup conductor
+* Get the package from npm
 
-Simple connection to conductor
+```shell
+npm i @io-orkes/conductor-javascript
+```
+or
 
-```typescript
-const client = new ConductorClient({
-  serverUrl: "https://play.orkes.io/api",
-});
-
+```shell
+yarn add @io-orkes/conductor-javascript
 ```
 
-### Running Custom Workers
+## Configurations
+
+### Authentication Settings (Optional)
+Configure the authentication settings if your Conductor server requires authentication.
+* keyId: Key for authentication.
+* keySecret: Secret for the key.
+
+### Access Control Setup
+See [Access Control](https://orkes.io/content/docs/getting-started/concepts/access-control) for more details on role-based access control with Conductor and generating API keys for your environment.
+
+### Configure API Client
 
 ```typescript
-
-import { OrkesApiConfig, orkesConductorClient, TaskRunner } from "@io-orkes/conductor-javascript";
-
-const clientPromise = orkesConductorClient({
-  serverUrl: 'https://play.orkes.io/api',
-})
-
-const client = await clientPromise;
-
-const taskManager = new TaskRunner({
-    taskResource: client.taskResource,
-    worker: {
-      taskDefName: "MyCustomWorker",
-      execute: async ({ inputData, taskId }) => {
-        return {
-          outputData: {
-            greeting: "Hello World",
-          },
-          status: "COMPLETED",
-        };
-      },
-    },
-    options: {
-      pollInterval: 10,
-      domain: undefined,
-      concurrency: 1,
-      workerID: "",
-    },
-  });
-
-taskManager.startPolling();
-
-```
-
-#### Connect to conductor using Orkes
-
-```typescript
-
 /**
  * Application keys generated from the Application menu > Create Application
  * then edit and create Access Keys
@@ -69,11 +43,13 @@ taskManager.startPolling();
 import { OrkesApiConfig, orkesConductorClient } from "@io-orkes/conductor-javascript";
 
 const config: Partial<OrkesApiConfig> = {
-  keyId: "XXX",
-  keySecret: "XXXX",
+  keyId: "XXX", // optional
+  keySecret: "XXXX", // optional
   serverUrl: "https://play.orkes.io/api",
 };
 
 orkesConductorClient(config).then(client => ..... );
 
 ```
+
+### Next: [Create and run task workers](workers_sdk.md)

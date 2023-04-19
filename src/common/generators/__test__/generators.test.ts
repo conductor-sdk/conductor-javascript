@@ -52,7 +52,7 @@ describe("Generate", () => {
         const generatedInputParameters = generateEvaluationCode();
         expect(generatedInputParameters).toEqual({
           value: "${workflow.input.value}",
-          evaluatorType: "javascript",
+          evaluatorType: "graaljs",
           expression: "true",
         });
       });
@@ -69,7 +69,7 @@ describe("Generate", () => {
       it("Should generate the expression if passed javascript code", () => {
         const generatedInputParameters = generateEvaluationCode({
           value: "${workflow.input.someNumber}",
-          evaluatorType: "javascript",
+          evaluatorType: "graaljs",
           expression: function ($: any) {
             return function () {
               if ($.value === 1) {
@@ -82,7 +82,7 @@ describe("Generate", () => {
         });
         expect(generatedInputParameters).toEqual({
           value: "${workflow.input.someNumber}",
-          evaluatorType: "javascript",
+          evaluatorType: "graaljs",
           expression:
             "(function () {\n                            if ($.value === 1) {\n                                return { result: true };\n                            }\n                            else {\n                                return { result: false };\n                            }\n                        })();",
         });
@@ -105,7 +105,7 @@ describe("Generate", () => {
         type: TaskType.INLINE,
         inputParameters: {
           value: "${workflow.param.value}",
-          evaluatorType: "javascript",
+          evaluatorType: "graaljs",
           expression: function () {
             return function () {
               return true;
