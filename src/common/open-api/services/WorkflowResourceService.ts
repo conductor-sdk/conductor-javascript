@@ -54,8 +54,7 @@ export class WorkflowResourceService {
    * @param name 
    * @param version 
    * @param requestId 
-   * @param opts Optional parameters
-   * @param opts.waitUntilTaskRef 
+   * @param waitUntilTaskRef 
    * @param callback 
    * @returns workflowRun
    * @throws ApiError
@@ -65,7 +64,7 @@ export class WorkflowResourceService {
     name: string,
     version: number,
     requestId: string,
-    opts: object,
+    waitUntilTaskRef: string,
   ): CancelablePromise<WorkflowRun> {
     return this.httpRequest.request({
       method: 'POST',
@@ -76,7 +75,7 @@ export class WorkflowResourceService {
       },
       query: {
         'requestId': requestId,
-        'waitUntilTaskRef': opts['waitUntilTaskRef'],
+        'waitUntilTaskRef': waitUntilTaskRef,
       },
       body: body,
       mediaType: 'application/json',

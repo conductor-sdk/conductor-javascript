@@ -61,10 +61,10 @@ export class WorkflowExecutor {
     name: string,
     version: number,
     requestId: string,
-    opts: object,
+    waitUntilTaskRef: string = '',
   ): Promise<WorkflowRun> {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.executeWorkflow(workflowRequest, name, version, requestId, opts)
+      this._client.workflowResource.executeWorkflow(workflowRequest, name, version, requestId, waitUntilTaskRef)
     );
   }
 
