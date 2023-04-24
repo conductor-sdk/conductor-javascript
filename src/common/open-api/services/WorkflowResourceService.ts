@@ -9,6 +9,7 @@ import type { SearchResultWorkflowSummary } from '../models/SearchResultWorkflow
 import type { SkipTaskRequest } from '../models/SkipTaskRequest';
 import type { StartWorkflowRequest } from '../models/StartWorkflowRequest';
 import type { Workflow } from '../models/Workflow';
+import type { WorkflowRun } from '../models/WorkflowRun';
 import type { WorkflowStatus } from '../models/WorkflowStatus';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
@@ -16,7 +17,7 @@ import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 
 export class WorkflowResourceService {
 
-  constructor(public readonly httpRequest: BaseHttpRequest) {}
+  constructor(public readonly httpRequest: BaseHttpRequest) { }
 
   /**
    * Retrieve all the running workflows
@@ -44,6 +45,41 @@ export class WorkflowResourceService {
         'startTime': startTime,
         'endTime': endTime,
       },
+    });
+  }
+
+  /**
+   * Execute a workflow synchronously
+   * @param body 
+   * @param name 
+   * @param version 
+   * @param requestId 
+   * @param opts Optional parameters
+   * @param opts.waitUntilTaskRef 
+   * @param callback 
+   * @returns workflowRun
+   * @throws ApiError
+   */
+  public executeWorkflow(
+    body: StartWorkflowRequest,
+    name: string,
+    version: number,
+    requestId: string,
+    opts: object,
+  ): CancelablePromise<WorkflowRun> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/workflow/execute/{name}/{version}',
+      path: {
+        'name': name,
+        'version': version,
+      },
+      query: {
+        'requestId': requestId,
+        'waitUntilTaskRef': opts['waitUntilTaskRef'],
+      },
+      body: body,
+      mediaType: 'application/json',
     });
   }
 
