@@ -7,6 +7,7 @@ import {
   WorkflowDef,
 } from "../../common";
 import { WorkflowExecutor } from "../executor";
+import { v4 as uuidv4 } from 'uuid';
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
@@ -28,11 +29,14 @@ describe("Executor", () => {
       version,
       tasks: [
         {
-          type: TaskType.SET_VARIABLE,
-          name: "variable_setter",
-          taskReferenceName: "variable_setter_ref",
+          type: TaskType.HTTP,
+          name: "httpTask",
+          taskReferenceName: "httpTaskRef",
           inputParameters: {
-            name: "someVariable",
+            http_request: {
+              method: "GET",
+              uri: "https://orkes-api-tester.orkesconductor.com/get",
+            },
           },
         },
       ],
@@ -66,6 +70,21 @@ describe("Executor", () => {
     const executor = new WorkflowExecutor(client);
     executionId = await executor.startWorkflow({ name, version });
     expect(executionId).toBeTruthy();
+  });
+
+  test("Should be able to execute workflow synchronously", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+    const workflowRun = await executor.executeWorkflow(
+      {
+        name: name,
+        version: version,
+      },
+      name,
+      version,
+      uuidv4(),
+    );
+    expect(workflowRun.status).toEqual('COMPLETED')
   });
 
   test("Should be able to get workflow execution status ", async () => {

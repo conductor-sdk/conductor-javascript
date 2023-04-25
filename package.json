@@ -54,17 +54,18 @@
   "devDependencies": {
     "@tsconfig/node18": "^1.0.1",
     "@types/node": "^18.11.18",
+    "@types/uuid": "^9.0.1",
     "@typescript-eslint/eslint-plugin": "^5.23.0",
     "@typescript-eslint/parser": "^5.23.0",
+    "dotenv": "^16.0.1",
     "eslint": "^6.1.0",
     "jest": "^28.1.0",
     "ts-jest": "^28.0.1",
     "ts-node": "^10.7.0",
     "tsup": "^5.12.6",
     "typedoc": "^0.23.10",
-    "typescript": "^4.6.4",
-    "dotenv": "^16.0.1",
-    "typedoc-plugin-markdown": "^3.13.4"
+    "typedoc-plugin-markdown": "^3.13.4",
+    "typescript": "^4.6.4"
   },
   "tsup": {
     "target": "node18",
@@ -78,5 +79,8 @@
   },
   "engines": {
     "node": ">=18"
+  },
+  "dependencies": {
+    "uuid": "^9.0.0"
   }
 }
