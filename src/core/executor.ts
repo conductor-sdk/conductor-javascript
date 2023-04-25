@@ -5,6 +5,7 @@ import {
   RerunWorkflowRequest,
   StartWorkflowRequest,
   SkipTaskRequest,
+  WorkflowRun,
 } from "../common/open-api";
 import { ConductorError, TaskResultStatus } from "./types";
 
@@ -47,6 +48,23 @@ export class WorkflowExecutor {
   public startWorkflow(workflowRequest: StartWorkflowRequest): Promise<string> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.startWorkflow(workflowRequest)
+    );
+  }
+
+  /**
+   * Execute a workflow synchronously. returns a Promise<WorkflowRun> with details of the running workflow
+   * @param workflowRequest
+   * @returns
+   */
+  public executeWorkflow(
+    workflowRequest: StartWorkflowRequest,
+    name: string,
+    version: number,
+    requestId: string,
+    waitUntilTaskRef: string = '',
+  ): Promise<WorkflowRun> {
+    return tryCatchReThrow(() =>
+      this._client.workflowResource.executeWorkflow(workflowRequest, name, version, requestId, waitUntilTaskRef)
     );
   }
 

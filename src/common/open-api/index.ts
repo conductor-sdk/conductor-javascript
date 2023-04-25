@@ -36,6 +36,7 @@ export type { TaskResult } from './models/TaskResult';
 export type { TaskSummary } from './models/TaskSummary';
 export type { Workflow } from './models/Workflow';
 export type { WorkflowDef } from './models/WorkflowDef';
+export type { WorkflowRun } from './models/WorkflowRun';
 export type { WorkflowSchedule } from './models/WorkflowSchedule';
 export type { WorkflowScheduleExecutionModel } from './models/WorkflowScheduleExecutionModel';
 export type { WorkflowStatus } from './models/WorkflowStatus';
