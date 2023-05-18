@@ -41,7 +41,7 @@ export class ConductorClient {
   public readonly humanTaskResource: HumanTaskResourceService;
   public readonly request: BaseHttpRequest;
 
-  public readonly token?: string | Resolver<string>;
+  public token?: string | Resolver<string>;
 
   constructor(
     config?: Partial<ConductorClientAPIConfig>,
@@ -67,7 +67,11 @@ export class ConductorClient {
     this.request = {
       config: resolvedConfig,
       request: (apiConfig) => {
-        return requestHandler(baseRequest, resolvedConfig, apiConfig);
+        return requestHandler(
+          baseRequest,
+          { ...resolvedConfig, TOKEN: this.token },
+          apiConfig
+        );
       },
     };
     // END conductor-client-modification
