@@ -74,8 +74,8 @@ export class ConductorClient {
         );
       },
     };
-    // END conductor-client-modification
     this.token = config?.TOKEN;
+    // END conductor-client-modification
 
     this.eventResource = new EventResourceService(this.request);
     this.healthCheckResource = new HealthCheckResourceService(this.request);
@@ -88,4 +88,5 @@ export class ConductorClient {
     this.humanTask = new HumanTaskService(this.request);
     this.humanTaskResource = new HumanTaskResourceService(this.request);
   }
+  stop() {}
 }

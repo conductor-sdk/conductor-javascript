@@ -16,6 +16,7 @@ const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
   serverUrl: `${process.env.SERVER_URL}`,
+  refreshTokenInterval: 0,
 };
 
 describe("TaskManager", () => {
