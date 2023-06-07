@@ -76,7 +76,6 @@ export class HumanExecutor {
   /**
    * Claim task as conductor user
    * @param taskId
-   * @param assignee
    * @returns
    */
   public async claimTaskAsConductorUser(taskId: string) {
