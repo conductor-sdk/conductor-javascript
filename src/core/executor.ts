@@ -7,20 +7,11 @@ import {
   SkipTaskRequest,
   WorkflowRun,
 } from "../common/open-api";
-import { ConductorError, TaskResultStatus } from "./types";
+import { TaskResultStatus } from "./types";
+import { errorMapper,tryCatchReThrow } from "./helpers";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
 
-const errorMapper = (error: any): ConductorError =>
-  new ConductorError(error?.body?.message, error);
-
-const tryCatchReThrow = (fn: Function) => {
-  try {
-    return fn();
-  } catch (error) {
-    throw errorMapper(error);
-  }
-};
 
 export class WorkflowExecutor {
   public readonly _client: ConductorClient;

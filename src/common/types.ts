@@ -193,21 +193,8 @@ export interface WaitTaskDef extends CommonTaskDef {
   };
 }
 
-type U2O<U extends string> = {
-  [key in U]: U2O<Exclude<U, key>>;
-};
-
-type O2T<O extends {}> = {} extends O
-  ? []
-  : {
-      [key in keyof O]: [key, ...O2T<O[key]>];
-    }[keyof O];
-
-export type WorkflowInputParameters<T extends string> = O2T<U2O<T>>;
-
 export interface WorkflowDef
   extends Omit<OriginalWorkflowDef, "tasks" | "version" | "inputParameters"> {
-  /* inputParameters: O2T<U2O<T>> | string[]; */
   inputParameters: string[];
   version: number;
   tasks: TaskDefTypes[];

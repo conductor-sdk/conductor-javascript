@@ -14,8 +14,8 @@ import { WorkflowBulkResourceService } from "./services/WorkflowBulkResourceServ
 import { WorkflowResourceService } from "./services/WorkflowResourceService";
 import { request as baseRequest } from "./core/request";
 import { ConductorHttpRequest } from "../RequestCustomizer";
-
-type HttpRequestConstructor = new (config: OpenAPIConfig) => BaseHttpRequest;
+import { HumanTaskService } from './services/HumanTaskService';
+import { HumanTaskResourceService } from './services/HumanTaskResourceService';
 
 export const defaultRequestHandler: ConductorHttpRequest = (
   request,
@@ -37,6 +37,8 @@ export class ConductorClient {
   public readonly workflowBulkResource: WorkflowBulkResourceService;
   public readonly workflowResource: WorkflowResourceService;
 
+  public readonly humanTask: HumanTaskService;
+  public readonly humanTaskResource: HumanTaskResourceService;
   public readonly request: BaseHttpRequest;
 
   public readonly token?: string | Resolver<string>;
@@ -79,5 +81,7 @@ export class ConductorClient {
     this.tokenResource = new TokenResourceService(this.request);
     this.workflowBulkResource = new WorkflowBulkResourceService(this.request);
     this.workflowResource = new WorkflowResourceService(this.request);
+    this.humanTask = new HumanTaskService(this.request);
+    this.humanTaskResource = new HumanTaskResourceService(this.request);
   }
 }
