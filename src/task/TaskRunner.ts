@@ -77,6 +77,15 @@ export class TaskRunner {
     this.isPolling = false;
   };
 
+  set setOptions(options: Required<TaskManagerOptions>) {
+    this.options = options;
+  }
+
+  get getOptions():TaskManagerOptions {
+    return this.options;
+  }
+
+
   poll = async () => {
     while (this.isPolling) {
       try {
@@ -84,7 +93,7 @@ export class TaskRunner {
         const task = await this.taskResource.poll(
           this.worker.taskDefName,
           workerID,
-          this.options.domain
+          this.worker.domain ?? this.options.domain,
         );
         if (task && task.taskId) {
           await this.executeTask(task);
