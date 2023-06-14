@@ -1,19 +1,25 @@
 import { ConductorLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
-import { TaskManagerOptions } from "./TaskManager";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
 
 export type TaskErrorHandler = (error: Error, task?: Task) => void;
 
+export interface TaskRunnerOptions {
+  workerID: string;
+  domain: string | undefined;
+  pollInterval?: number;
+  concurrency?: number;
+}
 export interface RunnerArgs {
   worker: ConductorWorker;
   taskResource: TaskResourceService;
-  options: Required<TaskManagerOptions>;
+  options: Required<TaskRunnerOptions>;
   logger?: ConductorLogger;
   onError?: TaskErrorHandler;
+  concurrency?: number;
 }
 
 //eslint-disable-next-line
@@ -42,8 +48,12 @@ export class TaskRunner {
   taskResource: TaskResourceService;
   worker: ConductorWorker;
   logger: ConductorLogger;
-  options: Required<TaskManagerOptions>;
+  options: Required<TaskRunnerOptions>;
   errorHandler: TaskErrorHandler;
+  private concurrentCalls: Array<{
+    promise: Promise<void>;
+    stop: () => void;
+  }> = [];
 
   constructor({
     worker,
@@ -67,7 +77,6 @@ export class TaskRunner {
       throw new Error("Runner is already started");
     }
 
-    this.isPolling = true;
     return this.poll();
   };
   /**
@@ -75,39 +84,84 @@ export class TaskRunner {
    */
   stopPolling = () => {
     this.isPolling = false;
+    this.concurrentCalls.forEach((call) => call.stop());
   };
 
-  set setOptions(options: Required<TaskManagerOptions>) {
-    this.options = options;
+  updateOptions(options: Partial<TaskRunnerOptions>) {
+    const newOptions = { ...this.options, ...options };
+    this.updateConcurrency(newOptions.concurrency);
+    this.options = newOptions;
   }
 
-  get getOptions():TaskManagerOptions {
+  private updateConcurrency(concurrency: number) {
+    if (concurrency > 0 && concurrency !== this.options.concurrency) {
+      if (concurrency < this.options.concurrency) {
+        const result = this.concurrentCalls.splice(
+          0,
+          this.options.concurrency - concurrency
+        );
+        result.forEach((call) => {
+          call.stop();
+          this.logger.debug("stopping some spawned calls");
+        });
+      } else {
+        for (let i = 0; i < concurrency - this.options.concurrency; i++) {
+          this.concurrentCalls.push(this.singlePoll());
+          this.logger.debug("spawning additional poll calls");
+        }
+      }
+      this.options.concurrency = concurrency;
+    }
+  }
+
+  get getOptions(): TaskRunnerOptions {
     return this.options;
   }
 
+  private singlePoll = () => {
+    let poll = this.isPolling;
+    let timeout: NodeJS.Timeout;
+    const pollingCall = async () => {
+      while (poll) {
+        try {
+          const { workerID } = this.options;
+          const task = await this.taskResource.poll(
+            this.worker.taskDefName,
+            workerID,
+            this.worker.domain ?? this.options.domain
+          );
+          if (task && task.taskId) {
+            await this.executeTask(task);
+          } else {
+            this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
+          }
+        } catch (unknownError: unknown) {
+          this.handleUnknownError(unknownError);
+          this.errorHandler(unknownError as Error);
+        }
+
+        await new Promise(
+          (r) =>
+            (timeout = setTimeout(() => r(true), this.options.pollInterval))
+        );
+      }
+    };
+
+    return {
+      promise: pollingCall(),
+      stop: () => {
+        clearTimeout(timeout);
+        poll = false;
+      },
+    };
+  };
 
   poll = async () => {
-    while (this.isPolling) {
-      try {
-        const { workerID } = this.options;
-        const task = await this.taskResource.poll(
-          this.worker.taskDefName,
-          workerID,
-          this.worker.domain ?? this.options.domain,
-        );
-        if (task && task.taskId) {
-          await this.executeTask(task);
-        } else {
-          this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
-        }
-      } catch (unknownError: unknown) {
-        this.handleUnknownError(unknownError);
-        this.errorHandler(unknownError as Error);
+    if (!this.isPolling) {
+      this.isPolling = true;
+      for (let i = 0; i < this.options.concurrency; i++) {
+        this.concurrentCalls.push(this.singlePoll());
       }
-
-      await new Promise((r) =>
-        setTimeout(() => r(true), this.options.pollInterval)
-      );
     }
   };
 
