@@ -2,6 +2,7 @@ import { ConductorLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
 import { Poller } from "./Poller";
+import { noopLogger } from "./helpers";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
@@ -26,15 +27,6 @@ export interface RunnerArgs {
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
 
-const noopLogger: ConductorLogger = {
-  //eslint-disable-next-line
-  debug: (...args: any) => {},
-  //eslint-disable-next-line
-  info: (...args: any) => {},
-  //eslint-disable-next-line
-  error: (...args: any) => {},
-};
-
 /**
  * Responsible for polling and executing tasks from a queue.
  *
@@ -50,7 +42,7 @@ export class TaskRunner {
   private logger: ConductorLogger;
   private options: Required<TaskRunnerOptions>;
   errorHandler: TaskErrorHandler;
-  private poller:Poller;
+  private poller: Poller;
 
   constructor({
     worker,
@@ -66,8 +58,9 @@ export class TaskRunner {
     this.errorHandler = errorHandler;
     this.poller = new Poller(
       this.pollAndExecute,
-      {concurrency:options.concurrency, pollInterval:options.pollInterval},
-      this.logger);
+      { concurrency: options.concurrency, pollInterval: options.pollInterval },
+      this.logger
+    );
   }
 
   /**
@@ -92,7 +85,6 @@ export class TaskRunner {
     this.options = newOptions;
   }
 
-
   get getOptions(): TaskRunnerOptions {
     return this.options;
   }
@@ -115,8 +107,6 @@ export class TaskRunner {
       this.errorHandler(unknownError as Error);
     }
   };
-
-
 
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
     let retryCount = 0;

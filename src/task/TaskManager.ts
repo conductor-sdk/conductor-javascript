@@ -1,4 +1,4 @@
-import os from "os";
+import os, { type } from "os";
 import {
   TaskRunner,
   TaskRunnerOptions,
@@ -9,20 +9,22 @@ import { ConductorLogger, DefaultLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { ConductorClient } from "../common/open-api";
 
+export type TaskManagerOptions = TaskRunnerOptions;
+
 export interface TaskManagerConfig {
   logger?: ConductorLogger;
-  options?: Partial<TaskRunnerOptions>;
+  options?: Partial<TaskManagerOptions>;
   onError?: TaskErrorHandler;
 }
 
-const defaultManagerOptions: Required<TaskRunnerOptions> = {
+const defaultManagerOptions: Required<TaskManagerOptions> = {
   workerID: "",
   pollInterval: 1000,
   domain: undefined,
   concurrency: 1,
 };
 
-function workerId(options: Partial<TaskRunnerOptions>) {
+function workerId(options: Partial<TaskManagerOptions>) {
   return options.workerID ?? os.hostname();
 }
 
@@ -35,7 +37,7 @@ export class TaskManager {
   private readonly logger: ConductorLogger;
   private readonly errorHandler: TaskErrorHandler;
   private workers: Array<ConductorWorker>;
-  private readonly taskManageOptions: Required<TaskRunnerOptions>;
+  private readonly taskManageOptions: Required<TaskManagerOptions>;
 
   constructor(
     client: ConductorClient,
@@ -61,7 +63,7 @@ export class TaskManager {
 
   private workerManagerWorkerOptions = (
     worker: ConductorWorker
-  ): Required<TaskRunnerOptions> => {
+  ): Required<TaskManagerOptions> => {
     return {
       ...this.taskManageOptions,
       concurrency: worker.concurrency ?? this.taskManageOptions.concurrency,
@@ -73,7 +75,7 @@ export class TaskManager {
    * new options will get merged to existing options
    * @param options new options to update polling options
    */
-  updatePollingOptions = (options: Partial<TaskRunnerOptions>) => {
+  updatePollingOptions = (options: Partial<TaskManagerOptions>) => {
     this.workers.forEach((worker) => {
       const newOptions = {
         ...this.workerManagerWorkerOptions(worker),
