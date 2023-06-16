@@ -1,4 +1,4 @@
-import os, { type } from "os";
+import os from "os";
 import {
   TaskRunner,
   TaskRunnerOptions,
