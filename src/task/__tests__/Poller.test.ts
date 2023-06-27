@@ -16,7 +16,7 @@ describe("Poller", () => {
     expect(functionToRun).toHaveBeenCalledTimes(3);
   });
 
-  test("Should run the poll function once for each interval if concurrency is just one", async () => {
+  test("Should run the poll function twice as much. with two times the concurrency", async () => {
     const functionToRun = jest.fn();
     const poller = new Poller(
       async () => {
