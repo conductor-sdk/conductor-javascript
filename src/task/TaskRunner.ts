@@ -1,32 +1,31 @@
 import { ConductorLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
-import { TaskManagerOptions } from "./TaskManager";
+import { Poller } from "./Poller";
+import { noopLogger } from "./helpers";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
 
 export type TaskErrorHandler = (error: Error, task?: Task) => void;
 
+export interface TaskRunnerOptions {
+  workerID: string;
+  domain: string | undefined;
+  pollInterval?: number;
+  concurrency?: number;
+}
 export interface RunnerArgs {
   worker: ConductorWorker;
   taskResource: TaskResourceService;
-  options: Required<TaskManagerOptions>;
+  options: Required<TaskRunnerOptions>;
   logger?: ConductorLogger;
   onError?: TaskErrorHandler;
+  concurrency?: number;
 }
 
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
-
-const noopLogger: ConductorLogger = {
-  //eslint-disable-next-line
-  debug: (...args: any) => {},
-  //eslint-disable-next-line
-  info: (...args: any) => {},
-  //eslint-disable-next-line
-  error: (...args: any) => {},
-};
 
 /**
  * Responsible for polling and executing tasks from a queue.
@@ -38,12 +37,12 @@ const noopLogger: ConductorLogger = {
  *
  */
 export class TaskRunner {
-  isPolling = false;
   taskResource: TaskResourceService;
   worker: ConductorWorker;
-  logger: ConductorLogger;
-  options: Required<TaskManagerOptions>;
+  private logger: ConductorLogger;
+  private options: Required<TaskRunnerOptions>;
   errorHandler: TaskErrorHandler;
+  private poller: Poller;
 
   constructor({
     worker,
@@ -57,48 +56,55 @@ export class TaskRunner {
     this.worker = worker;
     this.options = options;
     this.errorHandler = errorHandler;
+    this.poller = new Poller(
+      this.pollAndExecute,
+      { concurrency: options.concurrency, pollInterval: options.pollInterval },
+      this.logger
+    );
   }
 
   /**
    * Starts polling for work
    */
   startPolling = () => {
-    if (this.isPolling) {
-      throw new Error("Runner is already started");
-    }
-
-    this.isPolling = true;
-    return this.poll();
+    this.poller.startPolling();
   };
   /**
    * Stops Polling for work
    */
   stopPolling = () => {
-    this.isPolling = false;
+    this.poller.stopPolling();
   };
 
-  poll = async () => {
-    while (this.isPolling) {
-      try {
-        const { workerID } = this.options;
-        const task = await this.taskResource.poll(
-          this.worker.taskDefName,
-          workerID,
-          this.options.domain
-        );
-        if (task && task.taskId) {
-          await this.executeTask(task);
-        } else {
-          this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
-        }
-      } catch (unknownError: unknown) {
-        this.handleUnknownError(unknownError);
-        this.errorHandler(unknownError as Error);
-      }
+  updateOptions(options: Partial<TaskRunnerOptions>) {
+    const newOptions = { ...this.options, ...options };
+    this.poller.updateOptions({
+      concurrency: newOptions.concurrency,
+      pollInterval: newOptions.pollInterval,
+    });
+    this.options = newOptions;
+  }
 
-      await new Promise((r) =>
-        setTimeout(() => r(true), this.options.pollInterval)
+  get getOptions(): TaskRunnerOptions {
+    return this.options;
+  }
+
+  private pollAndExecute = async () => {
+    try {
+      const { workerID } = this.options;
+      const task = await this.taskResource.poll(
+        this.worker.taskDefName,
+        workerID,
+        this.worker.domain ?? this.options.domain
       );
+      if (task && task.taskId) {
+        await this.executeTask(task);
+      } else {
+        this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
+      }
+    } catch (unknownError: unknown) {
+      this.handleUnknownError(unknownError);
+      this.errorHandler(unknownError as Error);
     }
   };
 

@@ -1,15 +1,15 @@
 import os from "os";
-import { TaskRunner, TaskErrorHandler, noopErrorHandler } from "./TaskRunner";
+import {
+  TaskRunner,
+  TaskRunnerOptions,
+  TaskErrorHandler,
+  noopErrorHandler,
+} from "./TaskRunner";
 import { ConductorLogger, DefaultLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { ConductorClient } from "../common/open-api";
 
-export interface TaskManagerOptions {
-  workerID: string;
-  domain: string | undefined;
-  pollInterval?: number;
-  concurrency?: number;
-}
+export type TaskManagerOptions = TaskRunnerOptions;
 
 export interface TaskManagerConfig {
   logger?: ConductorLogger;
@@ -60,33 +60,53 @@ export class TaskManager {
       workerID: workerId(providedOptions),
     };
   }
+
+  private workerManagerWorkerOptions = (
+    worker: ConductorWorker
+  ): Required<TaskManagerOptions> => {
+    return {
+      ...this.taskManageOptions,
+      concurrency: worker.concurrency ?? this.taskManageOptions.concurrency,
+      domain: worker.domain ?? this.taskManageOptions.domain,
+    };
+  };
+
+  /**
+   * new options will get merged to existing options
+   * @param options new options to update polling options
+   */
+  updatePollingOptions = (options: Partial<TaskManagerOptions>) => {
+    this.workers.forEach((worker) => {
+      const newOptions = {
+        ...this.workerManagerWorkerOptions(worker),
+        ...options,
+      };
+      const runners = this.tasks[worker.taskDefName];
+      runners.forEach((runner) => {
+        runner.updateOptions(newOptions);
+      });
+    });
+  };
+
   /**
    * Start polling for tasks
    */
   startPolling = () => {
     this.workers.forEach((worker) => {
       this.tasks[worker.taskDefName] = [];
-      const options = {
-        ...this.taskManageOptions,
-        concurrency: worker.concurrency ?? this.taskManageOptions.concurrency,
-        domain: worker.domain ?? this.taskManageOptions.domain,
-      };
+      const options = this.workerManagerWorkerOptions(worker);
       this.logger.debug(
         `Starting taskDefName=${worker.taskDefName} concurrency=${options.concurrency} domain=${options.domain}`
       );
-      for (let i = 0; i < options.concurrency; i++) {
-        const runner = new TaskRunner({
-          worker,
-          options,
-          taskResource: this.client.taskResource,
-          logger: this.logger,
-          onError: this.errorHandler,
-        });
-        // TODO(@ntomlin): right now we aren't handling these promises
-        // which will inevitably lead to chaos
-        runner.startPolling();
-        this.tasks[worker.taskDefName].push(runner);
-      }
+      const runner = new TaskRunner({
+        worker,
+        options,
+        taskResource: this.client.taskResource,
+        logger: this.logger,
+        onError: this.errorHandler,
+      });
+      runner.startPolling();
+      this.tasks[worker.taskDefName].push(runner);
     });
   };
   /**
