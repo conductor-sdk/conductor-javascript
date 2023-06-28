@@ -1,8 +1,9 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import { OrkesApiConfig, orkesConductorClient } from "../../common";
+import { OrkesApiConfig, orkesConductorClient, simpleTask } from "../../common";
 import { WorkflowExecutor } from "../../core";
 import { TaskManager } from "../TaskManager";
 import { ConductorWorker } from "../Worker";
+import { assert } from "console";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
@@ -90,7 +91,7 @@ describe("TaskManager", () => {
       },
     };
 
-    const manager = new TaskManager(client, [worker],{
+    const manager = new TaskManager(client, [worker], {
       options: { pollInterval: 1500 },
     });
 
@@ -102,5 +103,79 @@ describe("TaskManager", () => {
       version: 1,
     });
     manager.stopPolling();
+  });
+
+  test("multi worker example", async () => {
+    const client = await clientPromise;
+
+    const executor = new WorkflowExecutor(client);
+    // just create a bunch of worker names
+    const workerNames: string[] = Array.from({ length: 3 })
+      .fill(0)
+      .map((_, i: number) => `taskman-multi-${1 + i}`);
+
+    // names to actual workers
+    const workers: ConductorWorker[] = workerNames.map((name) => ({
+      taskDefName: name,
+      execute: async () => {
+        return {
+          outputData: {
+            hello: "From your worker",
+          },
+          status: "COMPLETED",
+        };
+      },
+    }));
+
+    //create the manager with initial configuations
+    const manager = new TaskManager(client, workers, {
+      options: { pollInterval: 1500, concurrency: 2 },
+      logger: console,
+    });
+    // start polling
+    manager.startPolling();
+
+    expect(manager.isPolling).toBeTruthy();
+
+    const workflowName = "TaskManagerTestMulti";
+
+    // increase polling speed
+    manager.updatePollingOptions({ concurrency: 4 });
+
+    // create the workflow where we will run the test
+    await executor.registerWorkflow(true, {
+      name: workflowName,
+      version: 1,
+      ownerEmail: "developers@orkes.io",
+      tasks: workerNames.map((name) => simpleTask(name, name, {})),
+      inputParameters: [],
+      outputParameters: {},
+      timeoutSeconds: 0,
+    });
+
+    //Start workf
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: workflowName,
+        version: 1,
+      },
+      workflowName,
+      1,
+      "identifierTaskManMulti"
+    );
+    expect(executionId).toBeDefined();
+
+    // decrease speed again
+    manager.updatePollingOptions({ pollInterval: 1000, concurrency: 1 });
+
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
+
+    expect(workflowStatus.status).toEqual("COMPLETED");
+    manager.stopPolling();
+    await new Promise((r) => setTimeout(() => r(true), 1000));
+
+    expect(manager.isPolling).toBeFalsy();
+    expect(manager.options.concurrency).toBe(1);
+    expect(manager.options.pollInterval).toBe(1000);
   });
 });
