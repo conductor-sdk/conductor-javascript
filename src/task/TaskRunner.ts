@@ -64,7 +64,7 @@ export class TaskRunner {
   }
 
   get isPolling() {
-    return this.poller.getIsPolling;
+    return this.poller.isPolling;
   }
 
   /**
