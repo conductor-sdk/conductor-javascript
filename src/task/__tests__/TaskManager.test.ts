@@ -3,7 +3,6 @@ import { OrkesApiConfig, orkesConductorClient, simpleTask } from "../../common";
 import { WorkflowExecutor } from "../../core";
 import { TaskManager } from "../TaskManager";
 import { ConductorWorker } from "../Worker";
-import { assert } from "console";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
