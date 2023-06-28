@@ -63,6 +63,10 @@ export class TaskRunner {
     );
   }
 
+  get isPolling() {
+    return this.poller.getIsPolling;
+  }
+
   /**
    * Starts polling for work
    */

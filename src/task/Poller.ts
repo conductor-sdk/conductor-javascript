@@ -12,7 +12,7 @@ export class Poller {
     stop: () => void;
   }> = [];
   private pollFunction: () => Promise<void> = async () => {};
-  private isPolling = false;
+  public isPolling = false;
   options: PollerOptions = {
     pollInterval: 1000,
     concurrency: 1,
@@ -27,6 +27,10 @@ export class Poller {
     this.pollFunction = pollFunction;
     this.options = { ...this.options, ...pollerOptions };
     this.logger = logger || noopLogger;
+  }
+
+  get getIsPolling() {
+    return this.isPolling;
   }
 
   /**
