@@ -10,7 +10,7 @@ import {
 const config: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: "https://pg-staging.orkesconductor.com/api",
+  serverUrl: `${process.env.SERVER_URL}` 
 };
 
 describe("TaskManager", () => {
