@@ -55,14 +55,19 @@ describe("TaskManager", () => {
       timeoutSeconds: 0,
     });
 
-    const executionId = await executor.startWorkflow({
+    const { workflowId:executionId } = await executor.executeWorkflow({
       name:workflowName,
-      input: {},
-      version: 1,
-    });
-    await new Promise((r) => setTimeout(() => r(true), 900));
+      version:1
+    },
+      workflowName,
+     1,
+     "RunnerIdentifier"
+    );
+    expect(executionId).toBeDefined();
+    
     taskRunner.updateOptions({ concurrency: 1, pollInterval: 100 });
-    const workflowStatus = await executor.getWorkflow(executionId, true);
+    
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     const [firstTask] = workflowStatus.tasks || [];
     expect(firstTask?.taskType).toEqual("task-manager-int-test");
