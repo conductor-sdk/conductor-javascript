@@ -1,8 +1,7 @@
-import { ConductorLogger } from "../common";
+import { ConductorLogger, noopLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
 import { Poller } from "./Poller";
-import { noopLogger } from "./helpers";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;

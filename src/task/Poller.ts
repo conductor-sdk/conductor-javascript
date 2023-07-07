@@ -1,5 +1,4 @@
-import { ConductorLogger } from "../common";
-import { noopLogger } from "./helpers";
+import { ConductorLogger, noopLogger } from "../common";
 
 interface PollerOptions {
   pollInterval?: number;
