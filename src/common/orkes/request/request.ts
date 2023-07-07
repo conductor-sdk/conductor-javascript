@@ -8,10 +8,9 @@ import type { ApiResult } from "../../open-api/core/ApiResult";
 import { CancelablePromise } from "../../open-api/core/CancelablePromise";
 import type { OnCancel } from "../../open-api/core/CancelablePromise";
 import type { OpenAPIConfig } from "../../open-api/core/OpenAPI";
-import { fetchCache } from "./fetch";
+import type { FetchFn } from "./fetchCatchDns";
 
-
-// TODO move me to index 
+// TODO move me to index
 
 const isDefined = <T>(
   value: T | null | undefined
@@ -209,14 +208,14 @@ const getRequestBody = (options: ApiRequestOptions): any => {
   return undefined;
 };
 
-
-export const sendRequest = async (
+const sendRequest = async (
   options: ApiRequestOptions,
   url: string,
   body: any,
   formData: FormData | undefined,
   headers: Headers,
-  onCancel: OnCancel
+  onCancel: OnCancel,
+  fetchFn: FetchFn<RequestInit, Response> = fetch
 ): Promise<Response> => {
   const controller = new AbortController();
 
@@ -229,7 +228,7 @@ export const sendRequest = async (
 
   onCancel(() => controller.abort());
 
-  return await fetchCache(url, request);
+  return await fetchFn(url, request);
 };
 
 const getResponseHeader = (
@@ -298,7 +297,8 @@ const catchErrorCodes = (
  */
 export const request = <T>(
   config: OpenAPIConfig,
-  options: ApiRequestOptions
+  options: ApiRequestOptions,
+  fetchFn: FetchFn = fetch
 ): CancelablePromise<T> => {
   return new CancelablePromise(async (resolve, reject, onCancel) => {
     try {
@@ -314,7 +314,8 @@ export const request = <T>(
           body,
           formData,
           headers,
-          onCancel
+          onCancel,
+          fetchFn
         );
         const responseBody = await getResponseBody(response);
         const responseHeader = getResponseHeader(

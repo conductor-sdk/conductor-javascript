@@ -17,8 +17,11 @@ const defaultRequestHandler: ConductorHttpRequest = (
 Returns an orkes conductor client creator function.
 Usefull if you want to use your own fetch. like Got or Axios
  */
-export const baseOrkesConductorClient = (
-  fetchFn: FetchFn,
+export const baseOrkesConductorClient = <
+  T = RequestInit,
+  R extends { json: () => Promise<any> } = Response
+>(
+  fetchFn: FetchFn<T, R>,
   baseRequestHandler: ConductorHttpRequest = defaultRequestHandler
 ) => {
   return async (
@@ -35,8 +38,8 @@ export const baseOrkesConductorClient = (
         },
         body: JSON.stringify({ keyId, keySecret }),
         method: "POST",
-      });
-      const { token } = await res.json();
+      } as any);
+      const { token } = await (res as R).json();
       return new ConductorClient({ ...config, TOKEN: token }, requestHandler);
     } else {
       return new ConductorClient(config, requestHandler);

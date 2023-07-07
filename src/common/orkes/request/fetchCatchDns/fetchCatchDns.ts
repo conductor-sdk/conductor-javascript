@@ -24,6 +24,7 @@ export const toMaybeUrl = (
 
   return urlToHit;
 };
+
 type CatcherOptions = {
   dnsCache?: DnsCacheResolver;
   headerFactory?: (headers?: HeadersInit) => Headers;
@@ -34,14 +35,17 @@ const DEFAULT_OPTIONS: CatcherOptions = {
   headerFactory: (headers?: HeadersInit) => new Headers(headers || {}),
 };
 
-export const fetchCatchDns = (
-  fetch: FetchFn,
+export const fetchCatchDns = <
+  T extends { headers?: HeadersInit | undefined },
+  R extends { json: () => Promise<any> } 
+>(
+  fetch: FetchFn<T, R>,
   {
     dnsCache = new DnsCacheResolver(),
     headerFactory = (headers?: HeadersInit) => new Headers(headers || {}),
   }: CatcherOptions = DEFAULT_OPTIONS
-): FetchFn => {
-  const fetchWithDns: FetchFn = async (input, options) => {
+): FetchFn<T, R> => {
+  const fetchWithDns: FetchFn<T, R> = async (input, options) => {
     const parsedUrl = new URL(input.toString());
     const { hostname, host, port } = parsedUrl;
     if (isIP(hostname)) {
@@ -59,7 +63,7 @@ export const fetchCatchDns = (
       port: port,
     });
 
-    let headersOverride = headerFactory(options?.headers ?? {});
+    let headersOverride: Headers = headerFactory(options?.headers ?? {});
     // need to set this since we are hitting the ip
     if (!headersOverride.has("Host")) {
       headersOverride.set("Host", host);
@@ -69,7 +73,7 @@ export const fetchCatchDns = (
       headers: headersOverride,
     };
 
-    const res = await fetch(target.toString(), optionsOverride);
+    const res = await fetch(target.toString(), optionsOverride as T);
 
     return res;
   };

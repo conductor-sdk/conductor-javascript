@@ -1,5 +1,4 @@
-
-export type FetchFn = (
-  input: RequestInfo,
-  init?: RequestInit | undefined
-) => Promise<Response>;
+export type FetchFn<
+  T = RequestInit,
+  R extends { json: () => Promise<any> } = Response
+> = (input: RequestInfo, init?: T) => Promise<R>;
