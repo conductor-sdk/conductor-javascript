@@ -1,4 +1,4 @@
-import { expect, describe, test, jest } from "@jest/globals";
+import { expect, describe, test } from "@jest/globals";
 import { dnsResolver } from "../DnsResolver";
 
 const sampleDomain = "orkes.io";

@@ -63,7 +63,7 @@ export const fetchCatchDns = <
       port: port,
     });
 
-    let headersOverride: Headers = headerFactory(options?.headers ?? {});
+    const headersOverride: Headers = headerFactory(options?.headers ?? {});
     // need to set this since we are hitting the ip
     if (!headersOverride.has("Host")) {
       headersOverride.set("Host", host);
