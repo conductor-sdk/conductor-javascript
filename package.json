@@ -65,7 +65,8 @@
     "tsup": "^5.12.6",
     "typedoc": "^0.23.10",
     "typedoc-plugin-markdown": "^3.13.4",
-    "typescript": "^4.6.4"
+    "typescript": "^4.6.4",
+    "uuid": "^9.0.0"
   },
   "tsup": {
     "target": "node18",
@@ -79,8 +80,5 @@
   },
   "engines": {
     "node": ">=18"
-  },
-  "dependencies": {
-    "uuid": "^9.0.0"
   }
 }
