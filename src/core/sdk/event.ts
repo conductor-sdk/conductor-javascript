@@ -1,4 +1,4 @@
-import { TaskType, EventTaskDef } from "../types";
+import { TaskType, EventTaskDef } from "../../common/types";
 
 export const eventTask = (
   taskReferenceName: string,

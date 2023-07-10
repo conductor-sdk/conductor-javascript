@@ -1,4 +1,4 @@
-import { ConductorHttpRequest } from "../RequestCustomizer";
+import { ConductorHttpRequest } from "../common/RequestCustomizer";
 import { fetchCache } from "./request/fetchCatchDns";
 import { request as baseRequest } from "./request";
 import { baseOrkesConductorClient } from "./BaseOrkesConductorClient";

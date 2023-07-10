@@ -1,11 +1,14 @@
 import { expect, describe, test } from "@jest/globals";
 import {
-  OrkesApiConfig,
-  orkesConductorClient,
   SetVariableTaskDef,
   TaskType,
   WorkflowDef,
 } from "../../common";
+import {
+  
+  OrkesApiConfig,
+  orkesConductorClient,
+}from "../../orkes";
 import { WorkflowExecutor } from "../executor";
 import { v4 as uuidv4 } from 'uuid';
 

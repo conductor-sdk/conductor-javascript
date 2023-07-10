@@ -1,13 +1,17 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import { OrkesApiConfig, orkesConductorClient, simpleTask } from "../../common";
-import { WorkflowExecutor } from "../../core";
-import { TaskManager } from "../TaskManager";
-import { ConductorWorker } from "../Worker";
+import {
+  OrkesApiConfig,
+  orkesConductorClient,
+  simpleTask,
+  WorkflowExecutor,
+  TaskManager,
+  ConductorWorker,
+} from "../../../dist/index.js";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}` 
+  serverUrl: `${process.env.SERVER_URL}`,
 };
 
 describe("TaskManager", () => {

@@ -2,13 +2,13 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import { ApiError } from "../../open-api/core/ApiError";
-import type { ApiRequestOptions } from "../../open-api/core/ApiRequestOptions";
-import type { ApiResult } from "../../open-api/core/ApiResult";
-import { CancelablePromise } from "../../open-api/core/CancelablePromise";
-import type { OnCancel } from "../../open-api/core/CancelablePromise";
-import type { OpenAPIConfig } from "../../open-api/core/OpenAPI";
-import type { FetchFn } from "./fetchCatchDns";
+import { ApiError } from "../../common/open-api/core/ApiError";
+import type { ApiRequestOptions } from "../../common/open-api/core/ApiRequestOptions";
+import type { ApiResult } from "../../common/open-api/core/ApiResult";
+import { CancelablePromise } from "../../common/open-api/core/CancelablePromise";
+import type { OnCancel } from "../../common/open-api/core/CancelablePromise";
+import type { OpenAPIConfig } from "../../common/open-api/core/OpenAPI";
+import type { FetchFn } from "../types";
 
 // TODO move me to index
 

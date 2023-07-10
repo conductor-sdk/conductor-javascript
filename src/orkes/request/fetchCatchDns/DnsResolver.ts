@@ -1,5 +1,5 @@
 import { promises } from "dns";
-import { ConductorLogger, noopLogger } from "../../../ConductorLogger";
+import { ConductorLogger, noopLogger } from "../../../common/ConductorLogger";
 
 type Options = {
   logger: ConductorLogger;

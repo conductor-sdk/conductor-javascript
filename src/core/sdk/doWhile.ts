@@ -1,4 +1,4 @@
-import { TaskType, DoWhileTaskDef, TaskDefTypes } from "../types";
+import { TaskType, DoWhileTaskDef, TaskDefTypes } from "../../common/types";
 
 export const doWhileTask = (
   taskRefName: string,

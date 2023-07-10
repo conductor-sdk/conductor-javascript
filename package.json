@@ -2,13 +2,6 @@
   "name": "@io-orkes/conductor-javascript",
   "description": "Typescript Client for Netflix Conductor",
   "version": "v0.0.0",
-  "exports": {
-    ".": {
-      "require": "./dist/index.js",
-      "import": "./dist/index.mjs",
-      "types": "./dist/index.d.ts"
-    }
-  },
   "private": false,
   "homepage": "https://orkes.io",
   "repository": {
@@ -26,6 +19,7 @@
   "scripts": {
     "lint": "npx eslint . --ext .js,.ts",
     "build": "tsup index.ts",
+    "build:browser": "tsup browser.ts --outDir dist/browser",
     "prepublishOnly": "npm run build",
     "lint-fix": "npx eslint . --fix --ext .js,.ts",
     "test": "jest --force-exit --detectOpenHandles",
@@ -51,7 +45,11 @@
       "name": "James Stuart Milne"
     }
   ],
+  "jest": {
+    "preset": "ts-jest"
+  },
   "devDependencies": {
+    "@babel/preset-typescript": "^7.22.5",
     "@tsconfig/node18": "^1.0.1",
     "@types/node": "^18.11.18",
     "@types/uuid": "^9.0.1",

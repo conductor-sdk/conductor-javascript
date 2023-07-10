@@ -1,10 +1,10 @@
-import { ConductorHttpRequest } from "../RequestCustomizer";
+import { ConductorHttpRequest } from "../common/RequestCustomizer";
 import {
   ConductorClient,
   ConductorClientAPIConfig,
-} from "../open-api/ConductorClient";
-import { GenerateTokenRequest } from "../open-api";
-import { FetchFn } from "./request";
+} from "../common/open-api/ConductorClient";
+import { GenerateTokenRequest } from "../common/open-api";
+import { FetchFn } from "./types";
 
 export type OrkesApiConfig = ConductorClientAPIConfig & GenerateTokenRequest;
 

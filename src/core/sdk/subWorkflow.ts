@@ -1,4 +1,4 @@
-import { TaskType, SubWorkflowTaskDef } from "../types";
+import { TaskType, SubWorkflowTaskDef } from "../../common/types";
 
 export const subWorkflowTask = (
   taskReferenceName: string,

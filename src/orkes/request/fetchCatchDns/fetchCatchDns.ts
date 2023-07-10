@@ -1,6 +1,6 @@
 import { isIP } from "net";
 import { DnsCacheResolver } from "./DnsCache";
-import { FetchFn } from "./types";
+import { FetchFn } from "../../types";
 
 type ModifiedUrlParameters = {
   host: string;

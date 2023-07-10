@@ -1,4 +1,4 @@
-import { TaskType, SwitchTaskDef, TaskDefTypes } from "../types";
+import { TaskType, SwitchTaskDef, TaskDefTypes } from "../../common/types";
 
 export const switchTask = (
   taskReferenceName: string,

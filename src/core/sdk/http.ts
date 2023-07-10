@@ -2,7 +2,7 @@ import {
   TaskType,
   HttpTaskDef,
   HttpInputParameters,
-} from "../types";
+} from "../../common/types";
 
 export const httpTask = (
   taskReferenceName: string,

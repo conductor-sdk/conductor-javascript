@@ -1,4 +1,4 @@
-import { TaskType, WaitTaskDef } from "../types";
+import { TaskType, WaitTaskDef } from "../../common/types";
 
 export const waitTaskDuration = (taskReferenceName:string,duration:string):WaitTaskDef =>({
     name:taskReferenceName,

@@ -2,7 +2,7 @@ import {
   TaskType,
   KafkaPublishTaskDef,
   KafkaPublishInputParameters,
-} from "../types";
+} from "../../common/types";
 
 export const kafkaPublishTask = (
   taskReferenceName: string,

@@ -1,7 +1,7 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { fetchCatchDns } from "../fetchCatchDns";
 import { DnsCacheResolver } from "../DnsCache";
-import { FetchFn } from "../types";
+import { FetchFn } from "../../../types";
 
 describe("fetchCatchDns", () => {
   test("Should call original fetch if the target is an ip, no param modification", async () => {

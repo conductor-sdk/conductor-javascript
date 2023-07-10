@@ -1,16 +1,12 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import {
-  OrkesApiConfig,
-  orkesConductorClient,
-  WorkflowExecutor,
-  TaskRunner,
-  simpleTask,
-} from "../../../";
+import { TaskRunner } from "../TaskRunner";
+import { WorkflowExecutor,simpleTask } from "../../core";
+import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
 
 const config: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}` 
+  serverUrl: `${process.env.SERVER_URL}`,
 };
 
 describe("TaskManager", () => {
@@ -55,18 +51,19 @@ describe("TaskManager", () => {
       timeoutSeconds: 0,
     });
 
-    const { workflowId:executionId } = await executor.executeWorkflow({
-      name:workflowName,
-      version:1
-    },
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: workflowName,
+        version: 1,
+      },
       workflowName,
-     1,
-     "RunnerIdentifier"
+      1,
+      "RunnerIdentifier"
     );
     expect(executionId).toBeDefined();
-    
+
     taskRunner.updateOptions({ concurrency: 1, pollInterval: 100 });
-    
+
     const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     const [firstTask] = workflowStatus.tasks || [];

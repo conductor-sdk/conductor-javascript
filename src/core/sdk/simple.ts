@@ -1,4 +1,4 @@
-import { TaskType, SimpleTaskDef } from "../types";
+import { TaskType, SimpleTaskDef } from "../../common/types";
 
 export const simpleTask = (
   taskReferenceName: string,

@@ -1,4 +1,4 @@
-import { TaskType, TerminateTaskDef } from "../types";
+import { TaskType, TerminateTaskDef } from "../../common/types";
 export const terminateTask = (
   taskReferenceName: string,
   status: "COMPLETED" | "FAILED",
