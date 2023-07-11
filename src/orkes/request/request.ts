@@ -11,8 +11,6 @@ import type {
 import { CancelablePromise, ApiError } from "../../common";
 import type { FetchFn } from "../types";
 
-// TODO move me to index
-
 const isDefined = <T>(
   value: T | null | undefined
 ): value is Exclude<T, null | undefined> => {
