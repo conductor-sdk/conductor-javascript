@@ -1,4 +1,4 @@
-import { SimpleTaskDef, TaskType } from "../types";
+import { SimpleTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

@@ -1,4 +1,4 @@
-import { ForkJoinTaskDef, JoinTaskDef, TaskType } from "../types";
+import { ForkJoinTaskDef, JoinTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 import { ForkJoinTaskDefGen, NestedTaskMapper } from "./types";
 

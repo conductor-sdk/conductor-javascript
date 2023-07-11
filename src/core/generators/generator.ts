@@ -14,7 +14,7 @@ import { generateSetVariableTask } from "./SetVariableTask";
 import { generateTerminateTask } from "./TerminateTask";
 import { generateWaitTask } from "./WaitTask";
 import { generateSwitchTask } from "./SwitchTask";
-import { SimpleTaskDef, TaskDefTypes, TaskType } from "../types";
+import { SimpleTaskDef, TaskDefTypes, TaskType } from "../../common/types";
 
 const filledTaskDef = (task: Partial<TaskDefTypesGen>): TaskDefTypes => {
   const taskType = task.type;

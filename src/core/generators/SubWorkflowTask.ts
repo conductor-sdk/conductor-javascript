@@ -1,4 +1,4 @@
-import { SubWorkflowTaskDef, TaskType } from "../types";
+import { SubWorkflowTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

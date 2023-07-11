@@ -1,4 +1,4 @@
-import { JsonJQTransformTaskDef, TaskType } from "../types";
+import { JsonJQTransformTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

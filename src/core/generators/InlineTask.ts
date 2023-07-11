@@ -1,4 +1,4 @@
-import { InlineTaskDef, TaskType, InlineTaskInputParameters } from "../types";
+import { InlineTaskDef, TaskType, InlineTaskInputParameters } from "../../common/types";
 import { InlineTaskDefGen, InlineTaskInputParametersGen } from "./types";
 import { nameTaskNameGenerator } from "./common";
 

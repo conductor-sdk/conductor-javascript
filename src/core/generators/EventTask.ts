@@ -1,4 +1,4 @@
-import { EventTaskDef, TaskType } from "../types";
+import { EventTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

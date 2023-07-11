@@ -1,7 +1,7 @@
 import { expect, describe, it } from "@jest/globals";
 import { generate, taskGenMapper } from "../generator";
 import { generateSimpleTask } from "../SimpleTask";
-import { TaskType, ForkJoinTaskDef } from "../../types";
+import { TaskType, ForkJoinTaskDef } from "../../../common/types";
 import { generateEvaluationCode, generateInlineTask } from "../InlineTask";
 import { generateDoWhileTask } from "../DoWhileTask";
 import { generateSubWorkflowTask } from "../SubWorkflowTask";

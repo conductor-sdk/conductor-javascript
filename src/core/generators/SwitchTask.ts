@@ -1,4 +1,4 @@
-import { SwitchTaskDef, TaskType, TaskDefTypes } from "../types";
+import { SwitchTaskDef, TaskType, TaskDefTypes } from "../../common/types";
 import { nameTaskNameGenerator, mapArrValues } from "./common";
 import { NestedTaskMapper, SwitchTaskDefGen } from "./types";
 

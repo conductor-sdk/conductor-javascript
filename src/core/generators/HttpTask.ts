@@ -1,4 +1,4 @@
-import { HttpTaskDef, TaskType } from "../types";
+import { HttpTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

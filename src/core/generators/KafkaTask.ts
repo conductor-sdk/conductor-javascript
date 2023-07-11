@@ -1,4 +1,4 @@
-import { KafkaPublishTaskDef, TaskType } from "../types";
+import { KafkaPublishTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

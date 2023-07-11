@@ -1,4 +1,4 @@
-import { TerminateTaskDef, TaskType } from "../types";
+import { TerminateTaskDef, TaskType } from "../../common/types";
 import { nameTaskNameGenerator } from "./common";
 
 /**

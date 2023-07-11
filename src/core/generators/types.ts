@@ -17,7 +17,7 @@ import {
   WaitTaskDef,
   TaskDefTypes,
   InlineTaskInputParameters,
-} from "../types";
+} from "../../common/types";
 
 export type TaskDefTypesGen =
   | SimpleTaskDef
