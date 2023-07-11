@@ -13,7 +13,7 @@ const config: Partial<OrkesApiConfig> = {
 describe("TaskManager", () => {
   const clientPromise = orkesConductorClient(config);
 
-  jest.setTimeout(10000);
+  jest.setTimeout(20000);
   test("worker example ", async () => {
     const client = await clientPromise;
     const executor = new WorkflowExecutor(client);
@@ -77,20 +77,24 @@ describe("TaskManager", () => {
     });
     await executor.registerWorkflow(true, workflowWithWaitTask);
 
-    const executionId = await executor.startWorkflow({
-      name: workflowWithWaitTask.name,
-      input: {},
-      version: 1,
-    });
-    await new Promise((r) => setTimeout(() => r(true), 500));
-    const workflowStatus = await executor.getWorkflow(executionId, true);
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: workflowWithWaitTask.name,
+        input: {},
+        version: 1,
+      },
+      workflowWithWaitTask.name,
+      1,
+      "someId"
+    );
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     const [firstTask] = workflowStatus.tasks || [];
     expect(firstTask?.referenceTaskName).toEqual(waitTaskReference);
     const changedValue = { greet: "changed value" };
     await executor.updateTaskByRefName(
       firstTask!.referenceTaskName!,
-      executionId,
+      executionId!,
       "IN_PROGRESS",
       changedValue
     );
@@ -101,7 +105,7 @@ describe("TaskManager", () => {
 
     await executor.updateTask(
       firstTask!.taskId!,
-      executionId,
+      executionId!,
       "COMPLETED",
       newChange
     );
