@@ -1,7 +1,7 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { OrkesApiConfig, orkesConductorClient } from "../orkes";
-import { WorkflowExecutor, simpleTask } from "../core";
-import { generate, TaskType } from "../common";
+import { WorkflowExecutor, simpleTask, generate } from "../core";
+import { TaskType } from "../common";
 import { TaskRunner } from "../task";
 
 const config: Partial<OrkesApiConfig> = {
@@ -159,7 +159,6 @@ describe("TaskManager", () => {
     );
 
     const workflowStatus = await executor.getWorkflow(executionId!, true);
-
 
     expect(workflowStatus.status).toEqual("COMPLETED");
     expect(workflowStatus.output?.result).toEqual(3);

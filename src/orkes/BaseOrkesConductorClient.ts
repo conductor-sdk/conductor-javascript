@@ -1,18 +1,13 @@
-import { ConductorHttpRequest } from "../common/RequestCustomizer";
-import {
-  ConductorClient,
-  ConductorClientAPIConfig,
-} from "../common/open-api/ConductorClient";
-import { GenerateTokenRequest } from "../common/open-api";
-import { FetchFn } from "./types";
-
-export type OrkesApiConfig = ConductorClientAPIConfig & GenerateTokenRequest;
+import type { ConductorHttpRequest } from "../common";
+import { ConductorClient } from "../common";
+import { FetchFn, OrkesApiConfig } from "./types";
 
 const defaultRequestHandler: ConductorHttpRequest = (
   request,
   config,
   options
 ) => request(config, options);
+
 /*
 Returns an orkes conductor client creator function.
 Usefull if you want to use your own fetch. like Got or Axios

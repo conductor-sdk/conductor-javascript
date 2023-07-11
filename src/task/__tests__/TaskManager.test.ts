@@ -1,12 +1,16 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import {
-  OrkesApiConfig,
-  orkesConductorClient,
   simpleTask,
   WorkflowExecutor,
+} from "../../core";
+import {
+  OrkesApiConfig,
+  orkesConductorClient,
+} from "../../orkes";
+import {
   TaskManager,
   ConductorWorker,
-} from "../../../dist/index.js";
+} from "../index";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,

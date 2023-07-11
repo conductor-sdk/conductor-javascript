@@ -1,5 +1,5 @@
 import { TaskType, ForkJoinTaskDef, TaskDefTypes, JoinTaskDef } from "../../common/types";
-import { generateJoinTask } from "../../common/generators";
+import { generateJoinTask } from "../generators";
 
 export const forkTask = (
   taskReferenceName: string,

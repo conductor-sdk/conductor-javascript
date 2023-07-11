@@ -1,4 +1,4 @@
-import { ConductorHttpRequest } from "../common/RequestCustomizer";
+import type { ConductorHttpRequest } from "../common";
 import { baseOrkesConductorClient } from "./BaseOrkesConductorClient";
 
 const defaultRequestHandler: ConductorHttpRequest = (
