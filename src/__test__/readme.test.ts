@@ -143,18 +143,23 @@ describe("TaskManager", () => {
 
     await executor.registerWorkflow(true, sumTwoNumbers);
 
-    const executionId = await executor.startWorkflow({
-      name: sumTwoNumbers.name,
-      version: 1,
-      input: {
-        numberOne: 1,
-        numberTwo: 2,
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: sumTwoNumbers.name,
+        version: 1,
+
+        input: {
+          numberOne: 1,
+          numberTwo: 2,
+        },
       },
-    });
+      sumTwoNumbers.name,
+      1,
+      "workflowSummTwoNumbers"
+    );
 
-    const workflowStatus = await executor.getWorkflow(executionId, true);
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
 
-    await new Promise((r) => setTimeout(() => r(true), 900));
 
     expect(workflowStatus.status).toEqual("COMPLETED");
     expect(workflowStatus.output?.result).toEqual(3);
