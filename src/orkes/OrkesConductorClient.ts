@@ -1,8 +1,9 @@
-import { ConductorHttpRequest } from "../common/RequestCustomizer";
-import { fetchCache } from "./request/fetchCatchDns";
-import { request as baseRequest } from "./request";
+import { ConductorHttpRequest } from "../common";
+import { fetchCatchDns } from "./request/fetchCatchDns";
+import { request as baseRequest } from "./request/request";
 import { baseOrkesConductorClient } from "./BaseOrkesConductorClient";
 
+const fetchCache = fetchCatchDns(fetch);
 
 const defaultRequestHandler: ConductorHttpRequest = (
   __request,

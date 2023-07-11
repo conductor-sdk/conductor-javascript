@@ -1,12 +1,15 @@
 export * from "./ConductorLogger";
 export * from "./RequestCustomizer";
-export * from "./open-api/core/CancelablePromise";
 export * from "./generators";
 export * from "./types";
 
 export {
   ConductorClient,
+  ApiRequestOptions,
+  ApiResult,
+  ConductorClientAPIConfig,
   OpenAPIConfig,
+  OnCancel,
   ApiError,
   BaseHttpRequest,
   CancelablePromise,
