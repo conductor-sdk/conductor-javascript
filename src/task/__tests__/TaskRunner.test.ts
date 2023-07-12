@@ -77,7 +77,7 @@ test("Should set the task as failed if the task has an error", async () => {
   const args: RunnerArgs = {
     worker: {
       taskDefName: "test",
-      execute: async ({ inputData }) => {
+      execute: async () => {
         throw new Error("Error from worker");
       },
     },
