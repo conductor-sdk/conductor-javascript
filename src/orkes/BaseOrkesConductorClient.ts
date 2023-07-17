@@ -66,12 +66,12 @@ export const baseOrkesConductorClient = <
       const tokenUrl = `${serverUrl}/token`;
       const res = await requestTokenForKeySecret(keyId, keySecret, tokenUrl);
       const { token } = await (res as R).json();
-      
+
       const conductorClientInstance = new AuthConductorClient(
         { ...config, TOKEN: token },
         requestHandler
       );
-      
+
       if (token != null && refreshTokenInterval > 0) {
         const intervalId = setInterval(async () => {
           const res = await requestTokenForKeySecret(
