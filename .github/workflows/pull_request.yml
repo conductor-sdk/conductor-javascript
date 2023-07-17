@@ -32,4 +32,6 @@ jobs:
         env:
           KEY_ID: ${{ secrets.KEY_ID }}
           KEY_SECRET: ${{ secrets.KEY_SECRET }}
+          SERVER_URL: ${{ secrets.SERVER_URL }}
+
         

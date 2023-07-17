@@ -1,5 +1,4 @@
-import { ConductorLogger } from "../common";
-import { noopLogger } from "./helpers";
+import { ConductorLogger, noopLogger } from "../common";
 
 interface PollerOptions {
   pollInterval?: number;
@@ -12,7 +11,7 @@ export class Poller {
     stop: () => void;
   }> = [];
   private pollFunction: () => Promise<void> = async () => {};
-  private isPolling = false;
+  private polling = false;
   options: PollerOptions = {
     pollInterval: 1000,
     concurrency: 1,
@@ -29,11 +28,15 @@ export class Poller {
     this.logger = logger || noopLogger;
   }
 
+  get isPolling() {
+    return this.polling;
+  }
+
   /**
    * Starts polling for work
    */
   startPolling = () => {
-    if (this.isPolling) {
+    if (this.polling) {
       throw new Error("Runner is already started");
     }
 
@@ -44,14 +47,14 @@ export class Poller {
    * Stops Polling for work
    */
   stopPolling = () => {
-    this.isPolling = false;
+    this.polling = false;
     this.concurrentCalls.forEach((call) => call.stop());
   };
 
- /**
-  * adds or shuts down concurrent calls based on the concurrency setting
-  * @param concurrency 
-  */ 
+  /**
+   * adds or shuts down concurrent calls based on the concurrency setting
+   * @param concurrency
+   */
   private updateConcurrency(concurrency: number) {
     if (concurrency > 0 && concurrency !== this.options.concurrency) {
       if (concurrency < this.options.concurrency) {
@@ -80,8 +83,8 @@ export class Poller {
   }
 
   private poll = async () => {
-    if (!this.isPolling) {
-      this.isPolling = true;
+    if (!this.polling) {
+      this.polling = true;
       for (let i = 0; i < this.options.concurrency; i++) {
         this.concurrentCalls.push(this.singlePoll());
       }
@@ -89,7 +92,7 @@ export class Poller {
   };
 
   private singlePoll = () => {
-    let poll = this.isPolling;
+    let poll = this.polling;
     let timeout: NodeJS.Timeout;
     const pollingCall = async () => {
       while (poll) {

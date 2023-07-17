@@ -1,24 +1,19 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import {
-  OrkesApiConfig,
-  orkesConductorClient,
-  WorkflowExecutor,
-  TaskRunner,
-  generate,
-  simpleTask,
-} from "../../";
-import { TaskType } from "../../";
+import { OrkesApiConfig, orkesConductorClient } from "../orkes";
+import { WorkflowExecutor, simpleTask, generate } from "../core";
+import { TaskType } from "../common";
+import { TaskRunner } from "../task";
 
 const config: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: "https://pg-staging.orkesconductor.com/api",
+  serverUrl: `${process.env.SERVER_URL}`,
 };
 
 describe("TaskManager", () => {
   const clientPromise = orkesConductorClient(config);
 
-  jest.setTimeout(10000);
+  jest.setTimeout(20000);
   test("worker example ", async () => {
     const client = await clientPromise;
     const executor = new WorkflowExecutor(client);
@@ -82,20 +77,24 @@ describe("TaskManager", () => {
     });
     await executor.registerWorkflow(true, workflowWithWaitTask);
 
-    const executionId = await executor.startWorkflow({
-      name: workflowWithWaitTask.name,
-      input: {},
-      version: 1,
-    });
-    await new Promise((r) => setTimeout(() => r(true), 500));
-    const workflowStatus = await executor.getWorkflow(executionId, true);
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: workflowWithWaitTask.name,
+        input: {},
+        version: 1,
+      },
+      workflowWithWaitTask.name,
+      1,
+      "someId"
+    );
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     const [firstTask] = workflowStatus.tasks || [];
     expect(firstTask?.referenceTaskName).toEqual(waitTaskReference);
     const changedValue = { greet: "changed value" };
     await executor.updateTaskByRefName(
       firstTask!.referenceTaskName!,
-      executionId,
+      executionId!,
       "IN_PROGRESS",
       changedValue
     );
@@ -106,7 +105,7 @@ describe("TaskManager", () => {
 
     await executor.updateTask(
       firstTask!.taskId!,
-      executionId,
+      executionId!,
       "COMPLETED",
       newChange
     );
@@ -148,18 +147,22 @@ describe("TaskManager", () => {
 
     await executor.registerWorkflow(true, sumTwoNumbers);
 
-    const executionId = await executor.startWorkflow({
-      name: sumTwoNumbers.name,
-      version: 1,
-      input: {
-        numberOne: 1,
-        numberTwo: 2,
+    const { workflowId: executionId } = await executor.executeWorkflow(
+      {
+        name: sumTwoNumbers.name,
+        version: 1,
+
+        input: {
+          numberOne: 1,
+          numberTwo: 2,
+        },
       },
-    });
+      sumTwoNumbers.name,
+      1,
+      "workflowSummTwoNumbers"
+    );
 
-    const workflowStatus = await executor.getWorkflow(executionId, true);
-
-    await new Promise((r) => setTimeout(() => r(true), 900));
+    const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     expect(workflowStatus.status).toEqual("COMPLETED");
     expect(workflowStatus.output?.result).toEqual(3);

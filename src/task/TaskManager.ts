@@ -37,7 +37,8 @@ export class TaskManager {
   private readonly logger: ConductorLogger;
   private readonly errorHandler: TaskErrorHandler;
   private workers: Array<ConductorWorker>;
-  private readonly taskManageOptions: Required<TaskManagerOptions>;
+  readonly options: Required<TaskManagerOptions>;
+  private polling: boolean = false;
 
   constructor(
     client: ConductorClient,
@@ -54,7 +55,7 @@ export class TaskManager {
     this.errorHandler = config.onError ?? noopErrorHandler;
     this.workers = workers;
     const providedOptions = config.options ?? {};
-    this.taskManageOptions = {
+    this.options = {
       ...defaultManagerOptions,
       ...providedOptions,
       workerID: workerId(providedOptions),
@@ -65,11 +66,15 @@ export class TaskManager {
     worker: ConductorWorker
   ): Required<TaskManagerOptions> => {
     return {
-      ...this.taskManageOptions,
-      concurrency: worker.concurrency ?? this.taskManageOptions.concurrency,
-      domain: worker.domain ?? this.taskManageOptions.domain,
+      ...this.options,
+      concurrency: worker.concurrency ?? this.options.concurrency,
+      domain: worker.domain ?? this.options.domain,
     };
   };
+
+  get isPolling() {
+    return this.polling;
+  }
 
   /**
    * new options will get merged to existing options
@@ -86,6 +91,8 @@ export class TaskManager {
         runner.updateOptions(newOptions);
       });
     });
+    this.options.concurrency = options.concurrency ?? this.options.concurrency;
+    this.options.pollInterval = options.pollInterval ?? this.options.pollInterval;
   };
 
   /**
@@ -108,6 +115,7 @@ export class TaskManager {
       runner.startPolling();
       this.tasks[worker.taskDefName].push(runner);
     });
+    this.polling = true;
   };
   /**
    * Stops polling for tasks
@@ -117,5 +125,6 @@ export class TaskManager {
       this.tasks[taskType].forEach((runner) => runner.stopPolling());
       this.tasks[taskType] = [];
     }
+    this.polling = false;
   };
 }

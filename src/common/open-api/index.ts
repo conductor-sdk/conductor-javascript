@@ -1,14 +1,17 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-export { ConductorClient } from "./ConductorClient";
+export { ConductorClient, ConductorClientAPIConfig } from "./ConductorClient";
 
 export { ApiError } from "./core/ApiError";
 export { BaseHttpRequest } from "./core/BaseHttpRequest";
 export { CancelablePromise, CancelError } from "./core/CancelablePromise";
 export { OpenAPI } from "./core/OpenAPI";
 export type { OpenAPIConfig } from "./core/OpenAPI";
+export type { ApiRequestOptions } from "./core/ApiRequestOptions";
+export type { ApiResult } from "./core/ApiResult";
 
+export type { OnCancel } from "./core/CancelablePromise";
 export type { Action } from "./models/Action";
 export type { BulkResponse } from "./models/BulkResponse";
 export type { EventHandler } from "./models/EventHandler";
