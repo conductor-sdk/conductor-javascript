@@ -26,7 +26,9 @@ describe("fetchCatchDns", () => {
       .fn()
       .mockReturnValue(new Promise((r) => r(fakeResponse)));
     const options = {};
-    const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {dnsCache:dnsResolver});
+    const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {
+      dnsCache: dnsResolver,
+    });
     const result = await fetchWithDns(targetUrl, options);
     expect(result).toBe(fakeResponse);
     expect(mockFetch).toBeCalledTimes(1);
@@ -54,7 +56,9 @@ describe("fetchCatchDns", () => {
       .fn()
       .mockReturnValue(new Promise((r) => r(fakeResponse)));
     const options = {};
-    const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {dnsCache:dnsResolver});
+    const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {
+      dnsCache: dnsResolver,
+    });
     const result = await fetchWithDns(targetUrl, options);
     expect(result).toBe(fakeResponse);
     expect(mockFetch).toBeCalledTimes(1);
@@ -69,5 +73,33 @@ describe("fetchCatchDns", () => {
     expect(firstArgument).toEqual(targetUrl);
     //It included the host header
     expect(secondArgArgument).toEqual(options);
+  });
+
+  test("Should call with cache if ETIMEDOUT throw exception but remove host from cache", async () => {
+    const host = "non-existing-domain.orkes.io";
+    const targetUrl = `http://${host}`;
+    const dnsResolver = new DnsCacheResolver({
+      initialCache: new Map<string, string>([[host, "198.51.100.5"]]),
+    });
+    const mockFetch = jest.fn().mockImplementation(() => {
+      let error: NodeJS.ErrnoException = new Error(
+        "Test error"
+      ) as NodeJS.ErrnoException;
+      error.code = "ETIMEDOUT";
+      error.syscall = "test";
+      throw error;
+    });
+    const options = {};
+    const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {
+      dnsCache: dnsResolver,
+    });
+    fetchWithDns(targetUrl, options).catch((error) => {
+      expect(dnsResolver.cache.has(host)).toBe(false);
+
+      const firstArgument = mockFetch.mock.calls[0][0];
+
+      // Should hit original params
+      expect(firstArgument).toEqual(`http://198.51.100.5/`);
+    });
   });
 });

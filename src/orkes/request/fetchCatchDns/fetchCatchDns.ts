@@ -37,7 +37,7 @@ const DEFAULT_OPTIONS: CatcherOptions = {
 
 export const fetchCatchDns = <
   T extends { headers?: HeadersInit | undefined },
-  R extends { json: () => Promise<any> } 
+  R extends { json: () => Promise<any> }
 >(
   fetch: FetchFn<T, R>,
   {
@@ -73,9 +73,16 @@ export const fetchCatchDns = <
       headers: headersOverride,
     };
 
-    const res = await fetch(target.toString(), optionsOverride as T);
-
-    return res;
+    try {
+      const res = await fetch(target.toString(), optionsOverride as T);
+      return res;
+    } catch (e: NodeJS.ErrnoException | any) {
+      if (e && e?.code === "ETIMEDOUT") {
+        dnsCache.removeCache(hostname);
+      }
+      throw e;
+    }
   };
+
   return fetchWithDns;
 };
