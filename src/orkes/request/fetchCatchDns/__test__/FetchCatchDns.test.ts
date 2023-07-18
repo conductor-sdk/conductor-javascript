@@ -82,7 +82,7 @@ describe("fetchCatchDns", () => {
       initialCache: new Map<string, string>([[host, "198.51.100.5"]]),
     });
     const mockFetch = jest.fn().mockImplementation(() => {
-      let error: NodeJS.ErrnoException = new Error(
+      const error: NodeJS.ErrnoException = new Error(
         "Test error"
       ) as NodeJS.ErrnoException;
       error.code = "ETIMEDOUT";
@@ -93,7 +93,7 @@ describe("fetchCatchDns", () => {
     const fetchWithDns = fetchCatchDns(mockFetch as FetchFn, {
       dnsCache: dnsResolver,
     });
-    fetchWithDns(targetUrl, options).catch((error) => {
+    fetchWithDns(targetUrl, options).catch(() => {
       expect(dnsResolver.cache.has(host)).toBe(false);
 
       const firstArgument = mockFetch.mock.calls[0][0];
