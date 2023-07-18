@@ -1,16 +1,7 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import {
-  simpleTask,
-  WorkflowExecutor,
-} from "../../core";
-import {
-  OrkesApiConfig,
-  orkesConductorClient,
-} from "../../orkes";
-import {
-  TaskManager,
-  ConductorWorker,
-} from "../index";
+import { simpleTask, WorkflowExecutor } from "../../core";
+import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
+import { TaskManager, ConductorWorker } from "../index";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
@@ -22,7 +13,7 @@ const playConfig: Partial<OrkesApiConfig> = {
 describe("TaskManager", () => {
   const clientPromise = orkesConductorClient(playConfig);
 
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
   test("Should run workflow with worker", async () => {
     const client = await clientPromise;
     const executor = new WorkflowExecutor(client);
@@ -54,7 +45,7 @@ describe("TaskManager", () => {
       executionId,
       true
     );
-    manager.stopPolling();
+    await manager.stopPolling();
     expect(workflowStatus.status).toEqual("COMPLETED");
   });
 
@@ -85,7 +76,7 @@ describe("TaskManager", () => {
     });
     await new Promise((r) => setTimeout(() => r(true), 4500));
     expect(errorHandler).toBeCalledTimes(1);
-    manager.stopPolling();
+    await manager.stopPolling();
   });
 
   test("If no error handler provided. it should just update the task", async () => {
@@ -105,12 +96,18 @@ describe("TaskManager", () => {
 
     manager.startPolling();
 
-    await executor.startWorkflow({
-      name: "TaskManagerTest",
-      input: {},
-      version: 1,
-    });
-    manager.stopPolling();
+    const status = await executor.executeWorkflow(
+      {
+        name: "TaskManagerTestE",
+        input: {},
+        version: 1,
+      },
+      "TaskManagerTestE",
+      1,
+      "noErrorHandlerProvidedIdentifier"
+    );
+    await manager.stopPolling();
+    expect(status.status).toEqual("FAILED");
   });
 
   test("multi worker example", async () => {
@@ -138,7 +135,7 @@ describe("TaskManager", () => {
     //create the manager with initial configuations
     const manager = new TaskManager(client, workers, {
       options: { pollInterval: 1500, concurrency: 2 },
-      logger: console,
+      // logger: console,
     });
     // start polling
     manager.startPolling();
@@ -179,8 +176,7 @@ describe("TaskManager", () => {
     const workflowStatus = await executor.getWorkflow(executionId!, true);
 
     expect(workflowStatus.status).toEqual("COMPLETED");
-    manager.stopPolling();
-    await new Promise((r) => setTimeout(() => r(true), 1000));
+    await manager.stopPolling();
 
     expect(manager.isPolling).toBeFalsy();
     expect(manager.options.concurrency).toBe(1);

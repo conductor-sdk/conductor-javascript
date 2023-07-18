@@ -8,7 +8,7 @@ interface PollerOptions {
 export class Poller {
   private concurrentCalls: Array<{
     promise: Promise<void>;
-    stop: () => void;
+    stop: () => Promise<boolean>;
   }> = [];
   private pollFunction: () => Promise<void> = async () => {};
   private polling = false;
@@ -46,9 +46,9 @@ export class Poller {
   /**
    * Stops Polling for work
    */
-  stopPolling = () => {
+  stopPolling = async () => {
+    await Promise.all(this.concurrentCalls.map((call) => call.stop()));
     this.polling = false;
-    this.concurrentCalls.forEach((call) => call.stop());
   };
 
   /**
@@ -99,18 +99,20 @@ export class Poller {
         await this.pollFunction();
         await new Promise(
           (r) =>
-            (timeout = setTimeout(() => r(true), this.options.pollInterval))
+            poll ? (timeout = setTimeout(() => r(true), this.options.pollInterval)): r(true)
         );
       }
     };
 
     return {
       promise: pollingCall(),
-      stop: () => {
-        clearTimeout(timeout);
-        poll = false;
-        this.logger.debug("stopping single poll call");
-      },
+      stop: (): Promise<boolean> =>
+        new Promise((r) => {
+          clearTimeout(timeout);
+          poll = false;
+          this.logger.debug("stopping single poll call");
+          r(true);
+        }),
     };
   };
 }

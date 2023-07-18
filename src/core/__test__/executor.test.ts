@@ -1,25 +1,19 @@
-import { expect, describe, test } from "@jest/globals";
-import {
-  SetVariableTaskDef,
-  TaskType,
-  WorkflowDef,
-} from "../../common";
-import {
-  OrkesApiConfig,
-  orkesConductorClient,
-}from "../../orkes";
+import { expect, describe, test, jest } from "@jest/globals";
+import { SetVariableTaskDef, TaskType, WorkflowDef } from "../../common";
+import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
 import { WorkflowExecutor } from "../executor";
-import { v4 as uuidv4 } from 'uuid';
+import { v4 as uuidv4 } from "uuid";
 
 const playConfig: Partial<OrkesApiConfig> = {
   keyId: `${process.env.KEY_ID}`,
   keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}` 
+  serverUrl: `${process.env.SERVER_URL}`,
 };
 
 describe("Executor", () => {
   const clientPromise = orkesConductorClient(playConfig);
 
+  jest.setTimeout(15000);
   const name = "testWorkflow";
   const version = 1;
   test("Should be able to register a workflow", async () => {
@@ -84,9 +78,9 @@ describe("Executor", () => {
       },
       name,
       version,
-      uuidv4(),
+      uuidv4()
     );
-    expect(workflowRun.status).toEqual('COMPLETED')
+    expect(workflowRun.status).toEqual("COMPLETED");
   });
 
   test("Should be able to get workflow execution status ", async () => {
@@ -109,6 +103,4 @@ describe("Executor", () => {
     expect(workflowStatus.tasks?.length).toBe(1);
   });
 
-  test("Should return not found if there is an error", async () => {
-  });
 });

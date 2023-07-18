@@ -70,7 +70,7 @@ describe("TaskManager", () => {
     expect(firstTask?.taskType).toEqual("task-manager-int-test");
     expect(workflowStatus.status).toEqual("COMPLETED");
 
-    taskRunner.stopPolling();
+    await taskRunner.stopPolling();
 
     expect(taskRunner.isPolling).toEqual(false);
     const taskDetails = await executor.getTask(firstTask?.taskId || "");
