@@ -76,14 +76,6 @@
     "typescript": "^4.6.4",
     "uuid": "^9.0.0"
   },
-  "peerDependencies": {
-    "node-fetch": "*"
-  },
-  "peerDependenciesMeta": {
-    "node-fetch": {
-      "optional": true
-    }
-  },
   "tsup": {
     "target": "node18",
     "sourcemap": true,
@@ -106,5 +98,6 @@
     "node": ">=18"
   },
   "dependencies": {
+    "node-fetch": "^2.6.12"
   }
 }
