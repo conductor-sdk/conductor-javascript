@@ -25,14 +25,11 @@ describe("Executor", () => {
       version,
       tasks: [
         {
-          type: TaskType.HTTP,
-          name: "httpTask",
+          type: TaskType.SET_VARIABLE,
+          name: "setVariable",
           taskReferenceName: "httpTaskRef",
           inputParameters: {
-            http_request: {
-              method: "GET",
-              uri: "https://orkes-api-tester.orkesconductor.com/get",
-            },
+            hello:"world"
           },
         },
       ],
