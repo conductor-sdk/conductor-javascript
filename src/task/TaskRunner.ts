@@ -75,8 +75,8 @@ export class TaskRunner {
   /**
    * Stops Polling for work
    */
-  stopPolling = () => {
-    this.poller.stopPolling();
+  stopPolling = async () => {
+    await this.poller.stopPolling();
   };
 
   updateOptions(options: Partial<TaskRunnerOptions>) {

@@ -22,6 +22,10 @@ export class DnsCacheResolver {
     this._cache.clear();
   }
 
+  public removeCache(host: string) {
+    this._cache.delete(host);
+  }
+
   public get cache() {
     return this._cache;
   }

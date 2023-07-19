@@ -92,7 +92,8 @@ export class TaskManager {
       });
     });
     this.options.concurrency = options.concurrency ?? this.options.concurrency;
-    this.options.pollInterval = options.pollInterval ?? this.options.pollInterval;
+    this.options.pollInterval =
+      options.pollInterval ?? this.options.pollInterval;
   };
 
   /**
@@ -120,9 +121,11 @@ export class TaskManager {
   /**
    * Stops polling for tasks
    */
-  stopPolling = () => {
+  stopPolling = async () => {
     for (const taskType in this.tasks) {
-      this.tasks[taskType].forEach((runner) => runner.stopPolling());
+      await Promise.all(
+        this.tasks[taskType].map((runner) => runner.stopPolling())
+      );
       this.tasks[taskType] = [];
     }
     this.polling = false;
