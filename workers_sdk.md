@@ -74,13 +74,14 @@ const worker: ConductorWorker = {
 
 ## Starting Workers
 
-`TaskRunner` interface is used to start the workers, which takes care of polling server for the work, executing worker code and updating the results back to the server.
+`TaskManager` interface is used to start workers, which takes care of polling server for the work, executing worker code and updating the results back to the server.
 
 ```typescript
 import {
   OrkesApiConfig,
   orkesConductorClient,
-  TaskRunner,
+  TaskManager,
+  ConductorWorker
 } from "@io-orkes/conductor-javascript";
 
 const clientPromise = orkesConductorClient({
@@ -91,28 +92,23 @@ const clientPromise = orkesConductorClient({
 
 const client = await clientPromise;
 
-const taskRunner = new TaskRunner({
-  taskResource: client.taskResource,
-  worker: {
-    taskDefName: "MyCustomWorker",
-    execute: async ({ inputData, taskId }) => {
-      return {
-        outputData: {
-          greeting: "Hello World",
-        },
-        status: "COMPLETED",
-      };
-    },
+const customWorker: ConductorWorker = {
+  taskDefName: "MyCustomWorker",
+  execute: async ({ inputData, taskId }) => {
+    return {
+      outputData: {
+        greeting: "Hello World",
+      },
+      status: "COMPLETED",
+    };
   },
-  options: {
-    pollInterval: 10,
-    domain: undefined,
-    concurrency: 1,
-    workerID: "",
-  },
+};
+
+const manager = new TaskManager(client, [customWorker], {
+    options: { pollInterval: 1500, concurrency: 1 },
 });
 
-taskRunner.startPolling();
+manager.startPolling();
 ```
 
 ## Task Management APIs
