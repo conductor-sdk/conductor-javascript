@@ -41,7 +41,7 @@ export class TaskRunner {
   private logger: ConductorLogger;
   private options: Required<TaskRunnerOptions>;
   errorHandler: TaskErrorHandler;
-  private poller: Poller;
+  private poller: Poller<Task>;
 
   constructor({
     worker,
@@ -56,7 +56,8 @@ export class TaskRunner {
     this.options = options;
     this.errorHandler = errorHandler;
     this.poller = new Poller(
-      this.pollAndExecute,
+      this.batchPoll,
+      this.executeTask,
       { concurrency: options.concurrency, pollInterval: options.pollInterval },
       this.logger
     );
@@ -92,23 +93,15 @@ export class TaskRunner {
     return this.options;
   }
 
-  private pollAndExecute = async () => {
-    try {
-      const { workerID } = this.options;
-      const task = await this.taskResource.poll(
-        this.worker.taskDefName,
-        workerID,
-        this.worker.domain ?? this.options.domain
-      );
-      if (task && task.taskId) {
-        await this.executeTask(task);
-      } else {
-        this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
-      }
-    } catch (unknownError: unknown) {
-      this.handleUnknownError(unknownError);
-      this.errorHandler(unknownError as Error);
-    }
+  private batchPoll = async (count: number): Promise<Task[]> => {
+    const { workerID } = this.options;
+    const task = await this.taskResource.batchPoll(
+      this.worker.taskDefName,
+      workerID,
+      this.worker.domain ?? this.options.domain,
+      count
+    );
+    return task;
   };
 
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
@@ -132,7 +125,7 @@ export class TaskRunner {
     );
   };
 
-  executeTask = async (task: Task) => {
+  private executeTask = async (task: Task) => {
     try {
       const result = await this.worker.execute(task);
       await this.updateTaskWithRetry(task, {
