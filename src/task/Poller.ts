@@ -44,6 +44,7 @@ export class Poller<T> {
     if (this.polling) {
       throw new Error("Runner is already started");
     }
+    this._tasksInProcess = 0;
     this.polling = true;
     this.poll();
   };
