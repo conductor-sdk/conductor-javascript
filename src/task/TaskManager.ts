@@ -22,6 +22,7 @@ const defaultManagerOptions: Required<TaskManagerOptions> = {
   pollInterval: 1000,
   domain: undefined,
   concurrency: 1,
+  batchPollingTimeout: 100,
 };
 
 function workerId(options: Partial<TaskManagerOptions>) {
@@ -32,7 +33,7 @@ function workerId(options: Partial<TaskManagerOptions>) {
  * Responsible for initializing and managing the runners that poll and work different task queues.
  */
 export class TaskManager {
-  private tasks: Record<string, Array<TaskRunner>> = {};
+  private workerRunners: Map<string, TaskRunner> = new Map();
   private readonly client: ConductorClient;
   private readonly logger: ConductorLogger;
   private readonly errorHandler: TaskErrorHandler;
@@ -68,6 +69,7 @@ export class TaskManager {
     return {
       ...this.options,
       concurrency: worker.concurrency ?? this.options.concurrency,
+      pollInterval: worker.pollInterval ?? this.options.pollInterval,
       domain: worker.domain ?? this.options.domain,
     };
   };
@@ -75,6 +77,21 @@ export class TaskManager {
   get isPolling() {
     return this.polling;
   }
+
+  updatePollingOptionForWorker = (
+    workerTaskDefName: string,
+    options: Partial<TaskManagerOptions>
+  ) => {
+    const maybeRunner = this.workerRunners.get(workerTaskDefName);
+
+    if (maybeRunner != null) {
+      maybeRunner.updateOptions(options);
+    } else {
+      this.logger.info(
+        `No runner found for worker with taskDefName: ${workerTaskDefName}`
+      );
+    }
+  };
 
   /**
    * new options will get merged to existing options
@@ -86,26 +103,33 @@ export class TaskManager {
         ...this.workerManagerWorkerOptions(worker),
         ...options,
       };
-      const runners = this.tasks[worker.taskDefName];
-      runners.forEach((runner) => {
-        runner.updateOptions(newOptions);
-      });
+      this.updatePollingOptionForWorker(worker.taskDefName, newOptions);
     });
     this.options.concurrency = options.concurrency ?? this.options.concurrency;
     this.options.pollInterval =
       options.pollInterval ?? this.options.pollInterval;
   };
 
+  sanityCheck = () => {
+    if (this.workers.length === 0) {
+      throw new Error("No workers supplied to TaskManager");
+    }
+    const workerIDs = new Set();
+    for (const item of this.workers) {
+      if (workerIDs.has(item.taskDefName)) {
+        throw new Error(`Duplicate worker taskDefName: ${item.taskDefName}`);
+      }
+      workerIDs.add(item.taskDefName);
+    }
+  };
+
   /**
    * Start polling for tasks
    */
   startPolling = () => {
+    this.sanityCheck();
     this.workers.forEach((worker) => {
-      this.tasks[worker.taskDefName] = [];
       const options = this.workerManagerWorkerOptions(worker);
-      this.logger.debug(
-        `Starting taskDefName=${worker.taskDefName} concurrency=${options.concurrency} domain=${options.domain}`
-      );
       const runner = new TaskRunner({
         worker,
         options,
@@ -114,7 +138,7 @@ export class TaskManager {
         onError: this.errorHandler,
       });
       runner.startPolling();
-      this.tasks[worker.taskDefName].push(runner);
+      this.workerRunners.set(worker.taskDefName, runner);
     });
     this.polling = true;
   };
@@ -122,11 +146,10 @@ export class TaskManager {
    * Stops polling for tasks
    */
   stopPolling = async () => {
-    for (const taskType in this.tasks) {
-      await Promise.all(
-        this.tasks[taskType].map((runner) => runner.stopPolling())
-      );
-      this.tasks[taskType] = [];
+    for (const [workerTaskDefName, runner] of this.workerRunners) {
+      this.logger.debug(`Stopping taskDefName=${workerTaskDefName}`);
+      await runner.stopPolling();
+      this.workerRunners.delete(workerTaskDefName);
     }
     this.polling = false;
   };
