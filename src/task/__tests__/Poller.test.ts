@@ -1,5 +1,6 @@
 import { Poller } from "../Poller";
 import { expect, describe, test, jest } from "@jest/globals";
+import { mockLogger } from "./mockLogger";
 
 type Task = { description: string; id: number };
 
@@ -11,20 +12,26 @@ const fakeTaskGenerator = (count: number): Promise<Task[]> =>
     }))
   );
 const BASE_TIME = 100;
+const TEST_POLLER_ID = "test-poller-id";
 
 describe("Poller", () => {
   test("Should run the poll function once for each interval if concurrency is just one", async () => {
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
-    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
-      () => Promise.resolve()
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(() =>
+      Promise.resolve()
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 1,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 1,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
 
@@ -53,14 +60,19 @@ describe("Poller", () => {
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
-    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
-      () => Promise.resolve()
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(() =>
+      Promise.resolve()
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 2,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 2,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
     await new Promise((r) => setTimeout(() => r(true), BASE_TIME));
@@ -89,7 +101,7 @@ describe("Poller", () => {
     expect(mockPoller).toHaveBeenCalledWith(2);
   });
 
-  test("Should be able to keep the pooler with work if tasks take too long", async () => {
+  test("Should be able to keep the poller with work if tasks take too long", async () => {
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
@@ -102,10 +114,15 @@ describe("Poller", () => {
       }
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 2,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 2,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
     await new Promise((r) => setTimeout(() => r(true), BASE_TIME));
@@ -137,14 +154,19 @@ describe("Poller", () => {
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
-    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
-      () => Promise.resolve()
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(() =>
+      Promise.resolve()
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 2,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 2,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
     await new Promise((r) => setTimeout(() => r(true), BASE_TIME));
@@ -174,20 +196,24 @@ describe("Poller", () => {
     expect(mockPoller).toHaveBeenCalledWith(3); // it could not handle two because of the await
     expect(mockPoller).toHaveBeenCalledWith(3);
   });
-  
-  test("Should be able to change remove concurrency dynamically", async () => {
 
+  test("Should be able to change remove concurrency dynamically", async () => {
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
-    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
-      () => Promise.resolve()
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(() =>
+      Promise.resolve()
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 2,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 2,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
     await new Promise((r) => setTimeout(() => r(true), BASE_TIME));
@@ -219,18 +245,22 @@ describe("Poller", () => {
   });
 
   test("Should be able to change the pollInterval", async () => {
-
     const mockPoller: (count: number) => Promise<Task[]> =
       jest.fn(fakeTaskGenerator);
 
-    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
-      () => Promise.resolve()
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(() =>
+      Promise.resolve()
     );
 
-    const poller = new Poller<Task>(mockPoller, mockPerformWorkFunction, {
-      concurrency: 2,
-      pollInterval: BASE_TIME,
-    });
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 2,
+        pollInterval: BASE_TIME,
+      }
+    );
 
     poller.startPolling();
     await new Promise((r) => setTimeout(() => r(true), BASE_TIME));
@@ -255,6 +285,38 @@ describe("Poller", () => {
 
     // Should have been called 3 times since interval was updated
     expect(mockPoller).toHaveBeenCalledTimes(3);
+  });
 
+  test("Should get warning if unable to poll tasks after threshold", async () => {
+    const mockPoller: (count: number) => Promise<Task[]> =
+      jest.fn(fakeTaskGenerator);
+
+    const mockPerformWorkFunction: (work: Task) => Promise<void> = jest.fn(
+      async (work: Task): Promise<void> => {
+        if (work.id === 0) {
+          // Add work load on first task takes two times the poll interval
+          await new Promise<void>((r) => setTimeout(() => r(), BASE_TIME));
+        }
+      }
+    );
+
+    const poller = new Poller<Task>(
+      TEST_POLLER_ID,
+      mockPoller,
+      mockPerformWorkFunction,
+      {
+        concurrency: 1,
+        pollInterval: BASE_TIME / 2, //pollInterval takes half. so there will be no work for one cycle
+        warnAtO: 0, // Setting this to zero so that we get the warning with the first non processed task
+      },
+      mockLogger
+    );
+
+    poller.startPolling();
+    await new Promise((r) => setTimeout(() => r(true), BASE_TIME * 3));
+    poller.stopPolling();
+    expect(mockLogger.info).toHaveBeenCalledWith(
+      `Not polling anything because in process tasks is maxed as concurrency level. ${TEST_POLLER_ID}`
+    );
   });
 });

@@ -3,6 +3,7 @@ import { ConductorLogger, noopLogger } from "../common";
 interface PollerOptions {
   pollInterval?: number;
   concurrency: number;
+  warnAtO?: number;
 }
 
 export class Poller<T> {
@@ -11,18 +12,23 @@ export class Poller<T> {
   private performWorkFunction: (work: T) => Promise<void> = async () => {};
   private polling = false;
   private _tasksInProcess = 0;
+  private _counterAtO = 0;
+  private _pollerId: string = "";
   options: PollerOptions = {
     pollInterval: 1000,
     concurrency: 1,
+    warnAtO: 100,
   };
   logger: ConductorLogger = noopLogger;
 
   constructor(
+    pollerId: string,
     pollFunction: (count: number) => Promise<T[]>,
     performWorkFunction: (work: T) => Promise<void>,
     pollerOptions?: Partial<PollerOptions>,
     logger?: ConductorLogger
   ) {
+    this._pollerId = pollerId;
     this.pollFunction = pollFunction;
     this.performWorkFunction = performWorkFunction;
     this.options = { ...this.options, ...pollerOptions };
@@ -69,17 +75,35 @@ export class Poller<T> {
 
   private poll = async () => {
     while (this.isPolling) {
-      // Concurrency could have been updated. Accounting for that
-      const count =
-        this.options.concurrency > this._tasksInProcess
-          ? this.options.concurrency - this._tasksInProcess
-          : this._tasksInProcess;
-      const taskResult: T[] = await this.pollFunction(count);
+      try {
+        // Concurrency could have been updated. Accounting for that
+        const count = Math.max(
+          0,
+          this.options.concurrency - this._tasksInProcess
+        );
 
-      this._tasksInProcess = taskResult.length;
+        if (count == 0) {
+          this.logger.debug(
+            "Max in process reached, Will skip polling for " + this._pollerId
+          );
+          this._counterAtO++;
+          if (this._counterAtO > (this.options.warnAtO ?? 100)) {
+            this.logger.info(
+              `Not polling anything because in process tasks is maxed as concurrency level. ${this._pollerId}`
+            );
+          }
+        } else {
+          this._counterAtO = 0;
+          const tasksResult: T[] = await this.pollFunction(count);
+          this._tasksInProcess =
+            this._tasksInProcess + (tasksResult ?? []).length;
 
-      // Dont wait for the tasks to finish only 'listen' to the number of tasks being processes
-      taskResult.forEach(this.performWork);
+          // Don't wait for the tasks to finish only 'listen' to the number of tasks being processes
+          tasksResult.forEach(this.performWork);
+        }
+      } catch (e: any) {
+        this.logger.error(`Error polling for tasks: ${e.message}`, e);
+      }
 
       await new Promise((r) =>
         this.isPolling
