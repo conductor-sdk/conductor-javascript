@@ -69,6 +69,8 @@ const worker: ConductorWorker = {
       callbackAfterSeconds: 60,
     };
   },
+  pollInterval: 100, // optional
+  concurrency: 2, // optional
 };
 ```
 
@@ -91,28 +93,39 @@ const clientPromise = orkesConductorClient({
 
 const client = await clientPromise;
 
-const taskRunner = new TaskRunner({
-  taskResource: client.taskResource,
-  worker: {
-    taskDefName: "MyCustomWorker",
-    execute: async ({ inputData, taskId }) => {
-      return {
-        outputData: {
-          greeting: "Hello World",
-        },
-        status: "COMPLETED",
-      };
-    },
+const customWorker: ConductorWorker = {
+  taskDefName: "MyCustomWorker",
+  execute: async ({ inputData, taskId }) => {
+    return {
+      outputData: {
+        greeting: "Hello World",
+      },
+      status: "COMPLETED",
+    };
   },
-  options: {
-    pollInterval: 10,
-    domain: undefined,
-    concurrency: 1,
-    workerID: "",
-  },
+};
+// Worker Options will take precedence over options defined in the manager
+
+const manager = new TaskManager(client, [customWorker], {
+  options: { pollInterval: 1500, concurrency: 1 },
 });
 
-taskRunner.startPolling();
+manager.startPolling();
+// You can update all worker settings at once using
+manager.updatePollingOptions({ pollInterval: 100, concurrency: 1 });
+
+// You can update a single worker setting using :
+manager.updatePollingOptionForWorker("MyCustomWorker", {
+  pollInterval: 100,
+  concurrency: 1,
+});
+
+manager.isPolling // Will resolve to true
+
+await manager.stopPolling();
+
+manager.isPolling // Will resolve to false
+
 ```
 
 ## Task Management APIs
@@ -153,12 +166,7 @@ executor.updateTaskByRefName(
 #### Update task by id
 
 ```typescript
-await executor.updateTask(
-  taskId,
-  executionId,
-  "COMPLETED",
-  newChange
-);
+await executor.updateTask(taskId, executionId, "COMPLETED", newChange);
 ```
 
 ### Next: [Create and Execute Workflows](workflow_sdk.md)
