@@ -13,11 +13,12 @@ export interface TaskRunnerOptions {
   domain: string | undefined;
   pollInterval?: number;
   concurrency?: number;
+  batchPollingTimeout?: number;
 }
 export interface RunnerArgs {
   worker: ConductorWorker;
   taskResource: TaskResourceService;
-  options: Required<TaskRunnerOptions>;
+  options: TaskRunnerOptions;
   logger?: ConductorLogger;
   onError?: TaskErrorHandler;
   concurrency?: number;
@@ -25,6 +26,14 @@ export interface RunnerArgs {
 
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
+
+const defaultRunnerOptions: Required<TaskRunnerOptions> = {
+  workerID: "",
+  pollInterval: 1000,
+  domain: undefined,
+  concurrency: 1,
+  batchPollingTimeout: 100,
+};
 
 /**
  * Responsible for polling and executing tasks from a queue.
@@ -39,7 +48,7 @@ export class TaskRunner {
   taskResource: TaskResourceService;
   worker: ConductorWorker;
   private logger: ConductorLogger;
-  private options: Required<TaskRunnerOptions>;
+  private options: TaskRunnerOptions;
   errorHandler: TaskErrorHandler;
   private poller: Poller<Task>;
 
@@ -53,12 +62,16 @@ export class TaskRunner {
     this.taskResource = taskResource;
     this.logger = logger;
     this.worker = worker;
-    this.options = options;
+    this.options = {...defaultRunnerOptions, ...options};
     this.errorHandler = errorHandler;
     this.poller = new Poller(
+      worker.taskDefName,
       this.batchPoll,
       this.executeTask,
-      { concurrency: options.concurrency, pollInterval: options.pollInterval },
+      {
+        concurrency: worker.concurrency ?? options.concurrency,
+        pollInterval: worker.pollInterval ?? options.pollInterval,
+      },
       this.logger
     );
   }
@@ -72,6 +85,9 @@ export class TaskRunner {
    */
   startPolling = () => {
     this.poller.startPolling();
+    this.logger.info(
+      `TaskWorker ${this.worker.taskDefName} initialized with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
+    );
   };
   /**
    * Stops Polling for work
@@ -86,6 +102,9 @@ export class TaskRunner {
       concurrency: newOptions.concurrency,
       pollInterval: newOptions.pollInterval,
     });
+    this.logger.info(
+      `TaskWorker ${this.worker.taskDefName} configuration updated with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
+    );
     this.options = newOptions;
   }
 
@@ -95,13 +114,14 @@ export class TaskRunner {
 
   private batchPoll = async (count: number): Promise<Task[]> => {
     const { workerID } = this.options;
-    const task = await this.taskResource.batchPoll(
+    const tasks = await this.taskResource.batchPoll(
       this.worker.taskDefName,
       workerID,
       this.worker.domain ?? this.options.domain,
-      count
+      count,
+      this.options.batchPollingTimeout ?? 100 // default batch poll defined in the method
     );
-    return task;
+    return tasks;
   };
 
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
