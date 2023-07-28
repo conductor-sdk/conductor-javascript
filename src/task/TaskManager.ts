@@ -8,6 +8,11 @@ import {
 import { ConductorLogger, DefaultLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { ConductorClient } from "../common/open-api";
+import {
+  DEFAULT_POLL_INTERVAL,
+  DEFAULT_BATCH_POLLING_TIMEOUT,
+  DEFAULT_CONCURRENCY,
+} from "./constants";
 
 export type TaskManagerOptions = TaskRunnerOptions;
 
@@ -19,10 +24,10 @@ export interface TaskManagerConfig {
 
 const defaultManagerOptions: Required<TaskManagerOptions> = {
   workerID: "",
-  pollInterval: 1000,
+  pollInterval: DEFAULT_POLL_INTERVAL,
   domain: undefined,
-  concurrency: 1,
-  batchPollingTimeout: 100,
+  concurrency: DEFAULT_CONCURRENCY,
+  batchPollingTimeout: DEFAULT_BATCH_POLLING_TIMEOUT,
 };
 
 function workerId(options: Partial<TaskManagerOptions>) {

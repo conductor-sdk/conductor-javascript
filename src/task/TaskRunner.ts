@@ -2,6 +2,11 @@ import { ConductorLogger, noopLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
 import { Poller } from "./Poller";
+import {
+  DEFAULT_POLL_INTERVAL,
+  DEFAULT_BATCH_POLLING_TIMEOUT,
+  DEFAULT_CONCURRENCY,
+} from "./constants";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
@@ -29,10 +34,10 @@ export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
 
 const defaultRunnerOptions: Required<TaskRunnerOptions> = {
   workerID: "",
-  pollInterval: 1000,
+  pollInterval: DEFAULT_POLL_INTERVAL,
   domain: undefined,
-  concurrency: 1,
-  batchPollingTimeout: 100,
+  concurrency: DEFAULT_CONCURRENCY,
+  batchPollingTimeout: DEFAULT_BATCH_POLLING_TIMEOUT,
 };
 
 /**
@@ -153,7 +158,7 @@ export class TaskRunner {
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
       });
-      this.logger.debug(`Finished polling for task ${task.taskId}`);
+      this.logger.debug(`Task has executed successfully ${task.taskId}`);
     } catch (error: unknown) {
       await this.updateTaskWithRetry(task, {
         workflowInstanceId: task.workflowInstanceId!,

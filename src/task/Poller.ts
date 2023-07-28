@@ -1,4 +1,9 @@
 import { ConductorLogger, noopLogger } from "../common";
+import {
+  DEFAULT_POLL_INTERVAL,
+  DEFAULT_WARN_AT_O,
+  DEFAULT_CONCURRENCY,
+} from "./constants";
 
 interface PollerOptions {
   pollInterval?: number;
@@ -15,9 +20,9 @@ export class Poller<T> {
   private _counterAtO = 0;
   private _pollerId: string = "";
   options: PollerOptions = {
-    pollInterval: 1000,
-    concurrency: 1,
-    warnAtO: 100,
+    pollInterval: DEFAULT_POLL_INTERVAL,
+    concurrency: DEFAULT_CONCURRENCY,
+    warnAtO: DEFAULT_WARN_AT_O,
   };
   logger: ConductorLogger = noopLogger;
 
@@ -82,7 +87,7 @@ export class Poller<T> {
           this.options.concurrency - this._tasksInProcess
         );
 
-        if (count == 0) {
+        if (count === 0) {
           this.logger.debug(
             "Max in process reached, Will skip polling for " + this._pollerId
           );
