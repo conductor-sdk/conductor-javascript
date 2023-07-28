@@ -93,8 +93,10 @@ const clientPromise = orkesConductorClient({
 
 const client = await clientPromise;
 
+const taskDefName = "HelloWorldWorker";
+
 const customWorker: ConductorWorker = {
-  taskDefName: "MyCustomWorker",
+taskDefName,
   execute: async ({ inputData, taskId }) => {
     return {
       outputData: {
@@ -107,7 +109,7 @@ const customWorker: ConductorWorker = {
 // Worker Options will take precedence over options defined in the manager
 
 const manager = new TaskManager(client, [customWorker], {
-  options: { pollInterval: 1500, concurrency: 1 },
+  options: { pollInterval: 100, concurrency: 1 },
 });
 
 manager.startPolling();
@@ -115,7 +117,7 @@ manager.startPolling();
 manager.updatePollingOptions({ pollInterval: 100, concurrency: 1 });
 
 // You can update a single worker setting using :
-manager.updatePollingOptionForWorker("MyCustomWorker", {
+manager.updatePollingOptionForWorker(taskDefName, {
   pollInterval: 100,
   concurrency: 1,
 });
