@@ -1,35 +1,51 @@
 import { ConductorLogger, noopLogger } from "../common";
+import {
+  DEFAULT_POLL_INTERVAL,
+  DEFAULT_WARN_AT_O,
+  DEFAULT_CONCURRENCY,
+} from "./constants";
 
 interface PollerOptions {
   pollInterval?: number;
   concurrency: number;
+  warnAtO?: number;
 }
 
-export class Poller {
-  private concurrentCalls: Array<{
-    promise: Promise<void>;
-    stop: () => Promise<boolean>;
-  }> = [];
-  private pollFunction: () => Promise<void> = async () => {};
+export class Poller<T> {
+  private timeoutHandler?: NodeJS.Timeout;
+  private pollFunction: (count: number) => Promise<T[]>;
+  private performWorkFunction: (work: T) => Promise<void> = async () => {};
   private polling = false;
+  private _tasksInProcess = 0;
+  private _counterAtO = 0;
+  private _pollerId: string = "";
   options: PollerOptions = {
-    pollInterval: 1000,
-    concurrency: 1,
+    pollInterval: DEFAULT_POLL_INTERVAL,
+    concurrency: DEFAULT_CONCURRENCY,
+    warnAtO: DEFAULT_WARN_AT_O,
   };
   logger: ConductorLogger = noopLogger;
 
   constructor(
-    pollFunction: () => Promise<void>,
+    pollerId: string,
+    pollFunction: (count: number) => Promise<T[]>,
+    performWorkFunction: (work: T) => Promise<void>,
     pollerOptions?: Partial<PollerOptions>,
     logger?: ConductorLogger
   ) {
+    this._pollerId = pollerId;
     this.pollFunction = pollFunction;
+    this.performWorkFunction = performWorkFunction;
     this.options = { ...this.options, ...pollerOptions };
     this.logger = logger || noopLogger;
   }
 
   get isPolling() {
     return this.polling;
+  }
+
+  get tasksInProcess() {
+    return this._tasksInProcess;
   }
 
   /**
@@ -39,80 +55,69 @@ export class Poller {
     if (this.polling) {
       throw new Error("Runner is already started");
     }
-
-    return this.poll();
+    this._tasksInProcess = 0;
+    this.polling = true;
+    this.poll();
   };
 
   /**
    * Stops Polling for work
    */
   stopPolling = async () => {
-    await Promise.all(this.concurrentCalls.map((call) => call.stop()));
     this.polling = false;
+    clearTimeout(this.timeoutHandler!);
   };
 
-  /**
-   * adds or shuts down concurrent calls based on the concurrency setting
-   * @param concurrency
-   */
-  private updateConcurrency(concurrency: number) {
-    if (concurrency > 0 && concurrency !== this.options.concurrency) {
-      if (concurrency < this.options.concurrency) {
-        const result = this.concurrentCalls.splice(
-          0,
-          this.options.concurrency - concurrency
-        );
-        result.forEach((call) => {
-          call.stop();
-          this.logger.debug("stopping some spawned calls");
-        });
-      } else {
-        for (let i = 0; i < concurrency - this.options.concurrency; i++) {
-          this.concurrentCalls.push(this.singlePoll());
-          this.logger.debug("spawning additional poll calls");
-        }
-      }
-      this.options.concurrency = concurrency;
-    }
-  }
+  private performWork = async (work: T) => {
+    await this.performWorkFunction(work);
+    this._tasksInProcess--;
+  };
 
   updateOptions(options: Partial<PollerOptions>) {
     const newOptions = { ...this.options, ...options };
-    this.updateConcurrency(newOptions.concurrency);
     this.options = newOptions;
   }
 
   private poll = async () => {
-    if (!this.polling) {
-      this.polling = true;
-      for (let i = 0; i < this.options.concurrency; i++) {
-        this.concurrentCalls.push(this.singlePoll());
-      }
-    }
-  };
-
-  private singlePoll = () => {
-    let poll = this.polling;
-    let timeout: NodeJS.Timeout;
-    const pollingCall = async () => {
-      while (poll) {
-        await this.pollFunction();
-        await new Promise(
-          (r) =>
-            poll ? (timeout = setTimeout(() => r(true), this.options.pollInterval)): r(true)
+    while (this.isPolling) {
+      try {
+        // Concurrency could have been updated. Accounting for that
+        const count = Math.max(
+          0,
+          this.options.concurrency - this._tasksInProcess
         );
-      }
-    };
 
-    return {
-      promise: pollingCall(),
-      stop: (): Promise<boolean> =>
-        new Promise((r) => {
-          clearTimeout(timeout);
-          poll = false;
-          this.logger.debug("stopping single poll call");
-          r(true);
-        }),
-    };
+        if (count === 0) {
+          this.logger.debug(
+            "Max in process reached, Will skip polling for " + this._pollerId
+          );
+          this._counterAtO++;
+          if (this._counterAtO > (this.options.warnAtO ?? 100)) {
+            this.logger.info(
+              `Not polling anything because in process tasks is maxed as concurrency level. ${this._pollerId}`
+            );
+          }
+        } else {
+          this._counterAtO = 0;
+          const tasksResult: T[] = await this.pollFunction(count);
+          this._tasksInProcess =
+            this._tasksInProcess + (tasksResult ?? []).length;
+
+          // Don't wait for the tasks to finish only 'listen' to the number of tasks being processes
+          tasksResult.forEach(this.performWork);
+        }
+      } catch (e: any) {
+        this.logger.error(`Error polling for tasks: ${e.message}`, e);
+      }
+
+      await new Promise((r) =>
+        this.isPolling
+          ? (this.timeoutHandler = setTimeout(
+              () => r(true),
+              this.options.pollInterval
+            ))
+          : r(true)
+      );
+    }
   };
 }

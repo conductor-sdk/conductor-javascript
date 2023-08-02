@@ -2,6 +2,11 @@ import { ConductorLogger, noopLogger } from "../common";
 import { ConductorWorker } from "./Worker";
 import { Task, TaskResourceService, TaskResult } from "../common/open-api";
 import { Poller } from "./Poller";
+import {
+  DEFAULT_POLL_INTERVAL,
+  DEFAULT_BATCH_POLLING_TIMEOUT,
+  DEFAULT_CONCURRENCY,
+} from "./constants";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
@@ -13,11 +18,12 @@ export interface TaskRunnerOptions {
   domain: string | undefined;
   pollInterval?: number;
   concurrency?: number;
+  batchPollingTimeout?: number;
 }
 export interface RunnerArgs {
   worker: ConductorWorker;
   taskResource: TaskResourceService;
-  options: Required<TaskRunnerOptions>;
+  options: TaskRunnerOptions;
   logger?: ConductorLogger;
   onError?: TaskErrorHandler;
   concurrency?: number;
@@ -25,6 +31,14 @@ export interface RunnerArgs {
 
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
+
+const defaultRunnerOptions: Required<TaskRunnerOptions> = {
+  workerID: "",
+  pollInterval: DEFAULT_POLL_INTERVAL,
+  domain: undefined,
+  concurrency: DEFAULT_CONCURRENCY,
+  batchPollingTimeout: DEFAULT_BATCH_POLLING_TIMEOUT,
+};
 
 /**
  * Responsible for polling and executing tasks from a queue.
@@ -39,9 +53,9 @@ export class TaskRunner {
   taskResource: TaskResourceService;
   worker: ConductorWorker;
   private logger: ConductorLogger;
-  private options: Required<TaskRunnerOptions>;
+  private options: TaskRunnerOptions;
   errorHandler: TaskErrorHandler;
-  private poller: Poller;
+  private poller: Poller<Task>;
 
   constructor({
     worker,
@@ -53,11 +67,16 @@ export class TaskRunner {
     this.taskResource = taskResource;
     this.logger = logger;
     this.worker = worker;
-    this.options = options;
+    this.options = {...defaultRunnerOptions, ...options};
     this.errorHandler = errorHandler;
     this.poller = new Poller(
-      this.pollAndExecute,
-      { concurrency: options.concurrency, pollInterval: options.pollInterval },
+      worker.taskDefName,
+      this.batchPoll,
+      this.executeTask,
+      {
+        concurrency: worker.concurrency ?? options.concurrency,
+        pollInterval: worker.pollInterval ?? options.pollInterval,
+      },
       this.logger
     );
   }
@@ -71,6 +90,9 @@ export class TaskRunner {
    */
   startPolling = () => {
     this.poller.startPolling();
+    this.logger.info(
+      `TaskWorker ${this.worker.taskDefName} initialized with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
+    );
   };
   /**
    * Stops Polling for work
@@ -85,6 +107,9 @@ export class TaskRunner {
       concurrency: newOptions.concurrency,
       pollInterval: newOptions.pollInterval,
     });
+    this.logger.info(
+      `TaskWorker ${this.worker.taskDefName} configuration updated with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
+    );
     this.options = newOptions;
   }
 
@@ -92,23 +117,16 @@ export class TaskRunner {
     return this.options;
   }
 
-  private pollAndExecute = async () => {
-    try {
-      const { workerID } = this.options;
-      const task = await this.taskResource.poll(
-        this.worker.taskDefName,
-        workerID,
-        this.worker.domain ?? this.options.domain
-      );
-      if (task && task.taskId) {
-        await this.executeTask(task);
-      } else {
-        this.logger.debug(`No tasks for ${this.worker.taskDefName}`);
-      }
-    } catch (unknownError: unknown) {
-      this.handleUnknownError(unknownError);
-      this.errorHandler(unknownError as Error);
-    }
+  private batchPoll = async (count: number): Promise<Task[]> => {
+    const { workerID } = this.options;
+    const tasks = await this.taskResource.batchPoll(
+      this.worker.taskDefName,
+      workerID,
+      this.worker.domain ?? this.options.domain,
+      count,
+      this.options.batchPollingTimeout ?? 100 // default batch poll defined in the method
+    );
+    return tasks;
   };
 
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
@@ -132,7 +150,7 @@ export class TaskRunner {
     );
   };
 
-  executeTask = async (task: Task) => {
+  private executeTask = async (task: Task) => {
     try {
       const result = await this.worker.execute(task);
       await this.updateTaskWithRetry(task, {
@@ -140,7 +158,7 @@ export class TaskRunner {
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
       });
-      this.logger.debug(`Finished polling for task ${task.taskId}`);
+      this.logger.debug(`Task has executed successfully ${task.taskId}`);
     } catch (error: unknown) {
       await this.updateTaskWithRetry(task, {
         workflowInstanceId: task.workflowInstanceId!,

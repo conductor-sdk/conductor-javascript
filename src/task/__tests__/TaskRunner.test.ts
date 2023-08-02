@@ -7,9 +7,9 @@ import { TaskResourceService } from "../../common/open-api";
 
 test("polls tasks", async () => {
   const taskClientStub: Mocked<
-    Pick<TaskResourceService, "poll" | "updateTask1">
+    Pick<TaskResourceService, "batchPoll" | "updateTask1">
   > = {
-    poll: jest.fn(),
+    batchPoll: jest.fn(),
     updateTask1: jest.fn(),
   };
   const mockTaskClient = taskClientStub as unknown as TaskResourceService;
@@ -38,15 +38,17 @@ test("polls tasks", async () => {
   };
   const workflowInstanceId = "fake-workflow-id";
   const taskId = "fake-task-id";
-  taskClientStub.poll.mockResolvedValue({
-    taskId,
-    workflowInstanceId,
-    status: "IN_PROGRESS",
-    reasonForIncompletion: undefined,
-    inputData: {
-      input: "from workflow",
+  taskClientStub.batchPoll.mockResolvedValue([
+    {
+      taskId,
+      workflowInstanceId,
+      status: "IN_PROGRESS",
+      reasonForIncompletion: undefined,
+      inputData: {
+        input: "from workflow",
+      },
     },
-  });
+  ]);
 
   const runner = new TaskRunner(args);
   runner.startPolling();
@@ -66,9 +68,9 @@ test("polls tasks", async () => {
 
 test("Should set the task as failed if the task has an error", async () => {
   const taskClientStub: Mocked<
-    Pick<TaskResourceService, "poll" | "updateTask1">
+    Pick<TaskResourceService, "batchPoll" | "updateTask1">
   > = {
-    poll: jest.fn(),
+    batchPoll: jest.fn(),
     updateTask1: jest.fn(),
   };
   const mockTaskClient = taskClientStub as unknown as TaskResourceService;
@@ -92,15 +94,17 @@ test("Should set the task as failed if the task has an error", async () => {
   };
   const workflowInstanceId = "fake-workflow-id";
   const taskId = "fake-task-id";
-  taskClientStub.poll.mockResolvedValue({
-    taskId,
-    workflowInstanceId,
-    status: "IN_PROGRESS",
-    reasonForIncompletion: undefined,
-    inputData: {
-      input: "from workflow",
+  taskClientStub.batchPoll.mockResolvedValue([
+    {
+      taskId,
+      workflowInstanceId,
+      status: "IN_PROGRESS",
+      reasonForIncompletion: undefined,
+      inputData: {
+        input: "from workflow",
+      },
     },
-  });
+  ]);
 
   const runner = new TaskRunner(args);
   runner.startPolling();
@@ -110,8 +114,7 @@ test("Should set the task as failed if the task has an error", async () => {
     taskId,
     workflowInstanceId,
     status: "FAILED",
-    outputData: {
-    },
+    outputData: {},
     reasonForIncompletion: "Error from worker",
   };
   expect(taskClientStub.updateTask1).toHaveBeenCalledWith(expected);
