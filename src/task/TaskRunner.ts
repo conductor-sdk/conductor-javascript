@@ -162,7 +162,7 @@ export class TaskRunner {
         workflowInstanceId: task.workflowInstanceId!,
         taskId: task.taskId!,
       });
-      this.logger.debug(`Task has executed successfully ${task.taskId}`);
+      this.logger.info(`Task has executed successfully ${task.taskId}`);
     } catch (error: unknown) {
       await this.updateTaskWithRetry(task, {
         workflowInstanceId: task.workflowInstanceId!,
