@@ -58,6 +58,7 @@ test("polls tasks", async () => {
     taskId,
     workflowInstanceId,
     status: "COMPLETED",
+    workerId: workerID,
     outputData: {
       hello: "from worker",
       input: "from workflow",
@@ -113,6 +114,7 @@ test("Should set the task as failed if the task has an error", async () => {
   const expected = {
     taskId,
     workflowInstanceId,
+    workerId: workerID,
     status: "FAILED",
     outputData: {},
     reasonForIncompletion: "Error from worker",

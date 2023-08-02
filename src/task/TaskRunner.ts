@@ -67,7 +67,7 @@ export class TaskRunner {
     this.taskResource = taskResource;
     this.logger = logger;
     this.worker = worker;
-    this.options = {...defaultRunnerOptions, ...options};
+    this.options = { ...defaultRunnerOptions, ...options };
     this.errorHandler = errorHandler;
     this.poller = new Poller(
       worker.taskDefName,
@@ -130,10 +130,14 @@ export class TaskRunner {
   };
 
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
+    const { workerID } = this.options;
     let retryCount = 0;
     while (retryCount < MAX_RETRIES) {
       try {
-        await this.taskResource.updateTask1(taskResult);
+        await this.taskResource.updateTask1({
+          ...taskResult,
+          workerId: workerID,
+        });
         return;
       } catch (error: unknown) {
         this.errorHandler(error as Error, task);
