@@ -1,4 +1,4 @@
-import { expect, describe, test, jest, it } from "@jest/globals";
+import { expect, describe, it } from "@jest/globals";
 import { optionEquals } from "../helpers";
 import { TaskRunnerOptions } from "../types";
 
