@@ -6,12 +6,12 @@ import {
   StartWorkflowRequest,
   SkipTaskRequest,
   WorkflowRun,
+  WorkflowStatus,
 } from "../common/open-api";
 import { TaskResultStatus } from "./types";
-import { errorMapper,tryCatchReThrow } from "./helpers";
+import { errorMapper, tryCatchReThrow } from "./helpers";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
-
 
 export class WorkflowExecutor {
   public readonly _client: ConductorClient;
@@ -52,10 +52,16 @@ export class WorkflowExecutor {
     name: string,
     version: number,
     requestId: string,
-    waitUntilTaskRef: string = '',
+    waitUntilTaskRef: string = ""
   ): Promise<WorkflowRun> {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.executeWorkflow(workflowRequest, name, version, requestId, waitUntilTaskRef)
+      this._client.workflowResource.executeWorkflow(
+        workflowRequest,
+        name,
+        version,
+        requestId,
+        waitUntilTaskRef
+      )
     );
   }
 
@@ -111,7 +117,7 @@ export class WorkflowExecutor {
     workflowInstanceId: string,
     includeOutput: boolean,
     includeVariables: boolean
-  ) {
+  ): Promise<WorkflowStatus> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.getWorkflowStatusSummary(
         workflowInstanceId,
@@ -141,7 +147,7 @@ export class WorkflowExecutor {
   public reRun(
     workflowInstanceId: string,
     rerunWorkflowRequest: Partial<RerunWorkflowRequest> = {}
-  ) {
+  ): Promise<string> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.rerun(
         workflowInstanceId,
