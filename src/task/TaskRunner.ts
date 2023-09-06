@@ -7,27 +7,11 @@ import {
   DEFAULT_BATCH_POLLING_TIMEOUT,
   DEFAULT_CONCURRENCY,
 } from "./constants";
+import { TaskErrorHandler, TaskRunnerOptions, RunnerArgs } from "./types";
+import { optionEquals } from "./helpers";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
 const MAX_RETRIES = 3;
-
-export type TaskErrorHandler = (error: Error, task?: Task) => void;
-
-export interface TaskRunnerOptions {
-  workerID: string;
-  domain: string | undefined;
-  pollInterval?: number;
-  concurrency?: number;
-  batchPollingTimeout?: number;
-}
-export interface RunnerArgs {
-  worker: ConductorWorker;
-  taskResource: TaskResourceService;
-  options: TaskRunnerOptions;
-  logger?: ConductorLogger;
-  onError?: TaskErrorHandler;
-  concurrency?: number;
-}
 
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
@@ -103,13 +87,18 @@ export class TaskRunner {
 
   updateOptions(options: Partial<TaskRunnerOptions>) {
     const newOptions = { ...this.options, ...options };
-    this.poller.updateOptions({
-      concurrency: newOptions.concurrency,
-      pollInterval: newOptions.pollInterval,
-    });
-    this.logger.info(
-      `TaskWorker ${this.worker.taskDefName} configuration updated with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
-    );
+    const isOptionsUpdated = !optionEquals(this.options, newOptions);
+
+    if (isOptionsUpdated) {
+      this.poller.updateOptions({
+        concurrency: newOptions.concurrency,
+        pollInterval: newOptions.pollInterval,
+      });
+      this.logger.info(
+        `TaskWorker ${this.worker.taskDefName} configuration updated with concurrency of ${this.poller.options.concurrency} and poll interval of ${this.poller.options.pollInterval}`
+      );
+    }
+
     this.options = newOptions;
   }
 

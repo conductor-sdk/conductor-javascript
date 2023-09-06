@@ -1,8 +1,6 @@
 import os from "os";
 import {
   TaskRunner,
-  TaskRunnerOptions,
-  TaskErrorHandler,
   noopErrorHandler,
 } from "./TaskRunner";
 import { ConductorLogger, DefaultLogger } from "../common";
@@ -13,6 +11,7 @@ import {
   DEFAULT_BATCH_POLLING_TIMEOUT,
   DEFAULT_CONCURRENCY,
 } from "./constants";
+import { TaskErrorHandler, TaskRunnerOptions } from "./types";
 
 export type TaskManagerOptions = TaskRunnerOptions;
 
