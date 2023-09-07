@@ -1,7 +1,8 @@
 import { jest, test, expect } from "@jest/globals";
 import type { Mocked } from "jest-mock";
 
-import { RunnerArgs, TaskRunner } from "../TaskRunner";
+import { TaskRunner } from "../TaskRunner";
+import { RunnerArgs } from "../types";
 import { mockLogger } from "./mockLogger";
 import { TaskResourceService } from "../../common/open-api";
 
