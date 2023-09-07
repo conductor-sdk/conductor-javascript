@@ -1,4 +1,3 @@
-
 import type { ConductorLogger } from "../common";
 import type { ConductorWorker } from "./Worker";
 import type { Task, TaskResourceService } from "../common/open-api";
