@@ -55,10 +55,10 @@ describe("ScheduleExecutor", () => {
       name,
       cronExpression,
 
-      paused: false,
+      paused: true,
       runCatchupScheduleInstances: false,
-      scheduleStartTime: 0,
-      scheduleEndTime: 0,
+      scheduleStartTime: "",
+      scheduleEndTime: "",
       startWorkflowRequest: {
         name: workflowDefinitionFromApi.name,
         version: workflowDefinitionFromApi.version,
