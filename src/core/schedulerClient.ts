@@ -2,6 +2,7 @@ import {
   ConductorClient,
   SaveScheduleRequest,
   SearchResultWorkflowScheduleExecutionModel,
+  WorkflowSchedule,
 } from "../common";
 import { tryCatchReThrow } from "./helpers";
 
@@ -31,9 +32,9 @@ export class SchedulerClient {
    * @param sort
    * @param freeText
    * @param query
-   * @returns
+   * @returns SearchResultWorkflowScheduleExecutionModel
    */
-  public searchExecution(
+  public search(
     start: number,
     size: number,
     sort: string = "",
@@ -54,9 +55,9 @@ export class SchedulerClient {
   /**
    * Get an existing schedule by name
    * @param name
-   * @returns
+   * @returns SaveScheduleRequest
    */
-  public getExecution(name: string): Promise<SaveScheduleRequest> {
+  public get(name: string): Promise<SaveScheduleRequest> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.getSchedule(name)
     );
@@ -67,7 +68,7 @@ export class SchedulerClient {
    * @param name
    * @returns
    */
-  public pauseExecution(name: string): Promise<void> {
+  public pause(name: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.pauseSchedule(name)
     );
@@ -91,9 +92,22 @@ export class SchedulerClient {
    * @param name
    * @returns
    */
-  public deleteExecution(name: string): Promise<void> {
+  public delete(name: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.deleteSchedule(name)
     );
   }
+
+
+  /**
+   * Get all existing workflow schedules and optionally filter by workflow name 
+   * @param workflowName
+   * @returns Array<WorkflowSchedule>
+   */
+  public getAll(workflowName?: string):Promise<Array<WorkflowSchedule>>{
+    return tryCatchReThrow(()=>{
+        this._client.schedulerResource.getAllSchedules(workflowName)
+    })
+  }
+
 }
