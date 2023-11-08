@@ -105,9 +105,9 @@ export class SchedulerClient {
    * @returns Array<WorkflowSchedule>
    */
   public getAll(workflowName?: string):Promise<Array<WorkflowSchedule>>{
-    return tryCatchReThrow(()=>{
+    return tryCatchReThrow(()=>
         this._client.schedulerResource.getAllSchedules(workflowName)
-    })
+    )
   }
 
 }
