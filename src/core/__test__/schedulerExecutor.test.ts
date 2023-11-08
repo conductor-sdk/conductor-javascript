@@ -1,6 +1,6 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
-import { SchedulerExecutor } from "../schedulerClient";
+import { SchedulerClient } from "../schedulerClient";
 import { SaveScheduleRequest, TaskType, WorkflowDef } from "../../common";
 
 const playConfig: Partial<OrkesApiConfig> = {
@@ -21,7 +21,7 @@ describe("ScheduleExecutor", () => {
 
   test("Should be able to register a workflow and retrieve it", async () => {
     const client = await clientPromise;
-    const executor = new SchedulerExecutor(client);
+    const executor = new SchedulerClient(client);
 
     const workflowDefinition: WorkflowDef = {
       name: workflowName,
@@ -76,7 +76,7 @@ describe("ScheduleExecutor", () => {
 
   test("Should be able to resume the schedule", async () => {
     const client = await clientPromise;
-    const executor = new SchedulerExecutor(client);
+    const executor = new SchedulerClient(client);
     await executor.startResume(name);
     const scheduler = await executor.getExecution(name);
     expect(scheduler.paused).toBeFalsy();
@@ -84,7 +84,7 @@ describe("ScheduleExecutor", () => {
 
   test("Should be able to see the result in executed schedule", async () => {
     const client = await clientPromise;
-    const executor = new SchedulerExecutor(client);
+    const executor = new SchedulerClient(client);
     await new Promise((resolve) => setTimeout(resolve, 5000));
     const result = await executor.searchExecution(
       0,
@@ -98,7 +98,7 @@ describe("ScheduleExecutor", () => {
 
   test("Should be able to pause the schedule", async () => {
     const client = await clientPromise;
-    const executor = new SchedulerExecutor(client);
+    const executor = new SchedulerClient(client);
     await executor.pauseExecution(name);
     const scheduler = await executor.getExecution(name);
     expect(scheduler.paused).toBeTruthy();
@@ -106,7 +106,7 @@ describe("ScheduleExecutor", () => {
 
   test("Should be able to delete the schedule", async () => {
     const client = await clientPromise;
-    const executor = new SchedulerExecutor(client);
+    const executor = new SchedulerClient(client);
     await executor.deleteExecution(name);
     // delete workflowDef too
     await client.metadataResource.unregisterWorkflowDef(

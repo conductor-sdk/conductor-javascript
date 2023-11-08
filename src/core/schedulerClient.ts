@@ -5,7 +5,7 @@ import {
 } from "../common";
 import { tryCatchReThrow } from "./helpers";
 
-export class SchedulerExecutor {
+export class SchedulerClient {
   public readonly _client: ConductorClient;
 
   constructor(client: ConductorClient) {
