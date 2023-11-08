@@ -17,7 +17,7 @@ export class SchedulerExecutor {
    * @param requestBody
    * @returns
    */
-  public registerSchedule(param: SaveScheduleRequest) {
+  public registerSchedule(param: SaveScheduleRequest): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.saveSchedule(param)
     );
