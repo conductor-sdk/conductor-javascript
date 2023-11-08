@@ -1,6 +1,6 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { TaskRunner } from "../TaskRunner";
-import { WorkflowExecutor,simpleTask } from "../../core";
+import { WorkflowExecutor, simpleTask } from "../../core";
 import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
 
 const config: Partial<OrkesApiConfig> = {
@@ -12,7 +12,7 @@ const config: Partial<OrkesApiConfig> = {
 describe("TaskManager", () => {
   const clientPromise = orkesConductorClient(config);
 
-  jest.setTimeout(10000);
+  jest.setTimeout(15000);
   test("worker example ", async () => {
     const client = await clientPromise;
     const executor = new WorkflowExecutor(client);

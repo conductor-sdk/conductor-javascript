@@ -25,7 +25,7 @@ jobs:
         uses: actions/setup-node@v3
         with:
           node-version: "18"
-      - name: Instal package 
+      - name: Install package
         run: yarn install
       - name: Run Unit test
         run: yarn test
@@ -33,5 +33,3 @@ jobs:
           KEY_ID: ${{ secrets.KEY_ID }}
           KEY_SECRET: ${{ secrets.KEY_SECRET }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
-
-        

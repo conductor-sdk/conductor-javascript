@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { StartWorkflowRequest } from "./StartWorkflowRequest";
+import type { StartWorkflowRequest } from './StartWorkflowRequest';
 
 export type SaveScheduleRequest = {
   name: string;
@@ -12,6 +12,7 @@ export type SaveScheduleRequest = {
   startWorkflowRequest?: StartWorkflowRequest;
   createdBy?: string;
   updatedBy?: string;
-  scheduleStartTime?: string;
-  scheduleEndTime?: string;
+  scheduleStartTime?: number;
+  scheduleEndTime?: number;
 };
+

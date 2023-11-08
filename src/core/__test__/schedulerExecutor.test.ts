@@ -13,10 +13,10 @@ describe("ScheduleExecutor", () => {
   const clientPromise = orkesConductorClient(playConfig);
   jest.setTimeout(15000);
 
-  const name = `testSchedule`;
+  const name = `testSchedule_${Date.now()}`;
   const cronExpression = "0/5 * * ? * *"; //every 5 second
 
-  const workflowName = "testScheduleWf";
+  const workflowName = `testScheduleWf_${Date.now()}`;
   const workflowVersion = 1;
 
   test("Should be able to register a workflow and retrieve it", async () => {
@@ -57,8 +57,6 @@ describe("ScheduleExecutor", () => {
 
       paused: true,
       runCatchupScheduleInstances: false,
-      scheduleStartTime: "",
-      scheduleEndTime: "",
       startWorkflowRequest: {
         name: workflowDefinitionFromApi.name,
         version: workflowDefinitionFromApi.version,
