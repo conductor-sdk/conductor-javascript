@@ -7,7 +7,6 @@ Building the task workers in javascript mainly consists of the following steps:
 1. Setup conductor-javascript package
 2. [Create and run task workers](workers_sdk.md)
 3. [Create workflows using code](workflow_sdk.md)
-4. [Api Docs](docs/api/README.md)
    
 ### Setup Conductor Javascript Package
 

@@ -7,6 +7,7 @@ import {
   SkipTaskRequest,
   WorkflowRun,
   WorkflowStatus,
+  ScrollableSearchResultWorkflowSummary,
 } from "../common/open-api";
 import { TaskResultStatus } from "./types";
 import { errorMapper, tryCatchReThrow } from "./helpers";
@@ -26,7 +27,10 @@ export class WorkflowExecutor {
    * @returns null
    */
 
-  public registerWorkflow(override: boolean, workflow: WorkflowDef) {
+  public registerWorkflow(
+    override: boolean,
+    workflow: WorkflowDef
+  ): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.metadataResource.create(workflow, override)
     );
@@ -132,7 +136,7 @@ export class WorkflowExecutor {
    * @param workflowInstanceId current workflow execution
    * @returns
    */
-  public pause(workflowInstanceId: string) {
+  public pause(workflowInstanceId: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.pauseWorkflow(workflowInstanceId)
     );
@@ -162,7 +166,10 @@ export class WorkflowExecutor {
    * @param useLatestDefinitions
    * @returns
    */
-  public restart(workflowInstanceId: string, useLatestDefinitions: boolean) {
+  public restart(
+    workflowInstanceId: string,
+    useLatestDefinitions: boolean
+  ): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.restart1(
         workflowInstanceId,
@@ -177,7 +184,7 @@ export class WorkflowExecutor {
    * @param workflowInstanceId Running workflow workflowInstanceId
    * @returns
    */
-  public resume(workflowInstanceId: string) {
+  public resume(workflowInstanceId: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.resumeWorkflow(workflowInstanceId)
     );
@@ -191,7 +198,10 @@ export class WorkflowExecutor {
    * @param resumeSubworkflowTasks
    * @returns
    */
-  public retry(workflowInstanceId: string, resumeSubworkflowTasks: boolean) {
+  public retry(
+    workflowInstanceId: string,
+    resumeSubworkflowTasks: boolean
+  ): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.retry1(
         workflowInstanceId,
@@ -217,7 +227,7 @@ export class WorkflowExecutor {
     freeText: string,
     sort: string = "",
     skipCache: boolean = false
-  ) {
+  ): Promise<ScrollableSearchResultWorkflowSummary> {
     const queryId = undefined;
     return tryCatchReThrow(() =>
       this._client.workflowResource.search1(
@@ -243,7 +253,7 @@ export class WorkflowExecutor {
     workflowInstanceId: string,
     taskReferenceName: string,
     skipTaskRequest: Partial<SkipTaskRequest>
-  ) {
+  ): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.skipTaskFromWorkflow(
         workflowInstanceId,
@@ -258,7 +268,7 @@ export class WorkflowExecutor {
    * @param reason
    * @returns
    */
-  public terminate(workflowInstanceId: string, reason: string) {
+  public terminate(workflowInstanceId: string, reason: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.terminate1(workflowInstanceId, reason)
     );
@@ -277,7 +287,7 @@ export class WorkflowExecutor {
     workflowInstanceId: string,
     taskStatus: TaskResultStatus,
     outputData: Record<string, any> // TODO this can be typed.
-  ) {
+  ): Promise<string> {
     const taskUpdates = {
       status: taskStatus,
       taskId,
@@ -304,7 +314,7 @@ export class WorkflowExecutor {
     workflowInstanceId: string,
     status: TaskResultStatus,
     taskOutput: Record<string, any>
-  ) {
+  ): Promise<string> {
     return tryCatchReThrow(() =>
       this._client.taskResource.updateTask(
         workflowInstanceId,

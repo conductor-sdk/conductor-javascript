@@ -14,7 +14,7 @@ describe("Executor", () => {
   const clientPromise = orkesConductorClient(playConfig);
 
   jest.setTimeout(15000);
-  const name = "testWorkflow";
+  const name = `testWorkflow-${Date.now()}`;
   const version = 1;
   test("Should be able to register a workflow", async () => {
     const client = await clientPromise;
@@ -29,7 +29,7 @@ describe("Executor", () => {
           name: "setVariable",
           taskReferenceName: "httpTaskRef",
           inputParameters: {
-            hello:"world"
+            hello: "world",
           },
         },
       ],
@@ -99,5 +99,4 @@ describe("Executor", () => {
     expect(workflowStatus.status).toBeTruthy();
     expect(workflowStatus.tasks?.length).toBe(1);
   });
-
 });
