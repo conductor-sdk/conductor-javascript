@@ -2,32 +2,23 @@
 /* tslint:disable */
 /* eslint-disable */
 
-import type { BackToAssigment } from './BackToAssigment';
-import type { ClearAssigment } from './ClearAssigment';
-import type { Escalate } from './Escalate';
-import type { FFAAssignment } from './FFAAssignment';
-import type { Fixed } from './Fixed';
-import type { LeastBusyGroupMemberAssignment } from './LeastBusyGroupMemberAssignment';
-import type { Never } from './Never';
-import type { Terminate } from './Terminate';
+import type { HumanTaskDefinition } from './HumanTaskDefinition';
+import type { HumanTaskUser } from './HumanTaskUser';
 
 export type HumanTaskEntry = {
-  assignee?: string;
-  assigneeType?: 'EXTERNAL_USER' | 'EXTERNAL_GROUP' | 'CONDUCTOR_USER' | 'CONDUCTOR_GROUP';
-  assignmentPolicy?: (FFAAssignment | Fixed | LeastBusyGroupMemberAssignment);
-  claimedBy?: string;
+  assignee?: HumanTaskUser;
+  claimant?: HumanTaskUser;
   createdBy?: string;
   createdOn?: number;
-  escalatedAt?: number;
-  output?: Record<string, Record<string, any>>;
-  owners?: Array<string>;
-  predefinedInput?: Record<string, Record<string, any>>;
-  state?: 'PENDING' | 'ASSIGNED' | 'IN_PROGRESS' | 'COMPLETED' | 'TIMED_OUT';
+  definitionName?: string;
+  humanTaskDef?: HumanTaskDefinition;
+  input?: Record<string, any>;
+  output?: Record<string, any>;
+  state?: 'PENDING' | 'ASSIGNED' | 'IN_PROGRESS' | 'COMPLETED' | 'TIMED_OUT' | 'DELETED';
   taskId?: string;
-  taskName?: string;
   taskRefName?: string;
-  templateId?: string;
-  timeoutPolicy?: (BackToAssigment | ClearAssigment | Escalate | Never | Terminate);
+  updatedBy?: string;
+  updatedOn?: number;
   workflowId?: string;
   workflowName?: string;
 };

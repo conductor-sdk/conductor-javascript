@@ -1,7 +1,8 @@
 import {
   ConductorClient,
+  HumanTaskSearch,
   HumanTaskEntry,
-  HumanTaskTemplateEntry,
+  HumanTaskTemplate,
 } from "../common";
 import { errorMapper, tryCatchReThrow } from "./helpers";
 
@@ -20,29 +21,13 @@ export class HumanExecutor {
    * @param taskName
    * @param freeText
    * @param includeInputOutput
-   * @returns
+   * @returns Promise<HumanTaskEntry[]>
    */
   public async getTasksByFilter(
-    state: "PENDING" | "ASSIGNED" | "IN_PROGRESS" | "COMPLETED" | "TIMED_OUT",
-    assignee?: string,
-    assigneeType?:
-      | "EXTERNAL_USER"
-      | "EXTERNAL_GROUP"
-      | "CONDUCTOR_USER"
-      | "CONDUCTOR_GROUP",
-    claimedBy?: string,
-    taskName?: string,
-    freeText?: string,
-    includeInputOutput: boolean = false
+    searchParams: HumanTaskSearch
   ): Promise<HumanTaskEntry[]> {
-    const response = await this._client.humanTask.getTasksByFilter(
-      state,
-      assignee,
-      assigneeType,
-      claimedBy,
-      taskName,
-      freeText,
-      includeInputOutput
+    const response = await tryCatchReThrow(() =>
+      this._client.humanTask.search(searchParams)
     );
     if (response.results != undefined) {
       return response.results;
@@ -106,10 +91,11 @@ export class HumanExecutor {
    * @returns
    */
   public async getTemplateById(
-    templateId: string
-  ): Promise<HumanTaskTemplateEntry> {
+    name: string,
+    version: number
+  ): Promise<HumanTaskTemplate> {
     return tryCatchReThrow(() =>
-      this._client.humanTask.getTemplateById(templateId)
+      this._client.humanTask.getTemplateByNameAndVersion(name, version)
     );
   }
 

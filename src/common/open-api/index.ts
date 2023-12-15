@@ -47,24 +47,18 @@ export type { WorkflowSummary } from "./models/WorkflowSummary";
 export type { WorkflowTask } from "./models/WorkflowTask";
 
 // HUMAN
-export type { AssignmentPolicy } from "./models/AssignmentPolicy";
-export type { Fixed } from "./models/Fixed";
-export type { BackToAssigment } from "./models/BackToAssigment";
-export type { ClearAssigment } from "./models/ClearAssigment";
-export type { Escalate } from "./models/Escalate";
-export type { FFAAssignment } from "./models/FFAAssignment";
 export type { HTScrollableSearchResultHumanTaskEntry } from "./models/HTScrollableSearchResultHumanTaskEntry";
-export type { HumanTaskActionLogEntry } from "./models/HumanTaskActionLogEntry";
-export type { HumanTaskEntry } from "./models/HumanTaskEntry";
-export type { HumanTaskLoad } from "./models/HumanTaskLoad";
-export type { HumanTaskStateLogEntry } from "./models/HumanTaskStateLogEntry";
+export type { HumanTaskUser } from "./models/HumanTaskUser";
+export type { HumanTaskDefinition } from "./models/HumanTaskDefinition";
+export type { HumanTaskAssignment } from "./models/HumanTaskAssignment";
+export type { HumanTaskTrigger } from "./models/HumanTaskTrigger";
+export type { UserFormTemplateId } from "./models/UserFormTemplateId";
 export type { HumanTaskTemplate } from "./models/HumanTaskTemplate";
-export type { HumanTaskTemplateEntry } from "./models/HumanTaskTemplateEntry";
-export type { LeastBusyGroupMemberAssignment } from "./models/LeastBusyGroupMemberAssignment";
-export type { Never } from "./models/Never";
-export type { SearchResultHumanTaskEntry } from "./models/SearchResultHumanTaskEntry";
+export type { HumanTaskSearchResult } from "./models/HumanTaskSearchResult";
+export type { HumanTaskSearch } from "./models/HumanTaskSearch";
 export type { Terminate } from "./models/Terminate";
 export type { TimeoutPolicy } from "./models/TimeoutPolicy";
+export type { HumanTaskEntry } from "./models/HumanTaskEntry";
 
 export { EventResourceService } from "./services/EventResourceService";
 export { HealthCheckResourceService } from "./services/HealthCheckResourceService";
@@ -76,4 +70,3 @@ export { WorkflowBulkResourceService } from "./services/WorkflowBulkResourceServ
 export { WorkflowResourceService } from "./services/WorkflowResourceService";
 export { HumanTaskResourceService } from "./services/HumanTaskResourceService";
 export { HumanTaskService } from "./services/HumanTaskService";
-
