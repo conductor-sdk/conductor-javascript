@@ -25,7 +25,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/human/tasks/delete',
+      url: '/human/tasks/delete',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -42,7 +42,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/human/tasks/delete/{taskId}',
+      url: '/human/tasks/delete/{taskId}',
       path: {
         'taskId': taskId,
       },
@@ -60,7 +60,7 @@ export class HumanTaskService {
   ): CancelablePromise<HumanTaskSearchResult> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/search',
+      url: '/human/tasks/search',
       body: requestBody,
       mediaType: 'application/json',
     });
@@ -85,7 +85,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/update/taskRef',
+      url: '/human/tasks/update/taskRef',
       query: {
         'workflowId': workflowId,
         'taskRefName': taskRefName,
@@ -108,7 +108,7 @@ export class HumanTaskService {
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/human/tasks/{taskId}',
+      url: '/human/tasks/{taskId}',
       path: {
         'taskId': taskId,
       },
@@ -125,10 +125,10 @@ export class HumanTaskService {
   public claimTask(
     taskId: string,
     overrideAssignment: boolean = false,
-  ): CancelablePromise<any> {
+  ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/claim',
+      url: '/human/tasks/{taskId}/claim',
       path: {
         'taskId': taskId,
       },
@@ -150,10 +150,10 @@ export class HumanTaskService {
     taskId: string,
     userId: string,
     overrideAssignment: boolean = false,
-  ): CancelablePromise<any> {
+  ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/externalUser/{userId}',
+      url: '/human/tasks/{taskId}/externalUser/{userId}',
       path: {
         'taskId': taskId,
         'userId': userId,
@@ -177,7 +177,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/reassign',
+      url: '/human/tasks/{taskId}/reassign',
       path: {
         'taskId': taskId,
       },
@@ -197,7 +197,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/release',
+      url: '/human/tasks/{taskId}/release',
       path: {
         'taskId': taskId,
       },
@@ -217,7 +217,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/skip',
+      url: '/human/tasks/{taskId}/skip',
       path: {
         'taskId': taskId,
       },
@@ -242,7 +242,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/tasks/{taskId}/update',
+      url: '/human/tasks/{taskId}/update',
       path: {
         'taskId': taskId,
       },
@@ -267,7 +267,7 @@ export class HumanTaskService {
   ): CancelablePromise<Array<HumanTaskTemplate>> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/human/template',
+      url: '/human/template',
       query: {
         'name': name,
         'version': version,
@@ -288,7 +288,7 @@ export class HumanTaskService {
   ): CancelablePromise<HumanTaskTemplate> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/template',
+      url: '/human/template',
       query: {
         'newVersion': newVersion,
       },
@@ -310,7 +310,7 @@ export class HumanTaskService {
   ): CancelablePromise<Array<HumanTaskTemplate>> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/human/template/bulk',
+      url: '/human/template/bulk',
       query: {
         'newVersion': newVersion,
       },
@@ -330,7 +330,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/human/template/{name}',
+      url: '/human/template/{name}',
       path: {
         'name': name,
       },
@@ -350,7 +350,7 @@ export class HumanTaskService {
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/api/human/template/{name}/{version}',
+      url: '/human/template/{name}/{version}',
       path: {
         'name': name,
         'version': version,
@@ -371,7 +371,7 @@ export class HumanTaskService {
   ): CancelablePromise<HumanTaskTemplate> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/human/template/{name}/{version}',
+      url: '/human/template/{name}/{version}',
       path: {
         'name': name,
         'version': version,

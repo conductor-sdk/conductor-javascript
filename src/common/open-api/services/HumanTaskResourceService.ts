@@ -21,7 +21,7 @@ export class HumanTaskResourceService {
   ): CancelablePromise<Task> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/api/human/tasks/{taskId}/conductorTask',
+      url: '/human/tasks/{taskId}/conductorTask',
       path: {
         'taskId': taskId,
       },

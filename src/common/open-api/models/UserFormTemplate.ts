@@ -2,7 +2,7 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type UserFormTemplateId = {
+export type UserFormTemplate = {
   name?: string;
   version?: number;
 };

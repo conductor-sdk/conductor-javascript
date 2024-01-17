@@ -8,7 +8,8 @@ export type HumanTaskSearch = {
   assignees?: Array<HumanTaskUser>;
   claimants?: Array<HumanTaskUser>;
   definitionNames?: Array<string>;
-  outputFreeText?: string;
+  taskOutputQuery?: string;
+  taskInputQuery?: string;
   searchType?: 'ADMIN' | 'INBOX';
   size?: number;
   start?: number;

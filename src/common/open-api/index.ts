@@ -52,7 +52,7 @@ export type { HumanTaskUser } from "./models/HumanTaskUser";
 export type { HumanTaskDefinition } from "./models/HumanTaskDefinition";
 export type { HumanTaskAssignment } from "./models/HumanTaskAssignment";
 export type { HumanTaskTrigger } from "./models/HumanTaskTrigger";
-export type { UserFormTemplateId } from "./models/UserFormTemplateId";
+export type { UserFormTemplate } from "./models/UserFormTemplate";
 export type { HumanTaskTemplate } from "./models/HumanTaskTemplate";
 export type { HumanTaskSearchResult } from "./models/HumanTaskSearchResult";
 export type { HumanTaskSearch } from "./models/HumanTaskSearch";

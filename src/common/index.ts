@@ -58,7 +58,7 @@ export {
   HumanTaskDefinition,
   HumanTaskAssignment,
   HumanTaskTrigger,
-  UserFormTemplateId,
+  UserFormTemplate,
   HumanTaskTemplate,
   HumanTaskSearchResult,
   HumanTaskSearch,
