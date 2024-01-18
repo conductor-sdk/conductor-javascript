@@ -131,6 +131,27 @@ export class WorkflowExecutor {
     );
   }
 
+  
+  /**
+   *  Returns a summary of the current workflow status.
+   *
+   * @param workflowInstanceId current running workflow
+   * @param includeOutput flag to include output
+   * @param includeVariables flag to include variable
+   * @returns Promise<WorkflowStatus>
+   */
+  public getExecution(
+    workflowInstanceId: string,
+    includeTasks: boolean = true,
+  ): Promise<Workflow> {
+    return tryCatchReThrow(() =>
+      this._client.workflowResource.getExecutionStatus(
+        workflowInstanceId,
+        includeTasks,
+      )
+    );
+  }
+
   /**
    * Pauses a running workflow
    * @param workflowInstanceId current workflow execution
