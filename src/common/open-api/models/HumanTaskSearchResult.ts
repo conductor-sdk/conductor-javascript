@@ -4,7 +4,7 @@
 
 import type { HumanTaskEntry } from './HumanTaskEntry';
 
-export type SearchResultHumanTaskEntry = {
+export type HumanTaskSearchResult = {
   results?: Array<HumanTaskEntry>;
   totalHits?: number;
 };

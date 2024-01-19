@@ -2,7 +2,8 @@
 /* tslint:disable */
 /* eslint-disable */
 
-export type AssignmentPolicy = {
-  type: string;
+export type UserFormTemplate = {
+  name?: string;
+  version?: number;
 };
 

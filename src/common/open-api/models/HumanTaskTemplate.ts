@@ -3,9 +3,13 @@
 /* eslint-disable */
 
 export type HumanTaskTemplate = {
-  jsonSchema: Record<string, Record<string, any>>;
+  createdBy?: string;
+  createdOn?: number;
+  jsonSchema: Record<string, any>;
   name: string;
-  templateUI: Record<string, Record<string, any>>;
-  version?: number;
+  templateUI: Record<string, any>;
+  updatedBy?: string;
+  updatedOn?: number;
+  version: number;
 };
 

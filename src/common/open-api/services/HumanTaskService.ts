@@ -1,17 +1,11 @@
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-import type { FFAAssignment } from '../models/FFAAssignment';
-import type { Fixed } from '../models/Fixed';
-import type { HTScrollableSearchResultHumanTaskEntry } from '../models/HTScrollableSearchResultHumanTaskEntry';
-import type { HumanTaskActionLogEntry } from '../models/HumanTaskActionLogEntry';
+import type { HumanTaskAssignment } from '../models/HumanTaskAssignment';
 import type { HumanTaskEntry } from '../models/HumanTaskEntry';
-import type { HumanTaskLoad } from '../models/HumanTaskLoad';
-import type { HumanTaskStateLogEntry } from '../models/HumanTaskStateLogEntry';
+import type { HumanTaskSearch } from '../models/HumanTaskSearch';
+import type { HumanTaskSearchResult } from '../models/HumanTaskSearchResult';
 import type { HumanTaskTemplate } from '../models/HumanTaskTemplate';
-import type { HumanTaskTemplateEntry } from '../models/HumanTaskTemplateEntry';
-import type { LeastBusyGroupMemberAssignment } from '../models/LeastBusyGroupMemberAssignment';
-import type { SearchResultHumanTaskEntry } from '../models/SearchResultHumanTaskEntry';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -21,86 +15,19 @@ export class HumanTaskService {
   constructor(public readonly httpRequest: BaseHttpRequest) {}
 
   /**
-   * List tasks by filters - task name, state, assignee, assignee type, claimed
-   * @param state
-   * @param assignee
-   * @param assigneeType
-   * @param claimedBy
-   * @param taskName
-   * @param freeText
-   * @param includeInputOutput
-   * @returns SearchResultHumanTaskEntry OK
+   * If the workflow is disconnected from tasks, this API can be used to clean up (in bulk)
+   * @param requestBody
+   * @returns any OK
    * @throws ApiError
    */
-  public getTasksByFilter(
-    state: 'PENDING' | 'ASSIGNED' | 'IN_PROGRESS' | 'COMPLETED' | 'TIMED_OUT',
-    assignee?: string,
-    assigneeType?: 'EXTERNAL_USER' | 'EXTERNAL_GROUP' | 'CONDUCTOR_USER' | 'CONDUCTOR_GROUP',
-    claimedBy?: string,
-    taskName?: string,
-    freeText?: string,
-    includeInputOutput: boolean = false,
-  ): CancelablePromise<SearchResultHumanTaskEntry> {
+  public deleteTaskFromHumanTaskRecords(
+    requestBody: Array<string>,
+  ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'GET',
-      url: '/human/tasks',
-      query: {
-        'state': state,
-        'assignee': assignee,
-        'assigneeType': assigneeType,
-        'claimedBy': claimedBy,
-        'taskName': taskName,
-        'freeText': freeText,
-        'includeInputOutput': includeInputOutput,
-      },
-    });
-  }
-
-  /**
-   * Get task load grouped by workflow name and task ref name per user
-   * @returns HumanTaskLoad OK
-   * @throws ApiError
-   */
-  public getTaskLoad(): CancelablePromise<Array<HumanTaskLoad>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/human/tasks/load',
-    });
-  }
-
-  /**
-   * Search human tasks
-   * @param queryId
-   * @param start
-   * @param size
-   * @param freeText
-   * @param query
-   * @param jsonQuery
-   * @param includeInputOutput
-   * @returns HTScrollableSearchResultHumanTaskEntry OK
-   * @throws ApiError
-   */
-  public search1(
-    queryId?: string,
-    start?: number,
-    size: number = 100,
-    freeText: string = '*',
-    query?: string,
-    jsonQuery?: string,
-    includeInputOutput: boolean = false,
-  ): CancelablePromise<HTScrollableSearchResultHumanTaskEntry> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/human/tasks/search',
-      query: {
-        'queryId': queryId,
-        'start': start,
-        'size': size,
-        'freeText': freeText,
-        'query': query,
-        'jsonQuery': jsonQuery,
-        'includeInputOutput': includeInputOutput,
-      },
+      method: 'DELETE',
+      url: '/human/tasks/delete',
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -110,15 +37,63 @@ export class HumanTaskService {
    * @returns any OK
    * @throws ApiError
    */
-  public updateTaskOutput1(
+  public deleteTaskFromHumanTaskRecords1(
     taskId: string,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/human/tasks/{taskId}',
+      url: '/human/tasks/delete/{taskId}',
       path: {
         'taskId': taskId,
       },
+    });
+  }
+
+  /**
+   * Search human tasks
+   * @param requestBody
+   * @returns HumanTaskSearchResult OK
+   * @throws ApiError
+   */
+  public search(
+    requestBody: HumanTaskSearch,
+  ): CancelablePromise<HumanTaskSearchResult> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/human/tasks/search',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Update task output, optionally complete
+   * @param workflowId
+   * @param taskRefName
+   * @param requestBody
+   * @param complete
+   * @param iteration Populate this value if your task is in a loop and you want to update a specific iteration. If its not in a loop OR if you want to just update the latest iteration, leave this as empty
+   * @returns any OK
+   * @throws ApiError
+   */
+  public updateTaskOutputByRef(
+    workflowId: string,
+    taskRefName: string,
+    requestBody: Record<string, any>,
+    complete: boolean = false,
+    iteration?: Array<number>,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/human/tasks/update/taskRef',
+      query: {
+        'workflowId': workflowId,
+        'taskRefName': taskRefName,
+        'complete': complete,
+        'iteration': iteration,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
     });
   }
 
@@ -141,37 +116,24 @@ export class HumanTaskService {
   }
 
   /**
-   * Get human task action log entries by task id
-   * @param taskId
-   * @returns HumanTaskActionLogEntry OK
-   * @throws ApiError
-   */
-  public getActionLogs(
-    taskId: string,
-  ): CancelablePromise<Array<HumanTaskActionLogEntry>> {
-    return this.httpRequest.request({
-      method: 'GET',
-      url: '/human/tasks/{taskId}/actionLogs',
-      path: {
-        'taskId': taskId,
-      },
-    });
-  }
-
-  /**
    * Claim a task by authenticated Conductor user
    * @param taskId
+   * @param overrideAssignment
    * @returns any OK
    * @throws ApiError
    */
   public claimTask(
     taskId: string,
-  ): CancelablePromise<any> {
+    overrideAssignment: boolean = false,
+  ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/human/tasks/{taskId}/claim',
       path: {
         'taskId': taskId,
+      },
+      query: {
+        'overrideAssignment': overrideAssignment,
       },
     });
   }
@@ -180,19 +142,24 @@ export class HumanTaskService {
    * Claim a task to an external user
    * @param taskId
    * @param userId
+   * @param overrideAssignment
    * @returns any OK
    * @throws ApiError
    */
   public assignAndClaim(
     taskId: string,
     userId: string,
-  ): CancelablePromise<any> {
+    overrideAssignment: boolean = false,
+  ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/human/tasks/{taskId}/externalUser/{userId}',
       path: {
         'taskId': taskId,
         'userId': userId,
+      },
+      query: {
+        'overrideAssignment': overrideAssignment,
       },
     });
   }
@@ -206,7 +173,7 @@ export class HumanTaskService {
    */
   public reassignTask(
     taskId: string,
-    requestBody: (FFAAssignment | Fixed | LeastBusyGroupMemberAssignment),
+    requestBody: Array<HumanTaskAssignment>,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'POST',
@@ -238,19 +205,24 @@ export class HumanTaskService {
   }
 
   /**
-   * Get human task state log entries by task id
+   * If a task is assigned to a user, this API can be used to skip that assignment and move to the next assignee
    * @param taskId
-   * @returns HumanTaskStateLogEntry OK
+   * @param reason
+   * @returns any OK
    * @throws ApiError
    */
-  public getStateLogs(
+  public skipTask(
     taskId: string,
-  ): CancelablePromise<Array<HumanTaskStateLogEntry>> {
+    reason?: string,
+  ): CancelablePromise<any> {
     return this.httpRequest.request({
-      method: 'GET',
-      url: '/human/tasks/{taskId}/stateLogs',
+      method: 'POST',
+      url: '/human/tasks/{taskId}/skip',
       path: {
         'taskId': taskId,
+      },
+      query: {
+        'reason': reason,
       },
     });
   }
@@ -265,7 +237,7 @@ export class HumanTaskService {
    */
   public updateTaskOutput(
     taskId: string,
-    requestBody: Record<string, Record<string, any>>,
+    requestBody: Record<string, any>,
     complete: boolean = false,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
@@ -283,34 +255,16 @@ export class HumanTaskService {
   }
 
   /**
-   * Delete human task templates by name
-   * @param name
-   * @returns any OK
-   * @throws ApiError
-   */
-  public deleteTemplatesByName(
-    name: string,
-  ): CancelablePromise<any> {
-    return this.httpRequest.request({
-      method: 'DELETE',
-      url: '/human/template',
-      query: {
-        'name': name,
-      },
-    });
-  }
-
-  /**
-   * List all human task templates or get templates by name, or a template by name and version
+   * List all user form templates or get templates by name, or a template by name and version
    * @param name
    * @param version
-   * @returns HumanTaskTemplateEntry OK
+   * @returns HumanTaskTemplate OK
    * @throws ApiError
    */
   public getAllTemplates(
     name?: string,
     version?: number,
-  ): CancelablePromise<Array<HumanTaskTemplateEntry>> {
+  ): CancelablePromise<Array<HumanTaskTemplate>> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/human/template',
@@ -322,16 +276,16 @@ export class HumanTaskService {
   }
 
   /**
-   * Save human task template
+   * Save user form template
    * @param requestBody
    * @param newVersion
-   * @returns string OK
+   * @returns HumanTaskTemplate OK
    * @throws ApiError
    */
   public saveTemplate(
     requestBody: HumanTaskTemplate,
     newVersion: boolean = false,
-  ): CancelablePromise<string> {
+  ): CancelablePromise<HumanTaskTemplate> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/human/template',
@@ -344,37 +298,83 @@ export class HumanTaskService {
   }
 
   /**
-   * Delete human task template
-   * @param id
+   * Save user form template
+   * @param requestBody
+   * @param newVersion
+   * @returns HumanTaskTemplate OK
+   * @throws ApiError
+   */
+  public saveTemplates(
+    requestBody: Array<HumanTaskTemplate>,
+    newVersion: boolean = false,
+  ): CancelablePromise<Array<HumanTaskTemplate>> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/human/template/bulk',
+      query: {
+        'newVersion': newVersion,
+      },
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Delete all versions of user form template by name
+   * @param name
    * @returns any OK
    * @throws ApiError
    */
-  public deleteTemplateById(
-    id: string,
+  public deleteTemplateByName(
+    name: string,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
       method: 'DELETE',
-      url: '/human/template/{id}',
+      url: '/human/template/{name}',
       path: {
-        'id': id,
+        'name': name,
       },
     });
   }
 
   /**
-   * Get human task template by id
-   * @param id
-   * @returns HumanTaskTemplateEntry OK
+   * Delete a version of form template by name
+   * @param name
+   * @param version
+   * @returns any OK
    * @throws ApiError
    */
-  public getTemplateById(
-    id: string,
-  ): CancelablePromise<HumanTaskTemplateEntry> {
+  public deleteTemplatesByNameAndVersion(
+    name: string,
+    version: number,
+  ): CancelablePromise<any> {
+    return this.httpRequest.request({
+      method: 'DELETE',
+      url: '/human/template/{name}/{version}',
+      path: {
+        'name': name,
+        'version': version,
+      },
+    });
+  }
+
+  /**
+   * Get user form template by name and version
+   * @param name
+   * @param version
+   * @returns HumanTaskTemplate OK
+   * @throws ApiError
+   */
+  public getTemplateByNameAndVersion(
+    name: string,
+    version: number,
+  ): CancelablePromise<HumanTaskTemplate> {
     return this.httpRequest.request({
       method: 'GET',
-      url: '/human/template/{id}',
+      url: '/human/template/{name}/{version}',
       path: {
-        'id': id,
+        'name': name,
+        'version': version,
       },
     });
   }
