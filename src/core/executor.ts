@@ -10,9 +10,16 @@ import {
   ScrollableSearchResultWorkflowSummary,
 } from "../common/open-api";
 import { TaskResultStatus } from "./types";
-import { errorMapper, tryCatchReThrow } from "./helpers";
+import { errorMapper, reverseFind, tryCatchReThrow } from "./helpers";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
+
+export type TaskFinderPredicate = (task: Task) => boolean;
+
+export const completedTaskMatchingType =
+  (taskType: string): TaskFinderPredicate =>
+  (task: Task) =>
+    task.status === "COMPLETED" && task.taskType === taskType;
 
 export class WorkflowExecutor {
   public readonly _client: ConductorClient;
@@ -74,6 +81,35 @@ export class WorkflowExecutor {
   ): Promise<string>[] {
     return tryCatchReThrow(() => workflowsRequest.map(this.startWorkflow));
   }
+
+  public async goBackToTask(
+    workflowInstanceId: string,
+    taskFinderPredicate: TaskFinderPredicate,
+    rerunWorkflowRequestOverrides: Partial<RerunWorkflowRequest> = {}
+  ): Promise<void> {
+    const { tasks: executedTasks = [] } = await this.getExecution(
+      workflowInstanceId
+    );
+    const maybePreviousTask = reverseFind<Task>(
+      executedTasks,
+      taskFinderPredicate
+    );
+
+    if (!maybePreviousTask) {
+      throw new Error("Task not found");
+    }
+
+    await this.reRun(workflowInstanceId, {
+      //taskInput: previousTask.inputData,
+      ...rerunWorkflowRequestOverrides,
+      reRunFromTaskId: maybePreviousTask.taskId,
+    });
+  }
+  
+  public async goBackToFirstTaskMatchingType(workflowInstanceId: string, taskType: string): Promise<void> {
+    return this.goBackToTask(workflowInstanceId, completedTaskMatchingType(taskType));
+  }
+
   /**
    * Takes an workflowInstanceId and an includeTasks and an optional retry parameter returns the whole execution status.
    * If includeTasks flag is provided. Details of tasks execution will be returned as well,
@@ -131,7 +167,6 @@ export class WorkflowExecutor {
     );
   }
 
-  
   /**
    *  Returns a summary of the current workflow status.
    *
@@ -142,12 +177,12 @@ export class WorkflowExecutor {
    */
   public getExecution(
     workflowInstanceId: string,
-    includeTasks: boolean = true,
+    includeTasks: boolean = true
   ): Promise<Workflow> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.getExecutionStatus(
         workflowInstanceId,
-        includeTasks,
+        includeTasks
       )
     );
   }
