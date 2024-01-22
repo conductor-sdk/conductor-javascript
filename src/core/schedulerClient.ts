@@ -18,7 +18,7 @@ export class SchedulerClient {
    * @param requestBody
    * @returns
    */
-  public registerSchedule(param: SaveScheduleRequest): Promise<void> {
+  public saveSchedule(param: SaveScheduleRequest): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.saveSchedule(param)
     );
@@ -57,7 +57,7 @@ export class SchedulerClient {
    * @param name
    * @returns SaveScheduleRequest
    */
-  public get(name: string): Promise<SaveScheduleRequest> {
+  public getSchedule(name: string): Promise<SaveScheduleRequest> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.getSchedule(name)
     );
@@ -68,7 +68,7 @@ export class SchedulerClient {
    * @param name
    * @returns
    */
-  public pause(name: string): Promise<void> {
+  public pauseSchedule(name: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.pauseSchedule(name)
     );
@@ -80,7 +80,7 @@ export class SchedulerClient {
    * @param name
    * @returns
    */
-  public startResume(name: string): Promise<void> {
+  public resumeSchedule(name: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.resumeSchedule(name)
     );
@@ -92,22 +92,22 @@ export class SchedulerClient {
    * @param name
    * @returns
    */
-  public delete(name: string): Promise<void> {
+  public deleteSchedule(name: string): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.schedulerResource.deleteSchedule(name)
     );
   }
 
-
   /**
-   * Get all existing workflow schedules and optionally filter by workflow name 
+   * Get all existing workflow schedules and optionally filter by workflow name
    * @param workflowName
    * @returns Array<WorkflowSchedule>
    */
-  public getAll(workflowName?: string):Promise<Array<WorkflowSchedule>>{
-    return tryCatchReThrow(()=>
-        this._client.schedulerResource.getAllSchedules(workflowName)
-    )
+  public getAllSchedules(
+    workflowName?: string
+  ): Promise<Array<WorkflowSchedule>> {
+    return tryCatchReThrow(() =>
+      this._client.schedulerResource.getAllSchedules(workflowName)
+    );
   }
-
 }
