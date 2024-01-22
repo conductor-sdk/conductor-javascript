@@ -110,4 +110,62 @@ export class SchedulerClient {
       this._client.schedulerResource.getAllSchedules(workflowName)
     );
   }
+
+  /**
+   * Get list of the next x (default 3, max 5) execution times for a scheduler
+   * @param cronExpression
+   * @param scheduleStartTime
+   * @param scheduleEndTime
+   * @param limit
+   * @returns number OK
+   * @throws ApiError
+   */
+  public getNextFewSchedules(
+    cronExpression: string,
+    scheduleStartTime?: number,
+    scheduleEndTime?: number,
+    limit: number = 3
+  ): Promise<Array<number[]>> {
+    return tryCatchReThrow(() =>
+      this._client.schedulerResource.getNextFewSchedules(
+        cronExpression,
+        scheduleStartTime,
+        scheduleEndTime,
+        limit
+      )
+    );
+  }
+
+  /**
+   * Pause all scheduling in a single conductor server instance (for debugging only)
+   * @returns any OK
+   * @throws ApiError
+   */
+  public pauseAllSchedules(): Promise<void> {
+    return tryCatchReThrow(() =>
+      this._client.schedulerResource.pauseAllSchedules()
+    );
+  }
+
+  /**
+   * Requeue all execution records
+   * @returns any OK
+   * @throws ApiError
+   */
+  public requeueAllExecutionRecords(): Promise<void> {
+    return tryCatchReThrow(() =>
+      this._client.schedulerResource.requeueAllExecutionRecords()
+    );
+  }
+
+  /**
+   * Resume all scheduling
+   * @returns any OK
+   * @throws ApiError
+   */
+  public resumeAllSchedules(): Promise<void> {
+    return tryCatchReThrow(() =>
+      this._client.schedulerResource.resumeAllSchedules()
+    );
+  }
 }

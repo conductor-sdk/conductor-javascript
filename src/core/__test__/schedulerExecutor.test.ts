@@ -119,4 +119,12 @@ describe("ScheduleExecutor", () => {
     );
     expect(testSchedule).toBeFalsy();
   });
+
+  test("Should be able to retrieve  next (default 3) execution times for a scheduler", async () => {
+    const cronExpression = "0 0 * ? * *"; //every hour
+    const client = await clientPromise;
+    const executor = new SchedulerClient(client);
+    const result = await executor.getNextFewSchedules(cronExpression);
+    expect(result?.length).toBeGreaterThan(0);
+  });
 });
