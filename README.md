@@ -1,4 +1,4 @@
-# Netflix Conductor Javascript/Typescript SDK
+# Conductor OSS Javascript/Typescript SDK
 
 The `conductor-javascript` repository provides the client SDKs to build task workers in javascript/typescript.
 
