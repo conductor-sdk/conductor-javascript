@@ -67,9 +67,9 @@ describe("ScheduleExecutor", () => {
       },
     };
     await expect(
-      executor.registerSchedule(schedulerDefinition)
+      executor.saveSchedule(schedulerDefinition)
     ).resolves.not.toThrowError();
-    const scheduler = await executor.get(name);
+    const scheduler = await executor.getSchedule(name);
     expect(scheduler.name).toEqual(name);
     expect(scheduler.cronExpression).toEqual(cronExpression);
   });
@@ -77,8 +77,8 @@ describe("ScheduleExecutor", () => {
   test("Should be able to resume the schedule", async () => {
     const client = await clientPromise;
     const executor = new SchedulerClient(client);
-    await executor.startResume(name);
-    const scheduler = await executor.get(name);
+    await executor.resumeSchedule(name);
+    const scheduler = await executor.getSchedule(name);
     expect(scheduler.paused).toBeFalsy();
   });
 
@@ -99,24 +99,32 @@ describe("ScheduleExecutor", () => {
   test("Should be able to pause the schedule", async () => {
     const client = await clientPromise;
     const executor = new SchedulerClient(client);
-    await executor.pause(name);
-    const scheduler = await executor.get(name);
+    await executor.pauseSchedule(name);
+    const scheduler = await executor.getSchedule(name);
     expect(scheduler.paused).toBeTruthy();
   });
 
   test("Should be able to delete the schedule", async () => {
     const client = await clientPromise;
     const executor = new SchedulerClient(client);
-    await executor.delete(name);
+    await executor.deleteSchedule(name);
     // delete workflowDef too
     await client.metadataResource.unregisterWorkflowDef(
       workflowName,
       workflowVersion
     );
-    const schedulerList = await executor.getAll();
+    const schedulerList = await executor.getAllSchedules();
     const testSchedule = schedulerList.some(
       (schedule) => schedule.name === name
     );
     expect(testSchedule).toBeFalsy();
+  });
+
+  test("Should be able to retrieve  next (default 3) execution times for a scheduler", async () => {
+    const cronExpression = "0 0 * ? * *"; //every hour
+    const client = await clientPromise;
+    const executor = new SchedulerClient(client);
+    const result = await executor.getNextFewSchedules(cronExpression);
+    expect(result?.length).toBeGreaterThan(0);
   });
 });
