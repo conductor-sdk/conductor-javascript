@@ -6,6 +6,6 @@ import type { WorkflowSummary } from './WorkflowSummary';
 
 export type ScrollableSearchResultWorkflowSummary = {
   results?: Array<WorkflowSummary>;
-  queryId?: string;
+  totalHits?: number;
 };
 
