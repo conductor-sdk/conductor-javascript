@@ -17,4 +17,5 @@ export interface RunnerArgs {
   logger?: ConductorLogger;
   onError?: TaskErrorHandler;
   concurrency?: number;
+  maxRetries?: number;
 }

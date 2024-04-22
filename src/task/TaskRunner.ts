@@ -11,7 +11,7 @@ import { TaskErrorHandler, TaskRunnerOptions, RunnerArgs } from "./types";
 import { optionEquals } from "./helpers";
 
 const DEFAULT_ERROR_MESSAGE = "An unknown error occurred";
-const MAX_RETRIES = 3;
+export const MAX_RETRIES = 3;
 
 //eslint-disable-next-line
 export const noopErrorHandler: TaskErrorHandler = (__error: Error) => {};
@@ -40,6 +40,7 @@ export class TaskRunner {
   private options: TaskRunnerOptions;
   errorHandler: TaskErrorHandler;
   private poller: Poller<Task>;
+  private maxRetries: number;
 
   constructor({
     worker,
@@ -47,8 +48,10 @@ export class TaskRunner {
     options,
     logger = noopLogger,
     onError: errorHandler = noopErrorHandler,
+    maxRetries = MAX_RETRIES,
   }: RunnerArgs) {
     this.taskResource = taskResource;
+    this.maxRetries = maxRetries;
     this.logger = logger;
     this.worker = worker;
     this.options = { ...defaultRunnerOptions, ...options };
@@ -121,7 +124,7 @@ export class TaskRunner {
   updateTaskWithRetry = async (task: Task, taskResult: TaskResult) => {
     const { workerID } = this.options;
     let retryCount = 0;
-    while (retryCount < MAX_RETRIES) {
+    while (retryCount < this.maxRetries) {
       try {
         await this.taskResource.updateTask1({
           ...taskResult,
