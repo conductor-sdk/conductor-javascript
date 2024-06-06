@@ -5,3 +5,5 @@ export * from "./sdk";
 export * from "./generators";
 export * from "./schedulerClient";
 export * from "./taskClient";
+export * from "./templateClient";
+export * from "./metadataClient";

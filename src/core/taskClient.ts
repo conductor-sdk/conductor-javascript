@@ -1,9 +1,10 @@
+import { TaskResultStatus } from "../../dist";
 import {
   ConductorClient,
-  SaveScheduleRequest,
-  SearchResultWorkflowScheduleExecutionModel,
+  SearchResultTask,
+  Task,
+  TaskResult,
 } from "../common";
-import type { TaskDef } from '../common/open-api/models/TaskDef';
 import { tryCatchReThrow } from "./helpers";
 
 export class TaskClient {
@@ -29,7 +30,7 @@ export class TaskClient {
     sort: string = "",
     freeText: string,
     query: string
-  ): Promise<SearchResultWorkflowScheduleExecutionModel> {
+  ): Promise<SearchResultTask> {
     return tryCatchReThrow(() =>
       this._client.taskResource.search(
         start,
@@ -44,48 +45,37 @@ export class TaskClient {
   /**
    * Get an existing schedule by Id
    * @param taskId
-   * @returns SaveScheduleRequest
+   * @returns Task
    */
-  public getTask(taskId: string): Promise<SaveScheduleRequest> {
+  public getTask(taskId: string): Promise<Task> {
     return tryCatchReThrow(() =>
       this._client.taskResource.getTask(taskId)
     );
   }
 
   /**
-   * Unregisters an existing task definition by name
+   * Update task result status
    *
-   * @param name
+   * @param workflowId
+   * @param taskReferenceName
+   * @param status
+   * @param outputData
+   * @param workerId
    * @returns
    */
-  public unregisterTask(name: string): Promise<void> {
+  public updateTaskResult(
+    workflowId: string,
+    taskReferenceName: string,
+    status: TaskResultStatus,
+    outputData: Record<string, unknown>,
+  ): Promise<TaskResult> {
     return tryCatchReThrow(() =>
-      this._client.metadataResource.unregisterTaskDef(name)
+      this._client.taskResource.updateTask(
+        workflowId,
+        taskReferenceName,
+        status,
+        outputData
+      )
     );
   }
-
-  /**
-   * Registers a new task definition
-   *
-   * @param taskDef
-   * @returns
-   */
-  public registerTask(taskDef: TaskDef): Promise<void> {
-    return tryCatchReThrow(() =>
-      this._client.metadataResource.registerTaskDef([taskDef])
-    );
-  }
-
-  // /**
-  //  * Get all existing workflow schedules and optionally filter by workflow name
-  //  * @param workflowName
-  //  * @returns Array<WorkflowSchedule>
-  //  */
-  // public getAllSchedules(
-  //   workflowName?: string
-  // ): Promise<Array<WorkflowSchedule>> {
-  //   return tryCatchReThrow(() =>
-  //     this._client.taskResource.getAllSchedules(workflowName)
-  //   );
-  // }
 }
