@@ -55,5 +55,6 @@ export {
   HumanTaskSearchResult,
   HumanTaskSearch,
   HumanTaskEntry,
-  ExtendedWorkflowDef
+  ExtendedWorkflowDef,
+  ExtendedTaskDef
 } from "./open-api";

@@ -1,4 +1,4 @@
-import type { TaskDef } from '../../common/open-api/models/TaskDef';
+import type { ExtendedTaskDef } from '../../common';
 
 export const taskDefinition = ({
   name,
@@ -19,7 +19,7 @@ export const taskDefinition = ({
   ownerEmail = "",
   pollTimeoutSeconds = 3600,
   backoffScaleFactor = 1,
-}: TaskDef) : TaskDef => ({
+}: ExtendedTaskDef) : ExtendedTaskDef => ({
   name,
   ownerApp,
   description,

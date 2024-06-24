@@ -1,6 +1,6 @@
 import {
   ConductorClient,
-  TaskDef,
+  ExtendedTaskDef,
 } from "../common";
 import { tryCatchReThrow } from "./helpers";
 
@@ -29,7 +29,7 @@ export class MetadataClient {
    * @param taskDef
    * @returns
    */
-  public registerTask(taskDef: TaskDef): Promise<void> {
+  public registerTask(taskDef: ExtendedTaskDef): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.metadataResource.registerTaskDef([taskDef])
     );
@@ -41,7 +41,7 @@ export class MetadataClient {
    * @param taskDef
    * @returns
    */
-  public updateTask(taskDef: TaskDef): Promise<void> {
+  public updateTask(taskDef: ExtendedTaskDef): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.metadataResource.updateTaskDef(taskDef)
     );

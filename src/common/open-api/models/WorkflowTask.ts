@@ -31,7 +31,7 @@ export type WorkflowTask = {
   evaluatorType?: string;
   expression?: string;
   forkTasks?: Array<Array<WorkflowTask>>;
-  inputParameters?: Record<string, Record<string, any>>;
+  inputParameters?: Record<string, unknown>;
   joinOn?: Array<string>;
   joinStatus?: string;
   loopCondition?: string;

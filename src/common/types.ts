@@ -1,6 +1,7 @@
-import { WorkflowDef as OriginalWorkflowDef } from "./open-api/models/WorkflowDef";
+import type { ExtendedWorkflowDef as OriginalWorkflowDef } from "./open-api/models/ExtendedWorkflowDef";
+import type { WorkflowTask } from "./open-api/models/WorkflowTask";
 
-export interface CommonTaskDef {
+export interface CommonTaskDef extends WorkflowTask {
   name: string;
   taskReferenceName: string;
 }

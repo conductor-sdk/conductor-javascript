@@ -7,7 +7,7 @@ export type TaskResult = {
   callbackAfterSeconds?: number;
   externalOutputPayloadStoragePath?: string;
   logs?: Array<TaskExecLog>;
-  outputData?: Record<string, Record<string, any>>;
+  outputData?: Record<string, any>;
   reasonForIncompletion?: string;
   status?: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED';
   subWorkflowId?: string;

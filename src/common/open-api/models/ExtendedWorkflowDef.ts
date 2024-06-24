@@ -11,9 +11,9 @@ export type ExtendedWorkflowDef = {
   description?: string;
   failureWorkflow?: string;
   inputParameters?: Array<string>;
-  inputTemplate?: Record<string, Record<string, any>>;
+  inputTemplate?: Record<string, unknown>;
   name: string;
-  outputParameters?: Record<string, Record<string, any>>;
+  outputParameters?: Record<string, unknown>;
   overwriteTags?: boolean;
   ownerApp?: string;
   ownerEmail?: string;

@@ -12,7 +12,7 @@ export type ExtendedTaskDef = {
   description?: string;
   executionNameSpace?: string;
   inputKeys?: Array<string>;
-  inputTemplate?: Record<string, Record<string, any>>;
+  inputTemplate?: Record<string, unknown>;
   isolationGroupId?: string;
   name: string;
   outputKeys?: Array<string>;

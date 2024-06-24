@@ -8,10 +8,10 @@ import { TaskResourceService } from "../../common/open-api";
 
 test("polls tasks", async () => {
   const taskClientStub: Mocked<
-    Pick<TaskResourceService, "batchPoll" | "updateTask1">
+    Pick<TaskResourceService, "batchPoll" | "updateTask">
   > = {
     batchPoll: jest.fn(),
-    updateTask1: jest.fn(),
+    updateTask: jest.fn(),
   };
   const mockTaskClient = taskClientStub as unknown as TaskResourceService;
   const workerID = "worker-id";
@@ -65,15 +65,15 @@ test("polls tasks", async () => {
       input: "from workflow",
     },
   };
-  expect(taskClientStub.updateTask1).toHaveBeenCalledWith(expected);
+  expect(taskClientStub.updateTask).toHaveBeenCalledWith(expected);
 });
 
 test("Should set the task as failed if the task has an error", async () => {
   const taskClientStub: Mocked<
-    Pick<TaskResourceService, "batchPoll" | "updateTask1">
+    Pick<TaskResourceService, "batchPoll" | "updateTask">
   > = {
     batchPoll: jest.fn(),
-    updateTask1: jest.fn(),
+    updateTask: jest.fn(),
   };
   const mockTaskClient = taskClientStub as unknown as TaskResourceService;
 
@@ -120,5 +120,5 @@ test("Should set the task as failed if the task has an error", async () => {
     outputData: {},
     reasonForIncompletion: "Error from worker",
   };
-  expect(taskClientStub.updateTask1).toHaveBeenCalledWith(expected);
+  expect(taskClientStub.updateTask).toHaveBeenCalledWith(expected);
 });

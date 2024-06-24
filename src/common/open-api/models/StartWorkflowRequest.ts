@@ -9,7 +9,7 @@ export type StartWorkflowRequest = {
   externalInputPayloadStoragePath?: string;
   idempotencyKey?: string;
   idempotencyStrategy?: 'FAIL' | 'RETURN_EXISTING';
-  input?: Record<string, Record<string, any>>;
+  input?: Record<string, unknown>;
   name: string;
   priority?: number;
   taskToDomain?: Record<string, string>;

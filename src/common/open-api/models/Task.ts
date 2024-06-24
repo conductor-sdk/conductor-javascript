@@ -14,11 +14,11 @@ export type Task = {
   executionNameSpace?: string;
   externalInputPayloadStoragePath?: string;
   externalOutputPayloadStoragePath?: string;
-  inputData?: Record<string, Record<string, any>>;
+  inputData?: Record<string, any>;
   isolationGroupId?: string;
   iteration?: number;
   loopOverTask?: boolean;
-  outputData?: Record<string, Record<string, any>>;
+  outputData?: Record<string, any>;
   parentTaskId?: string;
   pollCount?: number;
   queueWaitTime?: number;

@@ -42,6 +42,8 @@ export type { WorkflowSummary } from "./models/WorkflowSummary";
 export type { WorkflowTask } from "./models/WorkflowTask";
 export type { ExtendedWorkflowDef } from "./models/ExtendedWorkflowDef";
 
+export type { ExtendedTaskDef } from "./models/ExtendedTaskDef";
+
 // HUMAN
 export type { HumanTaskUser } from "./models/HumanTaskUser";
 export type { HumanTaskDefinition } from "./models/HumanTaskDefinition";
