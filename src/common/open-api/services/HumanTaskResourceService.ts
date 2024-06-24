@@ -1,15 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
 import type { Task } from '../models/Task';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class HumanTaskResourceService {
-
   constructor(public readonly httpRequest: BaseHttpRequest) {}
-
   /**
    * Get Conductor task by id (for human tasks only)
    * @param taskId
@@ -27,5 +24,4 @@ export class HumanTaskResourceService {
       },
     });
   }
-
 }

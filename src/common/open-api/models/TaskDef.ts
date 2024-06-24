@@ -1,31 +1,32 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type TaskDef = {
-  ownerApp?: string;
-  createTime?: number;
-  updateTime?: number;
-  createdBy?: string;
-  updatedBy?: string;
-  name: string;
-  description?: string;
-  retryCount?: number;
-  timeoutSeconds: number;
-  inputKeys?: Array<string>;
-  outputKeys?: Array<string>;
-  timeoutPolicy?: 'RETRY' | 'TIME_OUT_WF' | 'ALERT_ONLY';
-  retryLogic?: 'FIXED' | 'EXPONENTIAL_BACKOFF' | 'LINEAR_BACKOFF';
-  retryDelaySeconds?: number;
-  responseTimeoutSeconds?: number;
+  backoffScaleFactor?: number;
+  baseType?: string;
   concurrentExecLimit?: number;
-  inputTemplate?: Record<string, any>;
-  rateLimitPerFrequency?: number;
-  rateLimitFrequencyInSeconds?: number;
-  isolationGroupId?: string;
+  createTime?: number;
+  createdBy?: string;
+  description?: string;
   executionNameSpace?: string;
+  inputKeys?: Array<string>;
+  inputTemplate?: Record<string, Record<string, any>>;
+  isolationGroupId?: string;
+  name: string;
+  outputKeys?: Array<string>;
+  ownerApp?: string;
   ownerEmail?: string;
   pollTimeoutSeconds?: number;
-  backoffScaleFactor?: number;
+  rateLimitFrequencyInSeconds?: number;
+  rateLimitPerFrequency?: number;
+  responseTimeoutSeconds?: number;
+  retryCount?: number;
+  retryDelaySeconds?: number;
+  retryLogic?: 'FIXED' | 'EXPONENTIAL_BACKOFF' | 'LINEAR_BACKOFF';
+  timeoutPolicy?: 'RETRY' | 'TIME_OUT_WF' | 'ALERT_ONLY';
+  timeoutSeconds: number;
+  updateTime?: number;
+  updatedBy?: string;
 };
 

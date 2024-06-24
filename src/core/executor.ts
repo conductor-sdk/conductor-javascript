@@ -1,4 +1,4 @@
-import { ConductorClient, WorkflowDef } from "../common";
+import { ConductorClient, ExtendedWorkflowDef } from "../common";
 import {
   Workflow,
   Task,
@@ -36,7 +36,7 @@ export class WorkflowExecutor {
 
   public registerWorkflow(
     override: boolean,
-    workflow: WorkflowDef
+    workflow: ExtendedWorkflowDef
   ): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.metadataResource.create(workflow, override)
@@ -67,10 +67,10 @@ export class WorkflowExecutor {
   ): Promise<WorkflowRun> {
     return tryCatchReThrow(() =>
       this._client.workflowResource.executeWorkflow(
-        workflowRequest,
         name,
         version,
         requestId,
+        workflowRequest,
         waitUntilTaskRef
       )
     );
@@ -227,7 +227,7 @@ export class WorkflowExecutor {
     useLatestDefinitions: boolean
   ): Promise<void> {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.restart1(
+      this._client.workflowResource.restart(
         workflowInstanceId,
         useLatestDefinitions
       )
@@ -259,7 +259,7 @@ export class WorkflowExecutor {
     resumeSubworkflowTasks: boolean
   ): Promise<void> {
     return tryCatchReThrow(() =>
-      this._client.workflowResource.retry1(
+      this._client.workflowResource.retry(
         workflowInstanceId,
         resumeSubworkflowTasks
       )
@@ -284,10 +284,8 @@ export class WorkflowExecutor {
     sort: string = "",
     skipCache: boolean = false
   ): Promise<ScrollableSearchResultWorkflowSummary> {
-    const queryId = undefined;
     return tryCatchReThrow(() =>
       this._client.workflowResource.search1(
-        queryId,
         start,
         size,
         sort,
@@ -350,7 +348,7 @@ export class WorkflowExecutor {
       workflowInstanceId,
     };
     return tryCatchReThrow(() =>
-      this._client.taskResource.updateTask1({
+      this._client.taskResource.updateTask({
         outputData,
         ...taskUpdates,
       })
@@ -372,7 +370,7 @@ export class WorkflowExecutor {
     taskOutput: Record<string, any>
   ): Promise<string> {
     return tryCatchReThrow(() =>
-      this._client.taskResource.updateTask(
+      this._client.taskResource.updateTask1(
         workflowInstanceId,
         taskReferenceName,
         status,

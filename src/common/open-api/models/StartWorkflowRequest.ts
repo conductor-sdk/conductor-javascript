@@ -1,18 +1,19 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { WorkflowDef } from './WorkflowDef';
-
 export type StartWorkflowRequest = {
-  name: string;
-  version?: number;
   correlationId?: string;
-  input?: Record<string, any>;
-  taskToDomain?: Record<string, string>;
-  workflowDef?: WorkflowDef;
-  externalInputPayloadStoragePath?: string;
-  priority?: number;
   createdBy?: string;
+  externalInputPayloadStoragePath?: string;
+  idempotencyKey?: string;
+  idempotencyStrategy?: 'FAIL' | 'RETURN_EXISTING';
+  input?: Record<string, Record<string, any>>;
+  name: string;
+  priority?: number;
+  taskToDomain?: Record<string, string>;
+  version?: number;
+  workflowDef?: WorkflowDef;
 };
 

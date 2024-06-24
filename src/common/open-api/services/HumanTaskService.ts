@@ -1,3 +1,4 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
@@ -6,14 +7,10 @@ import type { HumanTaskEntry } from '../models/HumanTaskEntry';
 import type { HumanTaskSearch } from '../models/HumanTaskSearch';
 import type { HumanTaskSearchResult } from '../models/HumanTaskSearchResult';
 import type { HumanTaskTemplate } from '../models/HumanTaskTemplate';
-
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
-
 export class HumanTaskService {
-
   constructor(public readonly httpRequest: BaseHttpRequest) {}
-
   /**
    * If the workflow is disconnected from tasks, this API can be used to clean up (in bulk)
    * @param requestBody
@@ -30,7 +27,6 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * If the workflow is disconnected from tasks, this API can be used to clean up
    * @param taskId
@@ -48,7 +44,23 @@ export class HumanTaskService {
       },
     });
   }
-
+  /**
+   * Get list of task display names applicable for the user
+   * @param searchType
+   * @returns string OK
+   * @throws ApiError
+   */
+  public getTaskDisplayNames(
+    searchType: 'ADMIN' | 'INBOX',
+  ): CancelablePromise<Array<string>> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/human/tasks/getTaskDisplayNames',
+      query: {
+        'searchType': searchType,
+      },
+    });
+  }
   /**
    * Search human tasks
    * @param requestBody
@@ -65,7 +77,6 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * Update task output, optionally complete
    * @param workflowId
@@ -79,7 +90,7 @@ export class HumanTaskService {
   public updateTaskOutputByRef(
     workflowId: string,
     taskRefName: string,
-    requestBody: Record<string, any>,
+    requestBody: Record<string, Record<string, any>>,
     complete: boolean = false,
     iteration?: Array<number>,
   ): CancelablePromise<any> {
@@ -96,15 +107,16 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * Get a task
    * @param taskId
+   * @param withTemplate
    * @returns HumanTaskEntry OK
    * @throws ApiError
    */
   public getTask1(
     taskId: string,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'GET',
@@ -112,19 +124,23 @@ export class HumanTaskService {
       path: {
         'taskId': taskId,
       },
+      query: {
+        'withTemplate': withTemplate,
+      },
     });
   }
-
   /**
    * Claim a task by authenticated Conductor user
    * @param taskId
    * @param overrideAssignment
-   * @returns any OK
+   * @param withTemplate
+   * @returns HumanTaskEntry OK
    * @throws ApiError
    */
   public claimTask(
     taskId: string,
     overrideAssignment: boolean = false,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
@@ -134,22 +150,24 @@ export class HumanTaskService {
       },
       query: {
         'overrideAssignment': overrideAssignment,
+        'withTemplate': withTemplate,
       },
     });
   }
-
   /**
    * Claim a task to an external user
    * @param taskId
    * @param userId
    * @param overrideAssignment
-   * @returns any OK
+   * @param withTemplate
+   * @returns HumanTaskEntry OK
    * @throws ApiError
    */
   public assignAndClaim(
     taskId: string,
     userId: string,
     overrideAssignment: boolean = false,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
@@ -160,12 +178,12 @@ export class HumanTaskService {
       },
       query: {
         'overrideAssignment': overrideAssignment,
+        'withTemplate': withTemplate,
       },
     });
   }
-
   /**
-   * Release a task without completing it
+   * Reassign a task without completing it
    * @param taskId
    * @param requestBody
    * @returns any OK
@@ -185,7 +203,6 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * Release a task without completing it
    * @param taskId
@@ -203,7 +220,6 @@ export class HumanTaskService {
       },
     });
   }
-
   /**
    * If a task is assigned to a user, this API can be used to skip that assignment and move to the next assignee
    * @param taskId
@@ -226,7 +242,6 @@ export class HumanTaskService {
       },
     });
   }
-
   /**
    * Update task output, optionally complete
    * @param taskId
@@ -237,7 +252,7 @@ export class HumanTaskService {
    */
   public updateTaskOutput(
     taskId: string,
-    requestBody: Record<string, any>,
+    requestBody: Record<string, Record<string, any>>,
     complete: boolean = false,
   ): CancelablePromise<any> {
     return this.httpRequest.request({
@@ -253,7 +268,6 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * List all user form templates or get templates by name, or a template by name and version
    * @param name
@@ -274,7 +288,6 @@ export class HumanTaskService {
       },
     });
   }
-
   /**
    * Save user form template
    * @param requestBody
@@ -296,7 +309,6 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
   /**
    * Save user form template
    * @param requestBody
@@ -318,7 +330,23 @@ export class HumanTaskService {
       mediaType: 'application/json',
     });
   }
-
+  /**
+   * Get user form by human task id
+   * @param humanTaskId
+   * @returns HumanTaskTemplate OK
+   * @throws ApiError
+   */
+  public getTemplateByTaskId(
+    humanTaskId: string,
+  ): CancelablePromise<HumanTaskTemplate> {
+    return this.httpRequest.request({
+      method: 'GET',
+      url: '/human/template/{humanTaskId}',
+      path: {
+        'humanTaskId': humanTaskId,
+      },
+    });
+  }
   /**
    * Delete all versions of user form template by name
    * @param name
@@ -336,7 +364,6 @@ export class HumanTaskService {
       },
     });
   }
-
   /**
    * Delete a version of form template by name
    * @param name
@@ -357,7 +384,6 @@ export class HumanTaskService {
       },
     });
   }
-
   /**
    * Get user form template by name and version
    * @param name
@@ -378,5 +404,4 @@ export class HumanTaskService {
       },
     });
   }
-
 }

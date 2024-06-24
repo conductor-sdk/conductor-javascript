@@ -42,7 +42,7 @@ export class SchedulerClient {
     query: string
   ): Promise<SearchResultWorkflowScheduleExecutionModel> {
     return tryCatchReThrow(() =>
-      this._client.schedulerResource.searchV21(
+      this._client.schedulerResource.searchV2(
         start,
         size,
         sort,

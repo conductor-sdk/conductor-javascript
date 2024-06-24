@@ -1,13 +1,13 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
-import type { WorkflowDef } from './WorkflowDef';
-
 export type SubWorkflowParams = {
-  name: string;
-  version?: number;
+  idempotencyKey?: string;
+  idempotencyStrategy?: 'FAIL' | 'RETURN_EXISTING';
+  name?: string;
   taskToDomain?: Record<string, string>;
-  workflowDefinition?: WorkflowDef;
+  version?: number;
+  workflowDefinition?: Record<string, any>;
 };
 

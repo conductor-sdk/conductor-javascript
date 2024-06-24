@@ -1,27 +1,27 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type WorkflowSummary = {
-  workflowType?: string;
-  version?: number;
-  workflowId?: string;
   correlationId?: string;
-  startTime?: string;
-  updateTime?: string;
+  createdBy?: string;
   endTime?: string;
-  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
-  input?: string;
-  output?: string;
-  reasonForIncompletion?: string;
-  executionTime?: number;
   event?: string;
-  failedReferenceTaskNames?: string;
+  executionTime?: number;
   externalInputPayloadStoragePath?: string;
   externalOutputPayloadStoragePath?: string;
-  priority?: number;
-  createdBy?: string;
-  outputSize?: number;
+  failedReferenceTaskNames?: string;
+  input?: string;
   inputSize?: number;
+  output?: string;
+  outputSize?: number;
+  priority?: number;
+  reasonForIncompletion?: string;
+  startTime?: string;
+  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
+  updateTime?: string;
+  version?: number;
+  workflowId?: string;
+  workflowType?: string;
 };
 

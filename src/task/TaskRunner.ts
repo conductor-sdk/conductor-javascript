@@ -126,7 +126,7 @@ export class TaskRunner {
     let retryCount = 0;
     while (retryCount < this.maxRetries) {
       try {
-        await this.taskResource.updateTask1({
+        await this.taskResource.updateTask({
           ...taskResult,
           workerId: workerID,
         });

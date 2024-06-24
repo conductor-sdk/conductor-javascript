@@ -1,11 +1,11 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type PollData = {
-  queueName?: string;
   domain?: string;
-  workerId?: string;
   lastPollTime?: number;
+  queueName?: string;
+  workerId?: string;
 };
 

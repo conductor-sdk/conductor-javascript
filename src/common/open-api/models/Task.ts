@@ -1,51 +1,51 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { TaskDef } from './TaskDef';
 import type { WorkflowTask } from './WorkflowTask';
-
 export type Task = {
-  taskType?: string;
-  status?: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED';
-  inputData?: Record<string, any>;
-  referenceTaskName?: string;
-  retryCount?: number;
-  seq?: number;
-  correlationId?: string;
-  pollCount?: number;
-  taskDefName?: string;
-  scheduledTime?: number;
-  startTime?: number;
-  endTime?: number;
-  updateTime?: number;
-  startDelayInSeconds?: number;
-  retriedTaskId?: string;
-  retried?: boolean;
-  executed?: boolean;
-  callbackFromWorker?: boolean;
-  responseTimeoutSeconds?: number;
-  workflowInstanceId?: string;
-  workflowType?: string;
-  taskId?: string;
-  reasonForIncompletion?: string;
   callbackAfterSeconds?: number;
-  workerId?: string;
-  outputData?: Record<string, any>;
-  workflowTask?: WorkflowTask;
+  callbackFromWorker?: boolean;
+  correlationId?: string;
   domain?: string;
-  rateLimitPerFrequency?: number;
-  rateLimitFrequencyInSeconds?: number;
+  endTime?: number;
+  executed?: boolean;
+  executionNameSpace?: string;
   externalInputPayloadStoragePath?: string;
   externalOutputPayloadStoragePath?: string;
-  workflowPriority?: number;
-  executionNameSpace?: string;
+  inputData?: Record<string, Record<string, any>>;
   isolationGroupId?: string;
   iteration?: number;
+  loopOverTask?: boolean;
+  outputData?: Record<string, Record<string, any>>;
+  parentTaskId?: string;
+  pollCount?: number;
+  queueWaitTime?: number;
+  rateLimitFrequencyInSeconds?: number;
+  rateLimitPerFrequency?: number;
+  reasonForIncompletion?: string;
+  referenceTaskName?: string;
+  responseTimeoutSeconds?: number;
+  retried?: boolean;
+  retriedTaskId?: string;
+  retryCount?: number;
+  scheduledTime?: number;
+  seq?: number;
+  startDelayInSeconds?: number;
+  startTime?: number;
+  status?: 'IN_PROGRESS' | 'CANCELED' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED' | 'COMPLETED_WITH_ERRORS' | 'SCHEDULED' | 'TIMED_OUT' | 'SKIPPED';
   subWorkflowId?: string;
   subworkflowChanged?: boolean;
-  queueWaitTime?: number;
+  taskDefName?: string;
   taskDefinition?: TaskDef;
-  loopOverTask?: boolean;
+  taskId?: string;
+  taskType?: string;
+  updateTime?: number;
+  workerId?: string;
+  workflowInstanceId?: string;
+  workflowPriority?: number;
+  workflowTask?: WorkflowTask;
+  workflowType?: string;
 };
 

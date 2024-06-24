@@ -15,20 +15,15 @@ export type { OnCancel } from "./core/CancelablePromise";
 export type { Action } from "./models/Action";
 export type { BulkResponse } from "./models/BulkResponse";
 export type { EventHandler } from "./models/EventHandler";
-export type { ExternalStorageLocation } from "./models/ExternalStorageLocation";
 export type { GenerateTokenRequest } from "./models/GenerateTokenRequest";
 export type { PollData } from "./models/PollData";
 export type { RerunWorkflowRequest } from "./models/RerunWorkflowRequest";
 export type { Response } from "./models/Response";
 export type { SaveScheduleRequest } from "./models/SaveScheduleRequest";
 export type { ScrollableSearchResultWorkflowSummary } from "./models/ScrollableSearchResultWorkflowSummary";
-export type { SearchResultTask } from "./models/SearchResultTask";
 export type { SearchResultTaskSummary } from "./models/SearchResultTaskSummary";
-export type { SearchResultWorkflow } from "./models/SearchResultWorkflow";
 export type { SearchResultWorkflowScheduleExecutionModel } from "./models/SearchResultWorkflowScheduleExecutionModel";
-export type { SearchResultWorkflowSummary } from "./models/SearchResultWorkflowSummary";
 export type { SkipTaskRequest } from "./models/SkipTaskRequest";
-export type { StartWorkflow } from "./models/StartWorkflow";
 export type { StartWorkflowRequest } from "./models/StartWorkflowRequest";
 export type { SubWorkflowParams } from "./models/SubWorkflowParams";
 export type { Task } from "./models/Task";
@@ -45,9 +40,9 @@ export type { WorkflowScheduleExecutionModel } from "./models/WorkflowScheduleEx
 export type { WorkflowStatus } from "./models/WorkflowStatus";
 export type { WorkflowSummary } from "./models/WorkflowSummary";
 export type { WorkflowTask } from "./models/WorkflowTask";
+export type { ExtendedWorkflowDef } from "./models/ExtendedWorkflowDef";
 
 // HUMAN
-export type { HTScrollableSearchResultHumanTaskEntry } from "./models/HTScrollableSearchResultHumanTaskEntry";
 export type { HumanTaskUser } from "./models/HumanTaskUser";
 export type { HumanTaskDefinition } from "./models/HumanTaskDefinition";
 export type { HumanTaskAssignment } from "./models/HumanTaskAssignment";
@@ -56,8 +51,6 @@ export type { UserFormTemplate } from "./models/UserFormTemplate";
 export type { HumanTaskTemplate } from "./models/HumanTaskTemplate";
 export type { HumanTaskSearchResult } from "./models/HumanTaskSearchResult";
 export type { HumanTaskSearch } from "./models/HumanTaskSearch";
-export type { Terminate } from "./models/Terminate";
-export type { TimeoutPolicy } from "./models/TimeoutPolicy";
 export type { HumanTaskEntry } from "./models/HumanTaskEntry";
 
 export { EventResourceService } from "./services/EventResourceService";

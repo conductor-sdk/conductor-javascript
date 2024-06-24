@@ -1,19 +1,18 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { TaskExecLog } from './TaskExecLog';
-
 export type TaskResult = {
-  workflowInstanceId: string;
-  taskId: string;
-  reasonForIncompletion?: string;
   callbackAfterSeconds?: number;
-  workerId?: string;
-  status?: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED';
-  outputData?: Record<string, any>;
-  logs?: Array<TaskExecLog>;
   externalOutputPayloadStoragePath?: string;
+  logs?: Array<TaskExecLog>;
+  outputData?: Record<string, Record<string, any>>;
+  reasonForIncompletion?: string;
+  status?: 'IN_PROGRESS' | 'FAILED' | 'FAILED_WITH_TERMINAL_ERROR' | 'COMPLETED';
   subWorkflowId?: string;
+  taskId: string;
+  workerId?: string;
+  workflowInstanceId: string;
 };
 

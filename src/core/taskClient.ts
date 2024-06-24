@@ -1,9 +1,9 @@
-import { TaskResultStatus } from "../../dist";
+import { TaskResultStatus } from "./types";
 import {
   ConductorClient,
-  SearchResultTask,
   Task,
   TaskResult,
+  SearchResultTaskSummary
 } from "../common";
 import { tryCatchReThrow } from "./helpers";
 
@@ -30,7 +30,7 @@ export class TaskClient {
     sort: string = "",
     freeText: string,
     query: string
-  ): Promise<SearchResultTask> {
+  ): Promise<SearchResultTaskSummary> {
     return tryCatchReThrow(() =>
       this._client.taskResource.search(
         start,
@@ -67,10 +67,10 @@ export class TaskClient {
     workflowId: string,
     taskReferenceName: string,
     status: TaskResultStatus,
-    outputData: Record<string, unknown>,
+    outputData: Record<string, Record<string,any>>,
   ): Promise<TaskResult> {
     return tryCatchReThrow(() =>
-      this._client.taskResource.updateTask(
+      this._client.taskResource.updateTask1(
         workflowId,
         taskReferenceName,
         status,

@@ -1,49 +1,53 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
+import type { CacheConfig } from './CacheConfig';
+import type { StateChangeEvent } from './StateChangeEvent';
 import type { SubWorkflowParams } from './SubWorkflowParams';
 import type { TaskDef } from './TaskDef';
-
 export type WorkflowTask = {
-  name: string;
-  taskReferenceName: string;
-  description?: string;
-  inputParameters?: Record<string, any>;
-  type?: string;
-  dynamicTaskNameParam?: string;
-  /**
-   * @deprecated
-   */
-  caseValueParam?: string;
+  asyncComplete?: boolean;
+  cacheConfig?: CacheConfig;
   /**
    * @deprecated
    */
   caseExpression?: string;
-  scriptExpression?: string;
+  /**
+   * @deprecated
+   */
+  caseValueParam?: string;
   decisionCases?: Record<string, Array<WorkflowTask>>;
+  defaultCase?: Array<WorkflowTask>;
+  defaultExclusiveJoinTask?: Array<string>;
+  description?: string;
   /**
    * @deprecated
    */
   dynamicForkJoinTasksParam?: string;
-  dynamicForkTasksParam?: string;
   dynamicForkTasksInputParamName?: string;
-  defaultCase?: Array<WorkflowTask>;
-  forkTasks?: Array<Array<WorkflowTask>>;
-  startDelay?: number;
-  subWorkflowParam?: SubWorkflowParams;
-  joinOn?: Array<string>;
-  sink?: string;
-  optional?: boolean;
-  taskDefinition?: TaskDef;
-  rateLimited?: boolean;
-  defaultExclusiveJoinTask?: Array<string>;
-  asyncComplete?: boolean;
-  loopCondition?: string;
-  loopOver?: Array<WorkflowTask>;
-  retryCount?: number;
+  dynamicForkTasksParam?: string;
+  dynamicTaskNameParam?: string;
   evaluatorType?: string;
   expression?: string;
-  workflowTaskType?: 'SIMPLE' | 'DYNAMIC' | 'FORK_JOIN' | 'FORK_JOIN_DYNAMIC' | 'DECISION' | 'SWITCH' | 'JOIN' | 'DO_WHILE' | 'SUB_WORKFLOW' | 'START_WORKFLOW' | 'EVENT' | 'WAIT' | 'HUMAN' | 'USER_DEFINED' | 'HTTP' | 'LAMBDA' | 'INLINE' | 'EXCLUSIVE_JOIN' | 'TERMINATE' | 'KAFKA_PUBLISH' | 'JSON_JQ_TRANSFORM' | 'SET_VARIABLE';
+  forkTasks?: Array<Array<WorkflowTask>>;
+  inputParameters?: Record<string, Record<string, any>>;
+  joinOn?: Array<string>;
+  joinStatus?: string;
+  loopCondition?: string;
+  loopOver?: Array<WorkflowTask>;
+  name: string;
+  onStateChange?: Record<string, Array<StateChangeEvent>>;
+  optional?: boolean;
+  rateLimited?: boolean;
+  retryCount?: number;
+  scriptExpression?: string;
+  sink?: string;
+  startDelay?: number;
+  subWorkflowParam?: SubWorkflowParams;
+  taskDefinition?: TaskDef;
+  taskReferenceName: string;
+  type?: string;
+  workflowTaskType?: 'SIMPLE' | 'DYNAMIC' | 'FORK_JOIN' | 'FORK_JOIN_DYNAMIC' | 'DECISION' | 'SWITCH' | 'JOIN' | 'DO_WHILE' | 'SUB_WORKFLOW' | 'START_WORKFLOW' | 'EVENT' | 'WAIT' | 'HUMAN' | 'USER_DEFINED' | 'HTTP' | 'LAMBDA' | 'INLINE' | 'EXCLUSIVE_JOIN' | 'TERMINATE' | 'KAFKA_PUBLISH' | 'JSON_JQ_TRANSFORM' | 'UPDATE_SECRET' | 'UPDATE_TASK' | 'JUMP' | 'SET_VARIABLE';
 };
 

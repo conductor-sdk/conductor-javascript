@@ -1,38 +1,41 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { Task } from './Task';
 import type { WorkflowDef } from './WorkflowDef';
-
 export type Workflow = {
-  ownerApp?: string;
-  createTime?: number;
-  updateTime?: number;
-  createdBy?: string;
-  updatedBy?: string;
-  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
-  endTime?: number;
-  workflowId?: string;
-  parentWorkflowId?: string;
-  parentWorkflowTaskId?: string;
-  tasks?: Array<Task>;
-  input?: Record<string, any>;
-  output?: Record<string, any>;
   correlationId?: string;
-  reRunFromWorkflowId?: string;
-  reasonForIncompletion?: string;
+  createTime?: number;
+  createdBy?: string;
+  endTime?: number;
   event?: string;
-  taskToDomain?: Record<string, string>;
-  failedReferenceTaskNames?: Array<string>;
-  workflowDefinition?: WorkflowDef;
   externalInputPayloadStoragePath?: string;
   externalOutputPayloadStoragePath?: string;
-  priority?: number;
-  variables?: Record<string, any>;
+  failedReferenceTaskNames?: Array<string>;
+  history?: Array<Workflow>;
+  idempotencyKey?: string;
+  input?: Record<string, Record<string, any>>;
   lastRetriedTime?: number;
+  output?: Record<string, Record<string, any>>;
+  ownerApp?: string;
+  parentWorkflowId?: string;
+  parentWorkflowTaskId?: string;
+  priority?: number;
+  rateLimitKey?: string;
+  rateLimited?: boolean;
+  reRunFromWorkflowId?: string;
+  reasonForIncompletion?: string;
   startTime?: number;
-  workflowVersion?: number;
+  status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
+  taskToDomain?: Record<string, string>;
+  tasks?: Array<Task>;
+  updateTime?: number;
+  updatedBy?: string;
+  variables?: Record<string, Record<string, any>>;
+  workflowDefinition?: WorkflowDef;
+  workflowId?: string;
   workflowName?: string;
+  workflowVersion?: number;
 };
 

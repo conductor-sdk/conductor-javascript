@@ -1,18 +1,19 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 import type { StartWorkflowRequest } from './StartWorkflowRequest';
-
 export type SaveScheduleRequest = {
-  name: string;
-  cronExpression: string;
-  runCatchupScheduleInstances?: boolean;
-  paused?: boolean;
-  startWorkflowRequest?: StartWorkflowRequest;
   createdBy?: string;
-  updatedBy?: string;
-  scheduleStartTime?: number;
+  cronExpression: string;
+  description?: string;
+  name: string;
+  paused?: boolean;
+  runCatchupScheduleInstances?: boolean;
   scheduleEndTime?: number;
+  scheduleStartTime?: number;
+  startWorkflowRequest: StartWorkflowRequest;
+  updatedBy?: string;
+  zoneId?: string;
 };
 

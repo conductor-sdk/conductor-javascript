@@ -1,12 +1,12 @@
+/* generated using openapi-typescript-codegen -- do not edit */
 /* istanbul ignore file */
 /* tslint:disable */
 /* eslint-disable */
-
 export type RerunWorkflowRequest = {
-  reRunFromWorkflowId?: string;
-  workflowInput?: Record<string, any>;
-  reRunFromTaskId?: string;
-  taskInput?: Record<string, any>;
   correlationId?: string;
+  reRunFromTaskId?: string;
+  reRunFromWorkflowId?: string;
+  taskInput?: Record<string, Record<string, any>>;
+  workflowInput?: Record<string, Record<string, any>>;
 };
 
