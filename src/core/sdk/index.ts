@@ -11,6 +11,7 @@ export * from "./setVariable";
 export * from "./simple";
 export * from "./subWorkflow";
 export * from "./switch";
+export * from "./taskDefinition";
 export * from "./terminate";
 export * from "./wait";
 export * from "./workflow";

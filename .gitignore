@@ -81,3 +81,5 @@ crashlytics-build.properties
 fabric.properties
 .DS_Store
 .env.development
+.env.development.local
+
