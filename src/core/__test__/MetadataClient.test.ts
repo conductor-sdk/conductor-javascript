@@ -1,5 +1,6 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import { MetadataClient, taskDefinition } from "..";
+import { MetadataClient } from "../metadataClient";
+import { taskDefinition } from "../sdk";
 import { orkesConductorClient, OrkesApiConfig } from "../../orkes";
 
 const playConfig: Partial<OrkesApiConfig> = {
