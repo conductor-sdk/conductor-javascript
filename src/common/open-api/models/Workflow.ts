@@ -12,6 +12,7 @@ export type Workflow = {
   createdBy?: string;
   updatedBy?: string;
   status?: 'RUNNING' | 'COMPLETED' | 'FAILED' | 'TIMED_OUT' | 'TERMINATED' | 'PAUSED';
+  idempotencyKey?: string;
   endTime?: number;
   workflowId?: string;
   parentWorkflowId?: string;

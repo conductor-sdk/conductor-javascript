@@ -11,6 +11,7 @@ export type HumanTaskEntry = {
   createdBy?: string;
   createdOn?: number;
   definitionName?: string;
+  displayName?: string;
   humanTaskDef?: HumanTaskDefinition;
   input?: Record<string, any>;
   output?: Record<string, any>;

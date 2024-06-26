@@ -1,4 +1,4 @@
-import { TaskResultStatus } from "../../dist";
+import { TaskResultStatus } from "../core/types";
 import {
   ConductorClient,
   SearchResultTask,

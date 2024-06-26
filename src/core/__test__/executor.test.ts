@@ -99,4 +99,18 @@ describe("Executor", () => {
     expect(workflowStatus.status).toBeTruthy();
     expect(workflowStatus.tasks?.length).toBe(1);
   });
+  test("Should execute a workflow with indempotency key", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+    const idempotencyKey = uuidv4();
+    const executionId = await executor.startWorkflow({
+      name: name,
+      version: version,
+      idempotencyKey,
+      idempotencyStrategy: "RETURN_EXISTING",
+    });
+
+    const executionDetails = await executor.getWorkflow(executionId!, true);
+    expect(executionDetails.idempotencyKey).toEqual(idempotencyKey);
+  });
 });

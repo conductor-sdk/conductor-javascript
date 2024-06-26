@@ -9,5 +9,7 @@ export type SubWorkflowParams = {
   version?: number;
   taskToDomain?: Record<string, string>;
   workflowDefinition?: WorkflowDef;
+  idempotencyKey?: string;
+  idempotencyStrategy?: 'FAIL' | 'RETURN_EXISTING';
 };
 
