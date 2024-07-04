@@ -52,9 +52,9 @@ orkesConductorClient(config).then(client => ..... );
 
 ### More Docs
 
-* [Create and run task workers](docs/workers.md)
-* [Create Workflows](docs/create.md)
-* [Search for entities](docs/search.md)
-* [Execute Workflows](docs/execute.md)
-* [About](docs/about.md)
+* [Create and run task workers](workers.md)
+* [Create Workflows](create.md)
+* [Search for entities](search.md)
+* [Execute Workflows](execute.md)
+* [About](about.md)
 

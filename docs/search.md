@@ -121,9 +121,9 @@ searchSchedule();
 
 ### More Docs
 
-* [Getting Started](docs/getting-started.md)
-* [Create and run task workers](docs/workers.md)
-* [Create Workflows](docs/create.md)
-* [Execute Workflows](docs/execute.md)
-* [About](docs/about.md)
+* [Getting Started](getting-started.md)
+* [Create and run task workers](workers.md)
+* [Create Workflows](create.md)
+* [Execute Workflows](execute.md)
+* [About](about.md)
 

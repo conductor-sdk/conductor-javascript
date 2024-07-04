@@ -39,9 +39,9 @@ who: @nicktomlin
 
 Typescript publication can be a wacky process and `tsup` simplifies a lot of this.
 
-* [Getting Started](docs/getting-started.md)
-* [Create and run task workers](docs/workers.md)
-* [Create Workflows](docs/create.md)
-* [Execute Workflows](docs/execute.md)
-* [Search for entities](docs/search.md)
+* [Getting Started](getting-started.md)
+* [Create and run task workers](workers.md)
+* [Create Workflows](create.md)
+* [Execute Workflows](execute.md)
+* [Search for entities](search.md)
 

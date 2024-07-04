@@ -87,9 +87,9 @@ export type Workflow = {
 
 ### More Docs
 
-* [Getting Started](docs/getting-started.md)
-* [Create and run task workers](docs/workers.md)
-* [Create Workflows](docs/create.md)
-* [Search for entities](docs/search.md)
-* [About](docs/about.md)
+* [Getting Started](getting-started.md)
+* [Create and run task workers](workers.md)
+* [Create Workflows](create.md)
+* [Search for entities](search.md)
+* [About](about.md)
 

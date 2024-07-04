@@ -46,9 +46,9 @@ See [execute](docs/execute.md) page to learn more about how to execute Workflows
 
 ### More Docs
 
-* [Getting Started](docs/getting-started.md)
-* [Create and run task workers](docs/workers.md)
-* [Execute Workflows](docs/execute.md)
-* [Search for entities](docs/search.md)
-* [About](docs/about.md)
+* [Getting Started](getting-started.md)
+* [Create and run task workers](workers.md)
+* [Execute Workflows](execute.md)
+* [Search for entities](search.md)
+* [About](about.md)
 
