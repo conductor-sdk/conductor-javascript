@@ -6,21 +6,21 @@ The `conductor-javascript` repository provides the client SDKs to build task wor
 
 Check out [Getting Started](docs/getting-started.md) to learn how to get started with the JS SDK.
 
-## Running Workers
+## Create Workflows, Tasks, and more.
 
-See [create and run task workers](docs/workers.md) to learn how to create and run task workers with the JS SDK.
+See [definitions](docs/definitions.md) to learn how to create workflows, tasks, and more with the JS SDK.
 
 ## Running Workflows
 
 Read the [execute](docs/execute.md) page to learn how to execute Workflows.
 
-## Search for Entities
+## Running Workers
 
-See [search for entities](docs/search.md) to learn how to search for entities in Conductor.
+See [create and run task workers](docs/workers.md) to learn how to create and run task workers with the JS SDK.
 
-## Create Workflows, Tasks, and more.
+## Search for Executions
 
-See [definitions](docs/definitions.md) to learn how to create workflows, tasks, and more with the JS SDK.
+See [search for executions](docs/search.md) to learn how to query the executions.
 
 ## About
 
