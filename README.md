@@ -4,7 +4,7 @@ The `conductor-javascript` repository provides the client SDKs to build task wor
 
 ## Getting Started
 
-Check out [Getting Started](docs/getting_started.md) to learn how to get started with the JS SDK.
+Check out [Getting Started](docs/getting-started.md) to learn how to get started with the JS SDK.
 
 ## Running Workers
 

@@ -37,4 +37,11 @@ I considered `mocha` and `ava` (which i've also used and like) but `jest` struck
 
 who: @nicktomlin
 
-Typescript publication can be a wacky process and `tsup` simplifies a lot of this. 
+Typescript publication can be a wacky process and `tsup` simplifies a lot of this.
+
+* [Getting Started](docs/getting-started.md)
+* [Create and run task workers](docs/workers.md)
+* [Create Workflows](docs/create.md)
+* [Execute Workflows](docs/execute.md)
+* [Search for entities](docs/search.md)
+
