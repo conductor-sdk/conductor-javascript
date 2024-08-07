@@ -153,10 +153,11 @@ export class HumanExecutor {
    */
   public async claimTaskAsExternalUser(
     taskId: string,
-    assignee: string
+    assignee: string,
+    options?:Record<string,boolean>
   ): Promise<HumanTaskEntry> {
     return tryCatchReThrow(() =>
-      this._client.humanTask.assignAndClaim(taskId, assignee)
+      this._client.humanTask.assignAndClaim(taskId, assignee,options?.overrideAssignment,options?.withTemplate)
     );
   }
 
