@@ -166,9 +166,10 @@ export class HumanExecutor {
    * @returns
    */
   public async claimTaskAsConductorUser(
-    taskId: string
+    taskId: string,
+    options?:Record<string,boolean>
   ): Promise<HumanTaskEntry> {
-    return tryCatchReThrow(() => this._client.humanTask.claimTask(taskId));
+    return tryCatchReThrow(() => this._client.humanTask.claimTask(taskId,options?.overrideAssignment,options?.withTemplate));
   }
 
   /**
