@@ -125,6 +125,7 @@ export class HumanTaskService {
   public claimTask(
     taskId: string,
     overrideAssignment: boolean = false,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
@@ -134,6 +135,7 @@ export class HumanTaskService {
       },
       query: {
         'overrideAssignment': overrideAssignment,
+        'withTemplate':withTemplate,
       },
     });
   }
@@ -150,6 +152,7 @@ export class HumanTaskService {
     taskId: string,
     userId: string,
     overrideAssignment: boolean = false,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'POST',
@@ -160,6 +163,7 @@ export class HumanTaskService {
       },
       query: {
         'overrideAssignment': overrideAssignment,
+        'withTemplate':withTemplate,
       },
     });
   }
