@@ -105,12 +105,14 @@ export class HumanTaskService {
    */
   public getTask1(
     taskId: string,
+    withTemplate: boolean = false,
   ): CancelablePromise<HumanTaskEntry> {
     return this.httpRequest.request({
       method: 'GET',
       url: '/human/tasks/{taskId}',
       path: {
         'taskId': taskId,
+        withTemplate
       },
     });
   }
