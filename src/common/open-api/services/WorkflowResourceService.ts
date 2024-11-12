@@ -11,6 +11,8 @@ import type { StartWorkflowRequest } from '../models/StartWorkflowRequest';
 import type { Workflow } from '../models/Workflow';
 import type { WorkflowRun } from '../models/WorkflowRun';
 import type { WorkflowStatus } from '../models/WorkflowStatus';
+import type { WorkflowTestRequest } from '../models/WorkflowTestRequest';
+
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
@@ -605,4 +607,20 @@ export class WorkflowResourceService {
     });
   }
 
+  /**
+   * Test workflow execution using mock data
+   * @param requestBody
+   * @returns Workflow OK
+   * @throws ApiError
+   */
+  public testWorkflow(
+    requestBody: WorkflowTestRequest
+  ): CancelablePromise<Workflow> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/api/workflow/test',
+      body: requestBody,
+      mediaType: 'application/json',
+    });
+  }
 }
