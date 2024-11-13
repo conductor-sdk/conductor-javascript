@@ -55,7 +55,7 @@ describe("TaskManager", () => {
     const executor = new WorkflowExecutor(client);
 
     const worker: ConductorWorker = {
-      taskDefName: "taskmanager-error-test",
+      taskDefName: "taskmanager-error-test2",
       execute: async () => {
         throw Error("This is a forced error");
       },
@@ -71,7 +71,7 @@ describe("TaskManager", () => {
     manager.startPolling();
 
     await executor.startWorkflow({
-      name: "TaskManagerTestE",
+      name: "TaskManagerTestE2",
       input: {},
       version: 1,
     });
