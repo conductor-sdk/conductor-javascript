@@ -618,7 +618,7 @@ export class WorkflowResourceService {
   ): CancelablePromise<Workflow> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/api/workflow/test',
+      url: '/workflow/test',
       body: requestBody,
       mediaType: 'application/json',
     });

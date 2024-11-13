@@ -1,7 +1,5 @@
-import {
-  ConductorClient,
-  TaskDef,
-} from "../common";
+import { ConductorClient, TaskDef } from "../common";
+import { WorkflowDef } from "../common/open-api";
 import { tryCatchReThrow } from "./helpers";
 
 export class MetadataClient {
@@ -44,6 +42,22 @@ export class MetadataClient {
   public updateTask(taskDef: TaskDef): Promise<void> {
     return tryCatchReThrow(() =>
       this._client.metadataResource.updateTaskDef(taskDef)
+    );
+  }
+
+  /**
+   * Creates or updates (overwrite: true) a workflow definition
+   *
+   * @param workflowDef
+   * @param overwrite
+   * @returns
+   */
+  public registerWorkflowDef(
+    workflowDef: WorkflowDef,
+    overwrite: boolean = false
+  ) {
+    return tryCatchReThrow(() =>
+      this._client.metadataResource.create(workflowDef, overwrite)
     );
   }
 }
