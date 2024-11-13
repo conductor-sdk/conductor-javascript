@@ -16,6 +16,7 @@ jobs:
         run: yarn install
       - name: Run the linter
         run: yarn lint
+
   unit-tests:
     runs-on: ubuntu-latest
     steps:
@@ -27,9 +28,16 @@ jobs:
           node-version: "18"
       - name: Install package
         run: yarn install
-      - name: Run Unit test
-        run: yarn test
+      - name: Run Tests
+        run: yarn test --ci --reporters=default --reporters=jest-junit
         env:
           KEY_ID: ${{ secrets.KEY_ID }}
           KEY_SECRET: ${{ secrets.KEY_SECRET }}
           SERVER_URL: ${{ secrets.SERVER_URL }}
+      - name: Publish Test Results
+        if: always() 
+        uses: dorny/test-reporter@v1
+        with:
+          name: Test report
+          path: reports/jest-*.xml
+          reporter: jest-junit
