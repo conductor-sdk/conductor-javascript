@@ -2,7 +2,7 @@ import { expect, describe, test } from "@jest/globals";
 import { dnsResolver } from "../DnsResolver";
 
 const sampleDomain = "orkes.io";
-const nonExistingDomain = "non-existing-domain.orkes.io";
+const nonExistingDomain = "non-existing-domain.orkesdemo.io";
 
 describe("dnsResolver", () => {
   test("should resolve dns", async () => {
