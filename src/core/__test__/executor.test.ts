@@ -1,17 +1,11 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { SetVariableTaskDef, TaskType, WorkflowDef } from "../../common";
-import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
+import { orkesConductorClient } from "../../orkes";
 import { WorkflowExecutor } from "../executor";
 import { v4 as uuidv4 } from "uuid";
 
-const playConfig: Partial<OrkesApiConfig> = {
-  keyId: `${process.env.KEY_ID}`,
-  keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}`,
-};
-
 describe("Executor", () => {
-  const clientPromise = orkesConductorClient(playConfig);
+  const clientPromise = orkesConductorClient({ useEnvVars: true });
 
   jest.setTimeout(15000);
   const name = `testWorkflow-${Date.now()}`;

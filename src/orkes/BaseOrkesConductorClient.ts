@@ -56,6 +56,18 @@ export const baseOrkesConductorClient = <
     config?: Partial<OrkesApiConfig>,
     requestHandler: ConductorHttpRequest = baseRequestHandler
   ): Promise<ConductorClient> => {
+    if (config?.useEnvVars) {
+      if (!process.env.CONDUCTOR_SERVER_URL) {
+        throw new Error(
+          "Environment variable CONDUCTOR_SERVER_URL is not defined."
+        );
+      }
+
+      config.serverUrl = process.env.CONDUCTOR_SERVER_URL;
+      config.keyId = process.env.CONDUCTOR_AUTH_KEY;
+      config.keySecret = process.env.CONDUCTOR_AUTH_SECRET;
+    }
+
     if (config?.keySecret != null && config?.keyId != null) {
       const {
         serverUrl,

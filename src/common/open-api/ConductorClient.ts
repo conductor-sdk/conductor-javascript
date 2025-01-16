@@ -14,8 +14,8 @@ import { WorkflowBulkResourceService } from "./services/WorkflowBulkResourceServ
 import { WorkflowResourceService } from "./services/WorkflowResourceService";
 import { request as baseRequest } from "./core/request";
 import { ConductorHttpRequest } from "../RequestCustomizer";
-import { HumanTaskService } from './services/HumanTaskService';
-import { HumanTaskResourceService } from './services/HumanTaskResourceService';
+import { HumanTaskService } from "./services/HumanTaskService";
+import { HumanTaskResourceService } from "./services/HumanTaskResourceService";
 
 export const defaultRequestHandler: ConductorHttpRequest = (
   request,
@@ -25,7 +25,22 @@ export const defaultRequestHandler: ConductorHttpRequest = (
 
 export interface ConductorClientAPIConfig extends Omit<OpenAPIConfig, "BASE"> {
   serverUrl: string;
+  useEnvVars: boolean;
 }
+
+const getServerBaseURL = (config?: Partial<ConductorClientAPIConfig>) => {
+  if (config?.useEnvVars) {
+    if(!process.env.CONDUCTOR_SERVER_URL) {
+      throw new Error(
+        "Environment variable CONDUCTOR_SERVER_URL is not defined."
+      );
+    }
+
+    return process.env.CONDUCTOR_SERVER_URL;
+  }
+
+  return config?.serverUrl ?? "http://localhost:8080";
+};
 
 export class ConductorClient {
   public readonly eventResource: EventResourceService;
@@ -48,7 +63,7 @@ export class ConductorClient {
     requestHandler: ConductorHttpRequest = defaultRequestHandler
   ) {
     const resolvedConfig = {
-      BASE: config?.serverUrl ?? "http://localhost:8080",
+      BASE: getServerBaseURL(config),
       VERSION: config?.VERSION ?? "0",
       WITH_CREDENTIALS: config?.WITH_CREDENTIALS ?? false,
       CREDENTIALS: config?.CREDENTIALS ?? "include",
