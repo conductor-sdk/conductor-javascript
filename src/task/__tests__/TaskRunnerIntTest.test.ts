@@ -1,16 +1,10 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { TaskRunner } from "../TaskRunner";
 import { WorkflowExecutor, simpleTask } from "../../core";
-import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
-
-const config: Partial<OrkesApiConfig> = {
-  keyId: `${process.env.KEY_ID}`,
-  keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}`,
-};
+import { orkesConductorClient } from "../../orkes";
 
 describe("TaskManager", () => {
-  const clientPromise = orkesConductorClient(config);
+  const clientPromise = orkesConductorClient({ useEnvVars: true });
 
   jest.setTimeout(15000);
   test("worker example ", async () => {

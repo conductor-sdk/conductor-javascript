@@ -1,17 +1,10 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { MetadataClient } from "../metadataClient";
 import { taskDefinition } from "../sdk";
-import { orkesConductorClient, OrkesApiConfig } from "../../orkes";
-
-const playConfig: Partial<OrkesApiConfig> = {
-  keyId: `${process.env.KEY_ID}`,
-  keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}`,
-  refreshTokenInterval: 0,
-};
+import { orkesConductorClient } from "../../orkes";
 
 describe("MetadataClient", () => {
-  const clientPromise = orkesConductorClient(playConfig);
+  const clientPromise = orkesConductorClient({ useEnvVars: true });
 
   jest.setTimeout(15000);
   test("Should register a task definition", async () => {

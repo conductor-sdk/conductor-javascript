@@ -1,18 +1,13 @@
 import { expect, describe, test, jest } from "@jest/globals";
 import { simpleTask, WorkflowExecutor } from "../../core";
-import { OrkesApiConfig, orkesConductorClient } from "../../orkes";
+import { orkesConductorClient } from "../../orkes";
 import { TaskManager, ConductorWorker } from "../index";
 import { mockLogger } from "./mockLogger";
 
-const playConfig: Partial<OrkesApiConfig> = {
-  keyId: `${process.env.KEY_ID}`,
-  keySecret: `${process.env.KEY_SECRET}`,
-  serverUrl: `${process.env.SERVER_URL}`,
-  refreshTokenInterval: 0,
-};
+
 const BASE_TIME = 500;
 describe("TaskManager", () => {
-  const clientPromise = orkesConductorClient(playConfig);
+  const clientPromise = orkesConductorClient({ useEnvVars: true, refreshTokenInterval: 0 });
 
   jest.setTimeout(15000);
   test("Should run workflow with worker", async () => {
@@ -314,6 +309,7 @@ describe("TaskManager", () => {
       `TaskWorker ${candidateWorkerUpdate} initialized with concurrency of ${initialCandidateWorkflowOptions.concurrency} and poll interval of ${initialCandidateWorkflowOptions.pollInterval}`
     );
     
+
     expect(mockLogger.info).toBeCalledWith(
       `TaskWorker ${candidateWorkerUpdate} configuration updated with concurrency of ${updatedWorkerOptions.concurrency} and poll interval of ${updatedWorkerOptions.pollInterval}`
     );
