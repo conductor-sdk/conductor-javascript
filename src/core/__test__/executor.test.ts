@@ -1,5 +1,11 @@
 import { expect, describe, test, jest } from "@jest/globals";
-import { SetVariableTaskDef, TaskType, WorkflowDef } from "../../common";
+import {
+  SetVariableTaskDef,
+  TaskType,
+  WorkflowConsistency,
+  WorkflowDef,
+  WorkflowSignalReturnStrategy
+} from "../../common";
 import { orkesConductorClient } from "../../orkes";
 import { WorkflowExecutor } from "../executor";
 import { v4 as uuidv4 } from "uuid";
@@ -72,6 +78,88 @@ describe("Executor", () => {
       uuidv4()
     );
     expect(workflowRun.status).toEqual("COMPLETED");
+  });
+
+  test("Should execute workflow with Durable consistency", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+
+    const workflowRun = await executor.executeWorkflow(
+        {
+          name: name,
+          version: version,
+        },
+        name,
+        version,
+        uuidv4(),
+        "", // waitUntilTaskRef
+        undefined, // waitForSeconds
+        WorkflowConsistency.DURABLE
+    );
+
+    expect(workflowRun.status).toEqual("COMPLETED");
+  });
+
+  test("Should execute workflow with Synchronous consistency", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+
+    const workflowRun = await executor.executeWorkflow(
+        {
+          name: name,
+          version: version,
+        },
+        name,
+        version,
+        uuidv4(),
+        "", // waitUntilTaskRef
+        undefined, // waitForSeconds
+        WorkflowConsistency.SYNCHRONOUS
+    );
+
+    expect(workflowRun.status).toEqual("COMPLETED");
+  });
+
+  test("Should execute workflow with Return Strategy - TARGET_WORKFLOW", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+
+    const workflowRun = await executor.executeWorkflowWithTargetWorkflow(
+        {
+          name: name,
+          version: version,
+        },
+        name,
+        version,
+        uuidv4(),
+        "", // waitUntilTaskRef
+        undefined, // waitForSeconds
+        WorkflowConsistency.SYNCHRONOUS
+    );
+
+    expect(workflowRun.status).toEqual("COMPLETED");
+    expect(workflowRun.responseType).toEqual(WorkflowSignalReturnStrategy.TARGET_WORKFLOW);
+  });
+
+  test("Should execute workflow with Return Strategy - BLOCKING_WORKFLOW", async () => {
+    const client = await clientPromise;
+    const executor = new WorkflowExecutor(client);
+
+    const workflowRun = await executor.executeWorkflowWithBlockingWorkflow(
+        {
+          name: name,
+          version: version,
+        },
+        name,
+        version,
+        uuidv4(),
+        "", // waitUntilTaskRef
+        undefined, // waitForSeconds
+        WorkflowConsistency.SYNCHRONOUS
+    );
+
+    expect(workflowRun.status).toEqual("COMPLETED");
+    expect(workflowRun.responseType).toEqual(WorkflowSignalReturnStrategy.BLOCKING_WORKFLOW);
   });
 
   test("Should be able to get workflow execution status ", async () => {

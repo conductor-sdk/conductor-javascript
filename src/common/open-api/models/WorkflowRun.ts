@@ -3,18 +3,14 @@
 /* eslint-disable */
 
 import { Task } from './Task';
+import {SignalResponse} from "./SignalResponse";
 
-export type WorkflowRun = {
-  correlationId?: string;
-  createTime?: number;
-  createdBy?: string;
+export interface WorkflowRun extends SignalResponse {
   priority?: number;
-  requestId?: string;
-  status?: string;
+  variables?: Record<string, any>;
   tasks?: Array<Task>;
+  createdBy?: string;
+  createTime?: number;
+  status?: string;
   updateTime?: number;
-  workflowId?: string;
-  variables?: Record<string, object>;
-  input?: Record<string, object>;
-  output?: Record<string, object>;
 }

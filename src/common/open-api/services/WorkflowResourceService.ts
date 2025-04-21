@@ -16,6 +16,8 @@ import type { WorkflowTestRequest } from '../models/WorkflowTestRequest';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
+import {TaskRun} from "../models/TaskRun";
+import {WorkflowSignalReturnStrategy} from "../../types";
 
 export class WorkflowResourceService {
 
@@ -52,22 +54,27 @@ export class WorkflowResourceService {
 
   /**
    * Execute a workflow synchronously
-   * @param body 
-   * @param name 
-   * @param version 
-   * @param requestId 
-   * @param waitUntilTaskRef 
-   * @param callback 
-   * @returns workflowRun
+   * @param body
+   * @param name
+   * @param version
+   * @param requestId
+   * @param waitUntilTaskRef
+   * @param waitForSeconds - Optional, defaults to 10
+   * @param consistency - Optional, defaults to "DURABLE"
+   * @param returnStrategy - Optional, defaults to "TARGET_WORKFLOW"
+   * @returns SignalResponse - The type depends on returnStrategy
    * @throws ApiError
    */
   public executeWorkflow(
-    body: StartWorkflowRequest,
-    name: string,
-    version: number,
-    requestId: string,
-    waitUntilTaskRef: string,
-  ): CancelablePromise<WorkflowRun> {
+      body: StartWorkflowRequest,
+      name: string,
+      version: number,
+      requestId?: string,
+      waitUntilTaskRef?: string,
+      waitForSeconds?: number,
+      consistency?: string,
+      returnStrategy?: string,
+  ): CancelablePromise<WorkflowRun | TaskRun> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/workflow/execute/{name}/{version}',
@@ -78,10 +85,145 @@ export class WorkflowResourceService {
       query: {
         'requestId': requestId,
         'waitUntilTaskRef': waitUntilTaskRef,
+        'waitForSeconds': waitForSeconds,
+        'consistency': consistency,
+        'returnStrategy': returnStrategy,
       },
       body: body,
       mediaType: 'application/json',
     });
+  }
+
+  /**
+   * Execute a workflow and return the target workflow
+   * @param body
+   * @param name
+   * @param version
+   * @param requestId
+   * @param waitUntilTaskRef
+   * @param waitForSeconds - Optional, defaults to 10
+   * @param consistency - Optional, defaults to "DURABLE"
+   * @returns WorkflowRun
+   * @throws ApiError
+   */
+  public executeWorkflowWithTargetWorkflow(
+      body: StartWorkflowRequest,
+      name: string,
+      version: number,
+      requestId?: string,
+      waitUntilTaskRef?: string,
+      waitForSeconds?: number,
+      consistency?: string,
+  ): CancelablePromise<WorkflowRun> {
+    return this.executeWorkflow(
+        body,
+        name,
+        version,
+        requestId,
+        waitUntilTaskRef,
+        waitForSeconds,
+        consistency,
+        WorkflowSignalReturnStrategy.TARGET_WORKFLOW
+    ) as CancelablePromise<WorkflowRun>;
+  }
+
+  /**
+   * Execute a workflow and return the blocking workflow
+   * @param body
+   * @param name
+   * @param version
+   * @param requestId
+   * @param waitUntilTaskRef
+   * @param waitForSeconds - Optional, defaults to 10
+   * @param consistency - Optional, defaults to "DURABLE"
+   * @returns WorkflowRun
+   * @throws ApiError
+   */
+  public executeWorkflowWithBlockingWorkflow(
+      body: StartWorkflowRequest,
+      name: string,
+      version: number,
+      requestId?: string,
+      waitUntilTaskRef?: string,
+      waitForSeconds?: number,
+      consistency?: string,
+  ): CancelablePromise<WorkflowRun> {
+    return this.executeWorkflow(
+        body,
+        name,
+        version,
+        requestId,
+        waitUntilTaskRef,
+        waitForSeconds,
+        consistency,
+        WorkflowSignalReturnStrategy.BLOCKING_WORKFLOW
+    ) as CancelablePromise<WorkflowRun>;
+  }
+
+  /**
+   * Execute a workflow and return the blocking task
+   * @param body
+   * @param name
+   * @param version
+   * @param requestId
+   * @param waitUntilTaskRef
+   * @param waitForSeconds - Optional, defaults to 10
+   * @param consistency - Optional, defaults to "DURABLE"
+   * @returns TaskRun
+   * @throws ApiError
+   */
+  public executeWorkflowWithBlockingTask(
+      body: StartWorkflowRequest,
+      name: string,
+      version: number,
+      requestId?: string,
+      waitUntilTaskRef?: string,
+      waitForSeconds?: number,
+      consistency?: string,
+  ): CancelablePromise<TaskRun> {
+    return this.executeWorkflow(
+        body,
+        name,
+        version,
+        requestId,
+        waitUntilTaskRef,
+        waitForSeconds,
+        consistency,
+        WorkflowSignalReturnStrategy.BLOCKING_TASK
+    ) as CancelablePromise<TaskRun>;
+  }
+
+  /**
+   * Execute a workflow and return the blocking task input
+   * @param body
+   * @param name
+   * @param version
+   * @param requestId
+   * @param waitUntilTaskRef
+   * @param waitForSeconds - Optional, defaults to 10
+   * @param consistency - Optional, defaults to "DURABLE"
+   * @returns TaskRun
+   * @throws ApiError
+   */
+  public executeWorkflowWithBlockingTaskInput(
+      body: StartWorkflowRequest,
+      name: string,
+      version: number,
+      requestId?: string,
+      waitUntilTaskRef?: string,
+      waitForSeconds?: number,
+      consistency?: string,
+  ): CancelablePromise<TaskRun> {
+    return this.executeWorkflow(
+        body,
+        name,
+        version,
+        requestId,
+        waitUntilTaskRef,
+        waitForSeconds,
+        consistency,
+        WorkflowSignalReturnStrategy.BLOCKING_TASK_INPUT
+    ) as CancelablePromise<TaskRun>;
   }
 
   /**

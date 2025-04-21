@@ -5,6 +5,19 @@ export interface CommonTaskDef {
   taskReferenceName: string;
 }
 
+export enum WorkflowConsistency {
+  SYNCHRONOUS = 'SYNCHRONOUS',
+  DURABLE = 'DURABLE',
+  REGION_DURABLE = 'REGION_DURABLE'
+}
+
+export enum WorkflowSignalReturnStrategy {
+  TARGET_WORKFLOW = 'TARGET_WORKFLOW',
+  BLOCKING_WORKFLOW = 'BLOCKING_WORKFLOW',
+  BLOCKING_TASK = 'BLOCKING_TASK',
+  BLOCKING_TASK_INPUT = 'BLOCKING_TASK_INPUT'
+}
+
 export enum TaskType {
   START = "START",
   SIMPLE = "SIMPLE",
