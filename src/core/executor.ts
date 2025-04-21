@@ -12,6 +12,7 @@ import {
 import {TaskResultStatus} from "./types";
 import {errorMapper, reverseFind, tryCatchReThrow} from "./helpers";
 import {TaskRun} from "../common/open-api/models/TaskRun";
+import {TaskResultStatusEnum} from "../../conductor-typescript-sdk";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
 
@@ -534,4 +535,116 @@ export class WorkflowExecutor {
     public getTask(taskId: string): Promise<Task> {
         return tryCatchReThrow(() => this._client.taskResource.getTask(taskId));
     }
+
+    /**
+     * Updates a task by reference name synchronously and returns the complete workflow
+     * @param taskReferenceName
+     * @param workflowInstanceId
+     * @param status
+     * @param taskOutput
+     * @param workerId - Optional
+     * @returns Promise<Workflow>
+     */
+    public updateTaskSync(
+        taskReferenceName: string,
+        workflowInstanceId: string,
+        status: TaskResultStatusEnum,
+        taskOutput: Record<string, any>,
+        workerId?: string
+    ): Promise<Workflow> {
+        return tryCatchReThrow(() =>
+            this._client.taskResource.updateTaskSync(
+                workflowInstanceId,
+                taskReferenceName,
+                status,
+                taskOutput,
+                workerId
+            )
+        );
+    }
+
+    /**
+     * Signals a workflow task and returns the target workflow
+     * @param workflowInstanceId
+     * @param status
+     * @param taskOutput
+     * @returns Promise<WorkflowRun>
+     */
+    public signalWorkflowAndReturnTargetWorkflow(
+        workflowInstanceId: string,
+        status: TaskResultStatusEnum,
+        taskOutput: Record<string, any>
+    ): Promise<WorkflowRun> {
+        return tryCatchReThrow(() =>
+            this._client.taskResource.signalWorkflowAndReturnTargetWorkflow(
+                workflowInstanceId,
+                status,
+                taskOutput
+            )
+        );
+    }
+
+    /**
+     * Signals a workflow task and returns the blocking workflow
+     * @param workflowInstanceId
+     * @param status
+     * @param taskOutput
+     * @returns Promise<WorkflowRun>
+     */
+    public signalWorkflowAndReturnBlockingWorkflow(
+        workflowInstanceId: string,
+        status: TaskResultStatusEnum,
+        taskOutput: Record<string, any>
+    ): Promise<WorkflowRun> {
+        return tryCatchReThrow(() =>
+            this._client.taskResource.signalWorkflowAndReturnBlockingWorkflow(
+                workflowInstanceId,
+                status,
+                taskOutput
+            )
+        );
+    }
+
+    /**
+     * Signals a workflow task and returns the blocking task
+     * @param workflowInstanceId
+     * @param status
+     * @param taskOutput
+     * @returns Promise<TaskRun>
+     */
+    public signalWorkflowAndReturnBlockingTask(
+        workflowInstanceId: string,
+        status: TaskResultStatusEnum,
+        taskOutput: Record<string, any>
+    ): Promise<TaskRun> {
+        return tryCatchReThrow(() =>
+            this._client.taskResource.signalWorkflowAndReturnBlockingTask(
+                workflowInstanceId,
+                status,
+                taskOutput
+            )
+        );
+    }
+
+    /**
+     * Signals a workflow task and returns the blocking task input
+     * @param workflowInstanceId
+     * @param status
+     * @param taskOutput
+     * @returns Promise<TaskRun>
+     */
+    public signalWorkflowAndReturnBlockingTaskInput(
+        workflowInstanceId: string,
+        status: TaskResultStatusEnum,
+        taskOutput: Record<string, any>
+    ): Promise<TaskRun> {
+        return tryCatchReThrow(() =>
+            this._client.taskResource.signalWorkflowAndReturnBlockingTaskInput(
+                workflowInstanceId,
+                status,
+                taskOutput
+            )
+        );
+    }
+
 }

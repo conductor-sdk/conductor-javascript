@@ -11,6 +11,13 @@ import type { TaskResult } from '../models/TaskResult';
 
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
+import {Workflow} from "../models/Workflow";
+import {TaskResultStatus} from "../../../core";
+import {TaskResultStatusEnum} from "../../../../conductor-typescript-sdk";
+import {WorkflowSignalReturnStrategy} from "../../types";
+import {SignalResponse} from "../models/SignalResponse";
+import {WorkflowRun} from "../models/WorkflowRun";
+import {TaskRun} from "../models/TaskRun";
 
 export class TaskResourceService {
 
@@ -350,6 +357,153 @@ export class TaskResourceService {
         'operation': operation,
         'payloadType': payloadType,
       },
+    });
+  }
+
+  /**
+   * Update a task By Ref Name synchronously. The output data is merged if data from a previous API call already exists.
+   * @param workflowId
+   * @param taskRefName
+   * @param status
+   * @param output
+   * @param workerId - Optional
+   * @returns Workflow
+   * @throws ApiError
+   */
+  public updateTaskSync(
+      workflowId: string,
+      taskRefName: string,
+      status:TaskResultStatusEnum,
+      output: Record<string, any>,
+      workerId?: string,
+  ): CancelablePromise<Workflow> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/tasks/{workflowId}/{taskRefName}/{status}/sync',
+      path: {
+        'workflowId': workflowId,
+        'taskRefName': taskRefName,
+        'status': status,
+      },
+      query: {
+        'workerid': workerId,
+      },
+      body: output,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Update running task in the workflow with given status and output synchronously and return back target workflow
+   * @param workflowId
+   * @param status
+   * @param output
+   * @param returnStrategy - Optional, defaults to TARGET_WORKFLOW
+   * @returns TargetWorkflow
+   * @throws ApiError
+   */
+  public signalWorkflowAndReturnTargetWorkflow(
+      workflowId: string,
+      status: TaskResultStatusEnum,
+      output: Record<string, any>,
+      returnStrategy: WorkflowSignalReturnStrategy = WorkflowSignalReturnStrategy.TARGET_WORKFLOW,
+  ): CancelablePromise<WorkflowRun> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/tasks/{workflowId}/{status}/signal/sync',
+      path: {
+        'workflowId': workflowId,
+        'status': status,
+      },
+      query: {
+        'returnStrategy': returnStrategy,
+      },
+      body: output,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Update running task in the workflow with given status and output synchronously and return back blocking workflow
+   * @param workflowId
+   * @param status
+   * @param output
+   * @returns BlockingWorkflow
+   * @throws ApiError
+   */
+  public signalWorkflowAndReturnBlockingWorkflow(
+      workflowId: string,
+      status: TaskResultStatusEnum,
+      output: Record<string, any>,
+  ): CancelablePromise<WorkflowRun> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/tasks/{workflowId}/{status}/signal/sync',
+      path: {
+        'workflowId': workflowId,
+        'status': status,
+      },
+      query: {
+        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_WORKFLOW,
+      },
+      body: output,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Update running task in the workflow with given status and output synchronously and return back blocking task
+   * @param workflowId
+   * @param status
+   * @param output
+   * @returns BlockingTask
+   * @throws ApiError
+   */
+  public signalWorkflowAndReturnBlockingTask(
+      workflowId: string,
+      status: TaskResultStatusEnum,
+      output: Record<string, any>,
+  ): CancelablePromise<TaskRun> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/tasks/{workflowId}/{status}/signal/sync',
+      path: {
+        'workflowId': workflowId,
+        'status': status,
+      },
+      query: {
+        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_TASK,
+      },
+      body: output,
+      mediaType: 'application/json',
+    });
+  }
+
+  /**
+   * Update running task in the workflow with given status and output synchronously and return back blocking task input
+   * @param workflowId
+   * @param status
+   * @param output
+   * @returns BlockingTaskInput
+   * @throws ApiError
+   */
+  public signalWorkflowAndReturnBlockingTaskInput(
+      workflowId: string,
+      status: TaskResultStatusEnum,
+      output: Record<string, any>,
+  ): CancelablePromise<TaskRun> {
+    return this.httpRequest.request({
+      method: 'POST',
+      url: '/tasks/{workflowId}/{status}/signal/sync',
+      path: {
+        'workflowId': workflowId,
+        'status': status,
+      },
+      query: {
+        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_TASK_INPUT,
+      },
+      body: output,
+      mediaType: 'application/json',
     });
   }
 
