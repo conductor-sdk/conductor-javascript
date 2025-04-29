@@ -13,11 +13,11 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 import {Workflow} from "../models/Workflow";
 import {TaskResultStatus} from "../../../core";
-import {TaskResultStatusEnum} from "../../../../conductor-typescript-sdk";
 import {WorkflowSignalReturnStrategy} from "../../types";
 import {SignalResponse} from "../models/SignalResponse";
 import {WorkflowRun} from "../models/WorkflowRun";
 import {TaskRun} from "../models/TaskRun";
+import {TaskResultStatusEnum} from "../models/TaskResultStatusEnum";
 
 export class TaskResourceService {
 

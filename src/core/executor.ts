@@ -12,7 +12,7 @@ import {
 import {TaskResultStatus} from "./types";
 import {errorMapper, reverseFind, tryCatchReThrow} from "./helpers";
 import {TaskRun} from "../common/open-api/models/TaskRun";
-import {TaskResultStatusEnum} from "../../conductor-typescript-sdk";
+import {TaskResultStatusEnum} from "../common/open-api/models/TaskResultStatusEnum";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
 

@@ -11,7 +11,7 @@ import {
 import {orkesConductorClient} from "../../orkes";
 import {WorkflowExecutor} from "../executor";
 import {v4 as uuidv4} from "uuid";
-import {TaskResultStatusEnum} from "../../../conductor-typescript-sdk";
+import {TaskResultStatusEnum} from "../../common/open-api/models/TaskResultStatusEnum";
 
 describe("Executor", () => {
   const clientPromise = orkesConductorClient({ useEnvVars: true });
