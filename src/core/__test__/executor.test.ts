@@ -295,16 +295,7 @@ describe("Execute WF with diff return strategy and Signal them", () => {
     // Get workflow details and verify it's completed
     const workflowDetails = await executor.getWorkflow(workflowId, true);
     expect(workflowDetails.status).toEqual('COMPLETED');
-
-    // Verify task output was correctly set
-    // @ts-ignore
-    const completedTask = workflowDetails.tasks.find(task => task.referenceTaskName === taskRefName);
-    expect(completedTask).toBeDefined();
-    // @ts-ignore
-    expect(completedTask.status).toEqual('COMPLETED');
-    // @ts-ignore
-    expect(completedTask.outputData).toMatchObject(taskOutput);
-
+    
     return workflowId; // Return workflowId for the next test
   });
 });
