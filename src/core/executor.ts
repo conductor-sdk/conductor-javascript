@@ -13,6 +13,7 @@ import {TaskResultStatus} from "./types";
 import {errorMapper, reverseFind, tryCatchReThrow} from "./helpers";
 import {TaskRun} from "../common/open-api/models/TaskRun";
 import {TaskResultStatusEnum} from "../common/open-api/models/TaskResultStatusEnum";
+import {SignalResponse} from "../common/open-api/models/SignalResponse";
 
 const RETRY_TIME_IN_MILLISECONDS = 10000;
 
@@ -564,82 +565,43 @@ export class WorkflowExecutor {
     }
 
     /**
-     * Signals a workflow task and returns the target workflow
-     * @param workflowInstanceId
-     * @param status
-     * @param taskOutput
-     * @returns Promise<WorkflowRun>
+     * Signals a workflow task and returns data based on the specified return strategy
+     * @param workflowInstanceId - Workflow instance ID to signal
+     * @param status - Task status to set
+     * @param taskOutput - Output data for the task
+     * @param returnStrategy - Optional strategy for what data to return (defaults to TARGET_WORKFLOW)
+     * @returns Promise<SignalResponse> with data based on the return strategy
      */
-    public signalWorkflowAndReturnTargetWorkflow(
+    public signal(
         workflowInstanceId: string,
         status: TaskResultStatusEnum,
-        taskOutput: Record<string, any>
-    ): Promise<WorkflowRun> {
+        taskOutput: Record<string, any>,
+        returnStrategy: WorkflowSignalReturnStrategy = WorkflowSignalReturnStrategy.TARGET_WORKFLOW
+    ): Promise<SignalResponse> {
         return tryCatchReThrow(() =>
-            this._client.taskResource.signalWorkflowAndReturnTargetWorkflow(
+            this._client.taskResource.signal(
                 workflowInstanceId,
                 status,
-                taskOutput
+                taskOutput,
+                returnStrategy
             )
         );
     }
 
     /**
-     * Signals a workflow task and returns the blocking workflow
-     * @param workflowInstanceId
-     * @param status
-     * @param taskOutput
-     * @returns Promise<WorkflowRun>
+     * Signals a workflow task asynchronously (fire-and-forget)
+     * @param workflowInstanceId - Workflow instance ID to signal
+     * @param status - Task status to set
+     * @param taskOutput - Output data for the task
+     * @returns Promise<void>
      */
-    public signalWorkflowAndReturnBlockingWorkflow(
+    public signalAsync(
         workflowInstanceId: string,
         status: TaskResultStatusEnum,
         taskOutput: Record<string, any>
-    ): Promise<WorkflowRun> {
+    ): Promise<void> {
         return tryCatchReThrow(() =>
-            this._client.taskResource.signalWorkflowAndReturnBlockingWorkflow(
-                workflowInstanceId,
-                status,
-                taskOutput
-            )
-        );
-    }
-
-    /**
-     * Signals a workflow task and returns the blocking task
-     * @param workflowInstanceId
-     * @param status
-     * @param taskOutput
-     * @returns Promise<TaskRun>
-     */
-    public signalWorkflowAndReturnBlockingTask(
-        workflowInstanceId: string,
-        status: TaskResultStatusEnum,
-        taskOutput: Record<string, any>
-    ): Promise<TaskRun> {
-        return tryCatchReThrow(() =>
-            this._client.taskResource.signalWorkflowAndReturnBlockingTask(
-                workflowInstanceId,
-                status,
-                taskOutput
-            )
-        );
-    }
-
-    /**
-     * Signals a workflow task and returns the blocking task input
-     * @param workflowInstanceId
-     * @param status
-     * @param taskOutput
-     * @returns Promise<TaskRun>
-     */
-    public signalWorkflowAndReturnBlockingTaskInput(
-        workflowInstanceId: string,
-        status: TaskResultStatusEnum,
-        taskOutput: Record<string, any>
-    ): Promise<TaskRun> {
-        return tryCatchReThrow(() =>
-            this._client.taskResource.signalWorkflowAndReturnBlockingTaskInput(
+            this._client.taskResource.signalAsync(
                 workflowInstanceId,
                 status,
                 taskOutput

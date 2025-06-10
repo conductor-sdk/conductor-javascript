@@ -283,10 +283,11 @@ describe("Execute WF with diff return strategy and Signal them", () => {
     expect(firstTask.status).toEqual('IN_PROGRESS');
 
     const taskOutput = { result: "success", additionalData: "test data" };
-    const signalResult = await executor.signalWorkflowAndReturnTargetWorkflow(
+    const signalResult = await executor.signal(
         workflowId,
         TaskResultStatusEnum.COMPLETED,
-        taskOutput
+        taskOutput,
+        WorkflowSignalReturnStrategy.TARGET_WORKFLOW
     );
 
     expect(signalResult).not.toBeNull();
@@ -295,7 +296,7 @@ describe("Execute WF with diff return strategy and Signal them", () => {
     // Get workflow details and verify it's completed
     const workflowDetails = await executor.getWorkflow(workflowId, true);
     expect(workflowDetails.status).toEqual('COMPLETED');
-    
+
     return workflowId; // Return workflowId for the next test
   });
 });

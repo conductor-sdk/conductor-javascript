@@ -394,20 +394,20 @@ export class TaskResourceService {
   }
 
   /**
-   * Update running task in the workflow with given status and output synchronously and return back target workflow
-   * @param workflowId
-   * @param status
-   * @param output
-   * @param returnStrategy - Optional, defaults to TARGET_WORKFLOW
-   * @returns TargetWorkflow
+   * Signals a task in a workflow synchronously and returns data based on the specified return strategy
+   * @param workflowId - Workflow ID of the workflow to be signaled
+   * @param status - Signal status to be set for the workflow
+   * @param output - Output for the task
+   * @param returnStrategy - Optional strategy for what data to return (defaults to TARGET_WORKFLOW)
+   * @returns SignalResponse with data based on the return strategy
    * @throws ApiError
    */
-  public signalWorkflowAndReturnTargetWorkflow(
+  public signal(
       workflowId: string,
       status: TaskResultStatusEnum,
       output: Record<string, any>,
       returnStrategy: WorkflowSignalReturnStrategy = WorkflowSignalReturnStrategy.TARGET_WORKFLOW,
-  ): CancelablePromise<WorkflowRun> {
+  ): CancelablePromise<SignalResponse> {
     return this.httpRequest.request({
       method: 'POST',
       url: '/tasks/{workflowId}/{status}/signal/sync',
@@ -424,83 +424,24 @@ export class TaskResourceService {
   }
 
   /**
-   * Update running task in the workflow with given status and output synchronously and return back blocking workflow
-   * @param workflowId
-   * @param status
-   * @param output
-   * @returns BlockingWorkflow
+   * Signals a task in a workflow asynchronously (fire-and-forget)
+   * @param workflowId - Workflow ID of the workflow to be signaled
+   * @param status - Signal status to be set for the workflow
+   * @param output - Output for the task
+   * @returns Promise<void>
    * @throws ApiError
    */
-  public signalWorkflowAndReturnBlockingWorkflow(
+  public signalAsync(
       workflowId: string,
       status: TaskResultStatusEnum,
       output: Record<string, any>,
-  ): CancelablePromise<WorkflowRun> {
+  ): CancelablePromise<void> {
     return this.httpRequest.request({
       method: 'POST',
-      url: '/tasks/{workflowId}/{status}/signal/sync',
+      url: '/tasks/{workflowId}/{status}/signal',
       path: {
         'workflowId': workflowId,
         'status': status,
-      },
-      query: {
-        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_WORKFLOW,
-      },
-      body: output,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Update running task in the workflow with given status and output synchronously and return back blocking task
-   * @param workflowId
-   * @param status
-   * @param output
-   * @returns BlockingTask
-   * @throws ApiError
-   */
-  public signalWorkflowAndReturnBlockingTask(
-      workflowId: string,
-      status: TaskResultStatusEnum,
-      output: Record<string, any>,
-  ): CancelablePromise<TaskRun> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/tasks/{workflowId}/{status}/signal/sync',
-      path: {
-        'workflowId': workflowId,
-        'status': status,
-      },
-      query: {
-        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_TASK,
-      },
-      body: output,
-      mediaType: 'application/json',
-    });
-  }
-
-  /**
-   * Update running task in the workflow with given status and output synchronously and return back blocking task input
-   * @param workflowId
-   * @param status
-   * @param output
-   * @returns BlockingTaskInput
-   * @throws ApiError
-   */
-  public signalWorkflowAndReturnBlockingTaskInput(
-      workflowId: string,
-      status: TaskResultStatusEnum,
-      output: Record<string, any>,
-  ): CancelablePromise<TaskRun> {
-    return this.httpRequest.request({
-      method: 'POST',
-      url: '/tasks/{workflowId}/{status}/signal/sync',
-      path: {
-        'workflowId': workflowId,
-        'status': status,
-      },
-      query: {
-        'returnStrategy': WorkflowSignalReturnStrategy.BLOCKING_TASK_INPUT,
       },
       body: output,
       mediaType: 'application/json',
