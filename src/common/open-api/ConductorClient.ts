@@ -16,6 +16,7 @@ import { request as baseRequest } from "./core/request";
 import { ConductorHttpRequest } from "../RequestCustomizer";
 import { HumanTaskService } from "./services/HumanTaskService";
 import { HumanTaskResourceService } from "./services/HumanTaskResourceService";
+import {ServiceRegistryResourceService} from "./services/ServiceRegistryResourceService";
 
 export const defaultRequestHandler: ConductorHttpRequest = (
   request,
@@ -51,6 +52,7 @@ export class ConductorClient {
   public readonly tokenResource: TokenResourceService;
   public readonly workflowBulkResource: WorkflowBulkResourceService;
   public readonly workflowResource: WorkflowResourceService;
+  public readonly serviceRegistryResource: ServiceRegistryResourceService;
 
   public readonly humanTask: HumanTaskService;
   public readonly humanTaskResource: HumanTaskResourceService;
@@ -100,6 +102,7 @@ export class ConductorClient {
     this.tokenResource = new TokenResourceService(this.request);
     this.workflowBulkResource = new WorkflowBulkResourceService(this.request);
     this.workflowResource = new WorkflowResourceService(this.request);
+    this.serviceRegistryResource = new ServiceRegistryResourceService(this.request);
     this.humanTask = new HumanTaskService(this.request);
     this.humanTaskResource = new HumanTaskResourceService(this.request);
   }
