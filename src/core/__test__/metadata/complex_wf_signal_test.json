@@ -9,7 +9,7 @@
       "name": "http",
       "taskReferenceName": "http_ref",
       "inputParameters": {
-        "uri": "http://localhost:8081/api/hello?name=test1",
+        "uri": "http://httpbin:8081/api/hello?name=test1",
         "method": "GET",
         "accept": "application/json",
         "contentType": "application/json",
