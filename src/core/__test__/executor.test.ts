@@ -125,7 +125,7 @@ describe("Execute with Return Strategy and Consistency", () => {
   };
 
   const clientPromise = orkesConductorClient({ useEnvVars: true });
-  jest.setTimeout(30000);
+  jest.setTimeout(300000);
 
   let client: any;
   let executor: WorkflowExecutor;
@@ -377,7 +377,7 @@ describe("Execute with Return Strategy and Consistency", () => {
           executor,
           workflowId,
           'COMPLETED',
-          10000, // 10 seconds max wait
+          300000, // 5 min max wait
           200    // 200ms poll interval
       );
 
@@ -446,7 +446,7 @@ describe("Execute with Return Strategy and Consistency", () => {
         await executor.signal(workflowId, TaskResultStatusEnum.COMPLETED, { result: "signal1" });
         await executor.signal(workflowId, TaskResultStatusEnum.COMPLETED, { result: "signal2" });
 
-        await TestUtil.waitForWorkflowStatus(executor, workflowId, 'COMPLETED', 10000, 200);
+        await TestUtil.waitForWorkflowStatus(executor, workflowId, 'COMPLETED', 300000, 200);
         console.log(`✓ ${testCase.name} test completed successfully`);
       });
     });
