@@ -1,4 +1,4 @@
-import {ConductorClient, Consistency, WorkflowDef, ReturnStrategy} from "../common";
+import {ConductorClient, Consistency, ReturnStrategy, WorkflowDef} from "../common";
 import {
     RerunWorkflowRequest,
     ScrollableSearchResultWorkflowSummary,
@@ -11,7 +11,6 @@ import {
 } from "../common/open-api";
 import {TaskResultStatus} from "./types";
 import {errorMapper, reverseFind, tryCatchReThrow} from "./helpers";
-import {TaskRun} from "../common/open-api/models/TaskRun";
 import {TaskResultStatusEnum} from "../common/open-api/models/TaskResultStatusEnum";
 import {SignalResponse} from "../common/open-api/models/SignalResponse";
 
@@ -104,138 +103,6 @@ export class WorkflowExecutor {
                 waitForSeconds,
                 consistency,
                 returnStrategy
-            )
-        );
-    }
-
-    /**
-     * Execute a workflow and return the target workflow
-     * @param workflowRequest
-     * @param name
-     * @param version
-     * @param requestId
-     * @param waitUntilTaskRef
-     * @param waitForSeconds
-     * @param consistency
-     * @returns
-     */
-    public executeWorkflowWithTargetWorkflow(
-        workflowRequest: StartWorkflowRequest,
-        name: string,
-        version: number,
-        requestId?: string,
-        waitUntilTaskRef: string = "",
-        waitForSeconds?: number,
-        consistency?: Consistency
-    ): Promise<WorkflowRun> {
-        return tryCatchReThrow(() =>
-            this._client.workflowResource.executeWorkflowWithTargetWorkflow(
-                workflowRequest,
-                name,
-                version,
-                requestId,
-                waitUntilTaskRef,
-                waitForSeconds,
-                consistency
-            )
-        );
-    }
-
-    /**
-     * Execute a workflow and return the blocking workflow
-     * @param workflowRequest
-     * @param name
-     * @param version
-     * @param requestId
-     * @param waitUntilTaskRef
-     * @param waitForSeconds
-     * @param consistency
-     * @returns
-     */
-    public executeWorkflowWithBlockingWorkflow(
-        workflowRequest: StartWorkflowRequest,
-        name: string,
-        version: number,
-        requestId?: string,
-        waitUntilTaskRef: string = "",
-        waitForSeconds?: number,
-        consistency?: Consistency
-    ): Promise<WorkflowRun> {
-        return tryCatchReThrow(() =>
-            this._client.workflowResource.executeWorkflowWithBlockingWorkflow(
-                workflowRequest,
-                name,
-                version,
-                requestId,
-                waitUntilTaskRef,
-                waitForSeconds,
-                consistency
-            )
-        );
-    }
-
-    /**
-     * Execute a workflow and return the blocking task
-     * @param workflowRequest
-     * @param name
-     * @param version
-     * @param requestId
-     * @param waitUntilTaskRef
-     * @param waitForSeconds
-     * @param consistency
-     * @returns
-     */
-    public executeWorkflowWithBlockingTask(
-        workflowRequest: StartWorkflowRequest,
-        name: string,
-        version: number,
-        requestId?: string,
-        waitUntilTaskRef: string = "",
-        waitForSeconds?: number,
-        consistency?: Consistency
-    ): Promise<TaskRun> {
-        return tryCatchReThrow(() =>
-            this._client.workflowResource.executeWorkflowWithBlockingTask(
-                workflowRequest,
-                name,
-                version,
-                requestId,
-                waitUntilTaskRef,
-                waitForSeconds,
-                consistency
-            )
-        );
-    }
-
-    /**
-     * Execute a workflow and return the blocking task input
-     * @param workflowRequest
-     * @param name
-     * @param version
-     * @param requestId
-     * @param waitUntilTaskRef
-     * @param waitForSeconds
-     * @param consistency
-     * @returns
-     */
-    public executeWorkflowWithBlockingTaskInput(
-        workflowRequest: StartWorkflowRequest,
-        name: string,
-        version: number,
-        requestId?: string,
-        waitUntilTaskRef: string = "",
-        waitForSeconds?: number,
-        consistency?: Consistency
-    ): Promise<TaskRun> {
-        return tryCatchReThrow(() =>
-            this._client.workflowResource.executeWorkflowWithBlockingTaskInput(
-                workflowRequest,
-                name,
-                version,
-                requestId,
-                waitUntilTaskRef,
-                waitForSeconds,
-                consistency
             )
         );
     }
