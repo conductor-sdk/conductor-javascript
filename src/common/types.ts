@@ -5,13 +5,13 @@ export interface CommonTaskDef {
   taskReferenceName: string;
 }
 
-export enum WorkflowConsistency {
+export enum Consistency {
   SYNCHRONOUS = 'SYNCHRONOUS',
   DURABLE = 'DURABLE',
   REGION_DURABLE = 'REGION_DURABLE'
 }
 
-export enum WorkflowSignalReturnStrategy {
+export enum ReturnStrategy {
   TARGET_WORKFLOW = 'TARGET_WORKFLOW',
   BLOCKING_WORKFLOW = 'BLOCKING_WORKFLOW',
   BLOCKING_TASK = 'BLOCKING_TASK',

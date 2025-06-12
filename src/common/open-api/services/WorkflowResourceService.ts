@@ -17,7 +17,7 @@ import type { WorkflowTestRequest } from '../models/WorkflowTestRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 import {TaskRun} from "../models/TaskRun";
-import {WorkflowSignalReturnStrategy} from "../../types";
+import {ReturnStrategy} from "../../types";
 
 export class WorkflowResourceService {
 
@@ -123,7 +123,7 @@ export class WorkflowResourceService {
         waitUntilTaskRef,
         waitForSeconds,
         consistency,
-        WorkflowSignalReturnStrategy.TARGET_WORKFLOW
+        ReturnStrategy.TARGET_WORKFLOW
     ) as CancelablePromise<WorkflowRun>;
   }
 
@@ -156,7 +156,7 @@ export class WorkflowResourceService {
         waitUntilTaskRef,
         waitForSeconds,
         consistency,
-        WorkflowSignalReturnStrategy.BLOCKING_WORKFLOW
+        ReturnStrategy.BLOCKING_WORKFLOW
     ) as CancelablePromise<WorkflowRun>;
   }
 
@@ -189,7 +189,7 @@ export class WorkflowResourceService {
         waitUntilTaskRef,
         waitForSeconds,
         consistency,
-        WorkflowSignalReturnStrategy.BLOCKING_TASK
+        ReturnStrategy.BLOCKING_TASK
     ) as CancelablePromise<TaskRun>;
   }
 
@@ -222,7 +222,7 @@ export class WorkflowResourceService {
         waitUntilTaskRef,
         waitForSeconds,
         consistency,
-        WorkflowSignalReturnStrategy.BLOCKING_TASK_INPUT
+        ReturnStrategy.BLOCKING_TASK_INPUT
     ) as CancelablePromise<TaskRun>;
   }
 

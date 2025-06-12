@@ -17,7 +17,7 @@ import type { WorkflowTestRequest } from '../models/WorkflowTestRequest';
 import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 import {TaskRun} from "../models/TaskRun";
-import {WorkflowSignalReturnStrategy} from "../../types";
+import {ReturnStrategy} from "../../types";
 import {
   CircuitBreakerTransitionResponse,
   ProtoRegistryEntry,

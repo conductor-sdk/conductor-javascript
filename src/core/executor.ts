@@ -1,4 +1,4 @@
-import {ConductorClient, WorkflowConsistency, WorkflowDef, WorkflowSignalReturnStrategy} from "../common";
+import {ConductorClient, Consistency, WorkflowDef, ReturnStrategy} from "../common";
 import {
     RerunWorkflowRequest,
     ScrollableSearchResultWorkflowSummary,
@@ -59,10 +59,31 @@ export class WorkflowExecutor {
     }
 
     /**
-     * Execute a workflow synchronously. returns a Promise<WorkflowRun> with details of the running workflow
-     * @param workflowRequest
-     * @returns
+     * Execute a workflow synchronously (original method - backward compatible)
      */
+    public executeWorkflow(
+        workflowRequest: StartWorkflowRequest,
+        name: string,
+        version: number,
+        requestId: string,
+        waitUntilTaskRef?: string
+    ): Promise<WorkflowRun>;
+
+    /**
+     * Execute a workflow with return strategy support (new method)
+     */
+    public executeWorkflow(
+        workflowRequest: StartWorkflowRequest,
+        name: string,
+        version: number,
+        requestId: string,
+        waitUntilTaskRef: string,
+        waitForSeconds: number,
+        consistency: Consistency,
+        returnStrategy: ReturnStrategy
+    ): Promise<SignalResponse>;
+
+// Implementation
     public executeWorkflow(
         workflowRequest: StartWorkflowRequest,
         name: string,
@@ -70,9 +91,9 @@ export class WorkflowExecutor {
         requestId: string,
         waitUntilTaskRef: string = "",
         waitForSeconds?: number,
-        consistency?: WorkflowConsistency,
-        returnStrategy?: WorkflowSignalReturnStrategy
-    ): Promise<WorkflowRun> {
+        consistency?: Consistency,
+        returnStrategy?: ReturnStrategy
+    ): Promise<WorkflowRun | SignalResponse> {
         return tryCatchReThrow(() =>
             this._client.workflowResource.executeWorkflow(
                 workflowRequest,
@@ -105,7 +126,7 @@ export class WorkflowExecutor {
         requestId?: string,
         waitUntilTaskRef: string = "",
         waitForSeconds?: number,
-        consistency?: WorkflowConsistency
+        consistency?: Consistency
     ): Promise<WorkflowRun> {
         return tryCatchReThrow(() =>
             this._client.workflowResource.executeWorkflowWithTargetWorkflow(
@@ -138,7 +159,7 @@ export class WorkflowExecutor {
         requestId?: string,
         waitUntilTaskRef: string = "",
         waitForSeconds?: number,
-        consistency?: WorkflowConsistency
+        consistency?: Consistency
     ): Promise<WorkflowRun> {
         return tryCatchReThrow(() =>
             this._client.workflowResource.executeWorkflowWithBlockingWorkflow(
@@ -171,7 +192,7 @@ export class WorkflowExecutor {
         requestId?: string,
         waitUntilTaskRef: string = "",
         waitForSeconds?: number,
-        consistency?: WorkflowConsistency
+        consistency?: Consistency
     ): Promise<TaskRun> {
         return tryCatchReThrow(() =>
             this._client.workflowResource.executeWorkflowWithBlockingTask(
@@ -204,7 +225,7 @@ export class WorkflowExecutor {
         requestId?: string,
         waitUntilTaskRef: string = "",
         waitForSeconds?: number,
-        consistency?: WorkflowConsistency
+        consistency?: Consistency
     ): Promise<TaskRun> {
         return tryCatchReThrow(() =>
             this._client.workflowResource.executeWorkflowWithBlockingTaskInput(
@@ -576,7 +597,7 @@ export class WorkflowExecutor {
         workflowInstanceId: string,
         status: TaskResultStatusEnum,
         taskOutput: Record<string, any>,
-        returnStrategy: WorkflowSignalReturnStrategy = WorkflowSignalReturnStrategy.TARGET_WORKFLOW
+        returnStrategy: ReturnStrategy = ReturnStrategy.TARGET_WORKFLOW
     ): Promise<SignalResponse> {
         return tryCatchReThrow(() =>
             this._client.taskResource.signal(

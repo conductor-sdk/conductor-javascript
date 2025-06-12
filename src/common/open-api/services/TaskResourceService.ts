@@ -13,7 +13,7 @@ import type { CancelablePromise } from '../core/CancelablePromise';
 import type { BaseHttpRequest } from '../core/BaseHttpRequest';
 import {Workflow} from "../models/Workflow";
 import {TaskResultStatus} from "../../../core";
-import {WorkflowSignalReturnStrategy} from "../../types";
+import {ReturnStrategy} from "../../types";
 import {SignalResponse} from "../models/SignalResponse";
 import {WorkflowRun} from "../models/WorkflowRun";
 import {TaskRun} from "../models/TaskRun";
@@ -406,7 +406,7 @@ export class TaskResourceService {
       workflowId: string,
       status: TaskResultStatusEnum,
       output: Record<string, any>,
-      returnStrategy: WorkflowSignalReturnStrategy = WorkflowSignalReturnStrategy.TARGET_WORKFLOW,
+      returnStrategy: ReturnStrategy = ReturnStrategy.TARGET_WORKFLOW,
   ): CancelablePromise<SignalResponse> {
     return this.httpRequest.request({
       method: 'POST',

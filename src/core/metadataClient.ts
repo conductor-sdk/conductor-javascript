@@ -60,4 +60,20 @@ export class MetadataClient {
       this._client.metadataResource.create(workflowDef, overwrite)
     );
   }
+
+  /**
+   * Unregister (overwrite: true) a workflow definition
+   *
+   * @param workflowDef
+   * @param overwrite
+   * @returns
+   */
+  public unregisterWorkflow(
+      workflowName: string,
+      version: number = 1,
+  ) {
+    return tryCatchReThrow(() =>
+        this._client.metadataResource.unregisterWorkflowDef(workflowName, version)
+    );
+  }
 }
