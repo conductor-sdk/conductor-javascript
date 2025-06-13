@@ -1,11 +1,10 @@
-import {expect, describe, test, jest, beforeAll} from "@jest/globals";
+import {expect, describe, test, jest, beforeAll, afterEach, afterAll} from "@jest/globals";
 import {Consistency, ReturnStrategy, SetVariableTaskDef, TaskType, WorkflowDef} from "../../common";
 import { orkesConductorClient } from "../../orkes";
 import { WorkflowExecutor } from "../executor";
 import { v4 as uuidv4 } from "uuid";
 import {MetadataClient} from "../metadataClient";
 import {TestUtil} from "./utils/test-util";
-import {after} from "node:test";
 import {TaskResultStatusEnum} from "../../common/open-api/models/TaskResultStatusEnum";
 import {SignalResponse} from "../../common/open-api/models/SignalResponse";
 
@@ -114,7 +113,6 @@ describe("Executor", () => {
   });
 });
 
-
 describe("Execute with Return Strategy and Consistency", () => {
   // Constants specific to this test suite
   const WORKFLOW_NAMES = {
@@ -130,6 +128,8 @@ describe("Execute with Return Strategy and Consistency", () => {
   let client: any;
   let executor: WorkflowExecutor;
   let metadataClient: MetadataClient;
+  const workflowsToCleanup: {name: string, version: number}[] = [];
+  const executionsToCleanup: string[] = [];
 
   beforeAll(async () => {
     client = await clientPromise;
@@ -139,9 +139,21 @@ describe("Execute with Return Strategy and Consistency", () => {
 
     // Register all test workflows
     await registerAllWorkflows();
-  })
+  });
 
-  after(async () => {
+  afterEach(async () => {
+    // Clean up executions first
+    for (const executionId of executionsToCleanup) {
+      try {
+        await executor.terminate(executionId, "Test cleanup");
+      } catch (e) {
+        console.debug(`Failed to cleanup execution ${executionId}:`, e);
+      }
+    }
+    executionsToCleanup.length = 0;
+  });
+
+  afterAll(async () => {
     // Cleanup all workflows
     await cleanupAllWorkflows();
   });
@@ -154,6 +166,12 @@ describe("Execute with Return Strategy and Consistency", () => {
         TestUtil.registerWorkflow(WORKFLOW_NAMES.SUB_WF_2),
         TestUtil.registerWorkflow(WORKFLOW_NAMES.WAIT_SIGNAL_TEST)
       ]);
+
+      // Add to cleanup list
+      Object.values(WORKFLOW_NAMES).forEach(name => {
+        workflowsToCleanup.push({name, version: 1});
+      });
+
       console.log('✓ All workflows registered successfully');
     } catch (error) {
       throw new Error(`Failed to register workflows: ${error}`);
@@ -161,17 +179,14 @@ describe("Execute with Return Strategy and Consistency", () => {
   }
 
   async function cleanupAllWorkflows(): Promise<void> {
-    const cleanupPromises = [
-      TestUtil.unregisterWorkflow(WORKFLOW_NAMES.COMPLEX_WF, 1),
-      TestUtil.unregisterWorkflow(WORKFLOW_NAMES.SUB_WF_1, 1),
-      TestUtil.unregisterWorkflow(WORKFLOW_NAMES.SUB_WF_2, 1),
-      TestUtil.unregisterWorkflow(WORKFLOW_NAMES.WAIT_SIGNAL_TEST, 1)
-    ];
+    const cleanupPromises = workflowsToCleanup.map(({name, version}) =>
+        TestUtil.unregisterWorkflow(name, version)
+    );
 
     const results = await Promise.allSettled(cleanupPromises);
     results.forEach((result, index) => {
       if (result.status === 'rejected') {
-        console.warn(`Failed to cleanup workflow ${Object.values(WORKFLOW_NAMES)[index]}: ${result.reason}`);
+        console.warn(`Failed to cleanup workflow ${workflowsToCleanup[index].name}: ${result.reason}`);
       }
     });
     console.log('✓ Cleanup completed');
@@ -241,7 +256,6 @@ describe("Execute with Return Strategy and Consistency", () => {
       }
     ];
 
-    // Let's write one comprehensive test first, then replicate
     test("Should execute complex workflow with SYNC + TARGET_WORKFLOW and validate all aspects", async () => {
       const testCase = testCombinations[0]; // SYNC + TARGET_WORKFLOW
 
@@ -261,6 +275,11 @@ describe("Execute with Return Strategy and Consistency", () => {
 
       // Convert to SignalResponse instance
       const result = Object.assign(new SignalResponse(), rawResult);
+
+      // Add to cleanup list
+      if (result.workflowId) {
+        executionsToCleanup.push(result.workflowId);
+      }
 
       console.log(`Started workflow with ID: ${result.workflowId} for strategy: ${testCase.name}`);
 
@@ -285,7 +304,6 @@ describe("Execute with Return Strategy and Consistency", () => {
         expect(result.status).toBeDefined();
         expect(result.createTime).toBeGreaterThan(0);
         expect(result.updateTime).toBeGreaterThan(0);
-        //expect(result.updateTime).toBeGreaterThanOrEqual(result.createTime);
         expect(result.tasks).toBeDefined();
         expect(Array.isArray(result.tasks)).toBe(true);
         expect(result.tasks!.length).toBeGreaterThan(0);
@@ -317,7 +335,6 @@ describe("Execute with Return Strategy and Consistency", () => {
         expect(workflowFromResp.status).toEqual(result.status);
         expect(workflowFromResp.createTime).toEqual(result.createTime);
         expect(workflowFromResp.updateTime).toEqual(result.updateTime);
-        //expect(workflowFromResp.tasks.length).toEqual(result.tasks!.length);
 
         // Test that task helper methods throw errors
         expect(() => result.getBlockingTask()).toThrow('does not contain task details');
@@ -405,6 +422,11 @@ describe("Execute with Return Strategy and Consistency", () => {
         // Convert to SignalResponse instance
         const result = Object.assign(new SignalResponse(), rawResult);
 
+        // Add to cleanup list
+        if (result.workflowId) {
+          executionsToCleanup.push(result.workflowId);
+        }
+
         // Basic validations
         expect(result.responseType).toEqual(testCase.returnStrategy);
         expect(result.workflowId).toBeDefined();
@@ -451,5 +473,4 @@ describe("Execute with Return Strategy and Consistency", () => {
       });
     });
   });
-
 });
