@@ -35,7 +35,7 @@ describe("ServiceRegistryClient", () => {
         const testServiceRegistry = {
             name: "test_service_registry",
             type: ServiceType.HTTP,
-            serviceURI: "http://localhost:8081/api-docs",
+            serviceURI: "http://httpbin:8081/api-docs",
             config: {
                 circuitBreakerConfig: {
                     failureRateThreshold: 50.0,
@@ -89,7 +89,7 @@ describe("ServiceRegistryClient", () => {
         const testServiceRegistry = {
             name: "test_service_registry_to_remove",
             type: ServiceType.HTTP,
-            serviceURI: "http://localhost:8081"
+            serviceURI: "http://httpbin:8081/api-docs"
         };
 
         // Add service to cleanup list
@@ -121,7 +121,7 @@ describe("ServiceRegistryClient", () => {
         const testServiceRegistry = {
             name: "test_service_registry_with_method",
             type: ServiceType.HTTP,
-            serviceURI: "http://localhost:8082"
+            serviceURI: "http://httpbin:8081/api-docs"
         };
 
         // Add service to cleanup list
@@ -175,7 +175,7 @@ describe("ServiceRegistryClient", () => {
         const testServiceRegistry = {
             name: "test_service_registry_discovery",
             type: ServiceType.HTTP,
-            serviceURI: "http://localhost:8081/api-docs"
+            serviceURI: "http://httpbin:8081/api-docs"
         };
 
         // Add service to cleanup list
@@ -208,7 +208,7 @@ describe("ServiceRegistryClient", () => {
         const testServiceRegistry = {
             name: "test_gRPC_service_registry_discovery",
             type: ServiceType.gRPC,
-            serviceURI: "localhost:50051"
+            serviceURI: "grpcbin:50051"
         };
 
         // Add service to cleanup list
