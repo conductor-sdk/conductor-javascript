@@ -1,4 +1,4 @@
-import {beforeAll, describe, expect, jest, test} from "@jest/globals";
+import {beforeAll, afterEach, describe, expect, jest, test} from "@jest/globals";
 import {ServiceRegistryClient} from "../serviceRegistryClient";
 import {orkesConductorClient} from "../../orkes";
 import {ServiceType} from "../../common/open-api/models/ServiceRegistryModels";
@@ -8,10 +8,24 @@ import * as path from 'path';
 describe("ServiceRegistryClient", () => {
     const clientPromise = orkesConductorClient({useEnvVars: true});
     let serviceRegistryClient: ServiceRegistryClient;
+    const testServicesToCleanup: string[] = [];
 
     beforeAll(async () => {
         const client = await clientPromise;
         serviceRegistryClient = new ServiceRegistryClient(client);
+    });
+
+    afterEach(async () => {
+        // Clean up any services created during tests
+        for (const serviceName of testServicesToCleanup) {
+            try {
+                await serviceRegistryClient.removeService(serviceName);
+            } catch (e) {
+                // Ignore cleanup errors - service might already be deleted or not exist
+                console.debug(`Failed to cleanup service ${serviceName}:`, e);
+            }
+        }
+        testServicesToCleanup.length = 0;
     });
 
     jest.setTimeout(15000);
@@ -36,6 +50,9 @@ describe("ServiceRegistryClient", () => {
                 }
             }
         };
+
+        // Add service to cleanup list
+        testServicesToCleanup.push(testServiceRegistry.name);
 
         // Register the service registry
         await expect(
@@ -75,6 +92,9 @@ describe("ServiceRegistryClient", () => {
             serviceURI: "http://localhost:8081"
         };
 
+        // Add service to cleanup list
+        testServicesToCleanup.push(testServiceRegistry.name);
+
         // Register the service registry
         await expect(
             serviceRegistryClient.addOrUpdateService(testServiceRegistry)
@@ -103,6 +123,9 @@ describe("ServiceRegistryClient", () => {
             type: ServiceType.HTTP,
             serviceURI: "http://localhost:8082"
         };
+
+        // Add service to cleanup list
+        testServicesToCleanup.push(testServiceRegistry.name);
 
         // Register the service registry
         await expect(
@@ -145,102 +168,73 @@ describe("ServiceRegistryClient", () => {
         expect(foundMethod?.methodType).toEqual(testServiceMethod.methodType);
         expect(foundMethod?.inputType).toEqual(testServiceMethod.inputType);
         expect(foundMethod?.outputType).toEqual(testServiceMethod.outputType);
-
-        // Clean up
-        await serviceRegistryClient.removeService(testServiceRegistry.name);
     });
 
     test("Should discover methods from a http service", async () => {
         // Create a test service registry for discovery
-        // Note: This should point to a real service that supports discovery
-        // For HTTP services, it should point to a service with a Swagger/OpenAPI doc
-        // For gRPC services, it should point to a running gRPC service with reflection
         const testServiceRegistry = {
             name: "test_service_registry_discovery",
             type: ServiceType.HTTP,
             serviceURI: "http://localhost:8081/api-docs"
         };
 
+        // Add service to cleanup list
+        testServicesToCleanup.push(testServiceRegistry.name);
+
         // Register the service registry
-        await expect(
-            serviceRegistryClient.addOrUpdateService(testServiceRegistry)
-        ).resolves.not.toThrowError();
+        await serviceRegistryClient.addOrUpdateService(testServiceRegistry);
 
-        try {
-            // Attempt to discover methods without creating them
-            const discoveredMethods = await serviceRegistryClient.discover(
-                testServiceRegistry.name,
-                true
-            );
+        // Attempt to discover methods - this will fail the test if discovery fails
+        const discoveredMethods = await serviceRegistryClient.discover(
+            testServiceRegistry.name,
+            true
+        );
 
-            // Verify that we discovered at least one method
-            expect(discoveredMethods).toBeDefined();
-            expect(Array.isArray(discoveredMethods)).toBe(true);
+        // Verify that we discovered methods
+        expect(discoveredMethods).toBeDefined();
+        expect(Array.isArray(discoveredMethods)).toBe(true);
+        expect(discoveredMethods.length).toBeGreaterThan(0);
 
-            // Check that we got at least one method
-            // If the service URI is valid, this should pass
-            expect(discoveredMethods.length).toBeGreaterThan(0);
-
-            if (discoveredMethods.length > 0) {
-                // Check that the discovered methods have the expected properties
-                const firstMethod = discoveredMethods[0];
-                expect(firstMethod.methodName).toBeDefined();
-                expect(firstMethod.methodType).toBeDefined();
-            }
-        } catch (error) {
-            // If the discovery endpoint fails (e.g., if the petstore API is down),
-            // we'll log the error but not fail the test
-            console.warn("Discovery test failed, possibly due to external service unavailability:", error);
-        } finally {
-            // Clean up
-            await serviceRegistryClient.removeService(testServiceRegistry.name);
+        if (discoveredMethods.length > 0) {
+            // Check that the discovered methods have the expected properties
+            const firstMethod = discoveredMethods[0];
+            expect(firstMethod.methodName).toBeDefined();
+            expect(firstMethod.methodType).toBeDefined();
         }
     });
 
     test("Should discover methods from a gRPC service", async () => {
         // Create a test service registry for discovery
-        // Note: This should point to a real service that supports discovery
-        // For HTTP services, it should point to a service with a Swagger/OpenAPI doc
-        // For gRPC services, it should point to a running gRPC service with reflection
         const testServiceRegistry = {
             name: "test_gRPC_service_registry_discovery",
             type: ServiceType.gRPC,
             serviceURI: "localhost:50051"
         };
 
+        // Add service to cleanup list
+        testServicesToCleanup.push(testServiceRegistry.name);
+
         // Register the service registry
-        await expect(
-            serviceRegistryClient.addOrUpdateService(testServiceRegistry)
-        ).resolves.not.toThrowError();
+        await serviceRegistryClient.addOrUpdateService(testServiceRegistry);
 
         const filePath = path.join(__dirname, 'metadata', 'compiled.bin');
         const fileBuffer = fs.readFileSync(filePath);
         const blob = new Blob([fileBuffer], {type: 'application/octet-stream'});
 
-        // Register the service registry
-        await expect(
-            serviceRegistryClient.setProtoData(testServiceRegistry.name, 'compiled.bin', blob)
-        ).resolves.not.toThrowError();
+        // Set proto data
+        await serviceRegistryClient.setProtoData(testServiceRegistry.name, 'compiled.bin', blob);
 
-        try {
-            const serviceMethods = await serviceRegistryClient.getService(testServiceRegistry.name).then();
-            const methods = serviceMethods.methods;
-            expect(serviceMethods).toBeDefined();
-            expect(methods?.length).toBeGreaterThan(0);
-            expect(Array.isArray(methods)).toBe(true);
+        const serviceMethods = await serviceRegistryClient.getService(testServiceRegistry.name);
+        const methods = serviceMethods.methods;
 
-            if (methods) {
-                const firstMethod = methods[0];
-                expect(firstMethod.methodName).toBeDefined();
-                expect(firstMethod.methodType).toBeDefined();
-            }
-        } catch (error) {
-            // If the discovery endpoint fails (e.g., if the petstore API is down),
-            // we'll log the error but not fail the test
-            console.warn("Discovery test failed, possibly due to external service unavailability:", error);
-        } finally {
-            // Clean up
-            await serviceRegistryClient.removeService(testServiceRegistry.name);
+        expect(serviceMethods).toBeDefined();
+        expect(methods?.length).toBeGreaterThan(0);
+        expect(Array.isArray(methods)).toBe(true);
+
+        if (methods) {
+            const firstMethod = methods[0];
+            expect(firstMethod.methodName).toBeDefined();
+            expect(firstMethod.methodType).toBeDefined();
         }
     });
 });
