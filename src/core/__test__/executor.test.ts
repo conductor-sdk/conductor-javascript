@@ -145,7 +145,14 @@ describe("Execute with Return Strategy and Consistency", () => {
     // Clean up executions first
     for (const executionId of executionsToCleanup) {
       try {
-        await executor.terminate(executionId, "Test cleanup");
+        const workflowStatus = await executor.getWorkflowStatus(executionId, false, false);
+
+        if (workflowStatus.status && !['COMPLETED', 'FAILED', 'TERMINATED', 'TIMED_OUT'].includes(workflowStatus.status)) {
+          await executor.terminate(executionId, "Test cleanup");
+          console.debug(`Terminated running workflow: ${executionId}`);
+        } else {
+          console.debug(`Skipping cleanup for ${workflowStatus.status} workflow: ${executionId}`);
+        }
       } catch (e) {
         console.debug(`Failed to cleanup execution ${executionId}:`, e);
       }
