@@ -2,6 +2,7 @@ import * as fs from 'fs';
 import * as path from 'path';
 import {WorkflowDef} from "../../../common";
 import {MetadataClient} from "../../metadataClient";
+import {WorkflowExecutor} from "../../executor";
 
 export class TestUtil {
     private static metadataClient: MetadataClient;
@@ -33,6 +34,39 @@ export class TestUtil {
         } catch (error) {
             throw new Error(`Failed to register workflow ${workflowName}: ${error}`);
         }
+    }
+
+    // Helper function to wait for workflow completion
+    public static async waitForWorkflowCompletion(
+        executor: WorkflowExecutor,
+        workflowId: string,
+        maxWaitMs: number = 300000, // 5 minutes default
+        pollIntervalMs: number = 100 // 100ms default
+    ) {
+        const startTime = Date.now();
+
+        while (Date.now() - startTime < maxWaitMs) {
+            try {
+                const workflowStatus = await executor.getWorkflow(workflowId, true);
+
+                // Check if workflow is in a terminal state
+                if (['COMPLETED', 'FAILED', 'TERMINATED', 'TIMED_OUT'].includes(workflowStatus.status!)) {
+                    console.debug(`Workflow ${workflowId} reached terminal state: ${workflowStatus.status}`);
+                    return workflowStatus;
+                }
+
+                console.debug(`Workflow ${workflowId} status: ${workflowStatus.status}, waiting...`);
+
+                // Wait before next poll
+                await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+
+            } catch (error) {
+                console.warn(`Error checking workflow status for ${workflowId}:`, error);
+                await new Promise(resolve => setTimeout(resolve, pollIntervalMs));
+            }
+        }
+
+        throw new Error(`Workflow ${workflowId} did not complete within ${maxWaitMs}ms`);
     }
 
     /**

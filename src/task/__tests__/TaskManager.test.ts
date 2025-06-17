@@ -3,6 +3,7 @@ import { simpleTask, WorkflowExecutor } from "../../core";
 import { orkesConductorClient } from "../../orkes";
 import { TaskManager, ConductorWorker } from "../index";
 import { mockLogger } from "./mockLogger";
+import {TestUtil} from "../../core/__test__/utils/test-util";
 
 
 const BASE_TIME = 500;
@@ -169,7 +170,7 @@ describe("TaskManager", () => {
     // decrease speed again
     manager.updatePollingOptions({ pollInterval: BASE_TIME, concurrency: 1 });
 
-    const workflowStatus = await executor.getWorkflow(executionId!, true);
+    const workflowStatus = await TestUtil.waitForWorkflowCompletion(executor, executionId!, 30000);
 
     expect(workflowStatus.status).toEqual("COMPLETED");
     await manager.stopPolling();
